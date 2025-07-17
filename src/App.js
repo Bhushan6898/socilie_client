@@ -5,6 +5,8 @@ import Feed from './components/Feed';
 import Profile from './components/Profile';
 import Login from './components/Login';
 import Register from './components/Register';
+import Notifications from './pages/Notifications';
+import Messages from './pages/Messages';
 
 function App() {
   return (
@@ -25,6 +27,8 @@ function App() {
           <Route path="/profile" element={<Profile />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/notifications" element={<Notifications />} />
+          <Route path="/messages" element={<Messages />} />
         </Routes>
       </div>
     </Router>
