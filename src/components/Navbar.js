@@ -12,7 +12,7 @@ function Navbar() {
               src={logo}
               alt="Instagram"
               className="img-fluid"
-              style={{ maxWidth: 100, height: 'auto' }}
+              style={{ maxWidth: 70, height: 'auto',borderRadius: '10%' }}
             />
           </Link>
          
@@ -30,13 +30,13 @@ function Navbar() {
       
       <nav
         className="navbar bg-white border-top fixed-bottom"
-        style={{ minHeight: 56, zIndex: 1050 }}
+        style={{ minHeight: 30, zIndex: 1000 }}
       >
         <div className="container d-flex justify-content-between align-items-center px-0" style={{ maxWidth: 500 }}>
           <Link to="/" className="nav-link text-center flex-fill py-2">
             <i className="fas fa-home fa-xl" style={{ color: '#e1306c' }}></i>
           </Link>
-          <Link to="/search" className="nav-link text-center flex-fill py-2">
+          <Link to="/searchbar" className="nav-link text-center flex-fill py-2">
             <i className="fas fa-search fa-xl" style={{ color: '#8e44ad' }}></i>
           </Link>
           <Link to="/post" className="nav-link text-center flex-fill py-2">

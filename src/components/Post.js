@@ -1,9 +1,15 @@
 import React from 'react';
 
-function Post({ username, image, caption, type = 'image', videoUrl }) {
+function Post({ username, image, caption, type = 'image', videoUrl, profileImg }) {
   return (
     <div className="card mb-4">
       <div className="card-header d-flex align-items-center">
+        <img
+          src={profileImg || "https://randomuser.me/api/portraits/men/1.jpg"}
+          alt={username}
+          className="rounded-circle border me-2"
+          style={{ width: 36, height: 36, objectFit: 'cover' }}
+        />
         <strong>{username}</strong>
         {/* Reel/Video indicator */}
         {type === 'reel' && (
@@ -40,9 +46,12 @@ function Post({ username, image, caption, type = 'image', videoUrl }) {
             <i className="fas fa-share"></i>
           </button>
         </div>
+         
         {/* ...existing code for Like/Comment buttons if needed... */}
       </div>
+      
     </div>
+   
   );
 }
 

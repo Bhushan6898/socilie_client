@@ -7,6 +7,9 @@ import Login from './components/Login';
 import Register from './components/Register';
 import Notifications from './pages/Notifications';
 import Messages from './pages/Messages';
+import PostPage from './pages/PostPage';
+import SearchBarPage from './pages/SearchBarPage';
+import VideoFeedPage from './pages/VideoFeedPage';
 
 function App() {
   return (
@@ -29,6 +32,9 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/notifications" element={<Notifications />} />
           <Route path="/messages" element={<Messages />} />
+          <Route path="/post" element={<PostPage />} />
+          <Route path="/searchbar" element={<SearchBarPage />} />
+          <Route path="/video" element={<VideoFeedPage />} />
         </Routes>
       </div>
     </Router>
