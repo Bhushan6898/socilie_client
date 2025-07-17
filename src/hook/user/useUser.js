@@ -2,9 +2,9 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import UserRepository from "repository/user/useUserrepository.js";
-import { logOut } from "store/auth/reduser.slice";
-import { login} from "store/auth/reduser.slice";
+import UserRepository from "../../repository/user/useUserrepository.js";
+import { logOut } from "../../store/auth/reduser.slice";
+import { login} from "../../store/auth/reduser.slice";
 
 export const useUser = () => {
     const navigation=useNavigate();

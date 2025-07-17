@@ -1,5 +1,5 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 
 const posts = [
   "https://picsum.photos/id/1011/300/300",
@@ -11,6 +11,9 @@ const posts = [
 ];
 
 function Profile() {
+  const [showSettings, setShowSettings] = useState(false);
+  const navigate = useNavigate();
+
   return (
     <div className="container py-4">
       <div className="row align-items-center mb-4">
@@ -28,9 +31,14 @@ function Profile() {
             <Link to="/edit-profile" className="btn btn-link p-0 me-2" title="Edit Profile">
               <i className="fas fa-user-edit fa-lg" style={{ color: '#3498db' }}></i>
             </Link>
-            <Link to="/settings" className="btn btn-link p-0" title="Settings">
+            <button
+              className="btn btn-link p-0"
+              title="Settings"
+              onClick={() => setShowSettings(true)}
+              style={{ border: 'none', background: 'none' }}
+            >
               <i className="fas fa-cog fa-lg" style={{ color: '#888' }}></i>
-            </Link>
+            </button>
           </div>
           <div className="d-flex mb-2 flex-wrap">
             <span className="me-4"><strong>6</strong> posts</span>
@@ -53,6 +61,49 @@ function Profile() {
           </div>
         ))}
       </div>
+      {/* Settings Modal */}
+      {showSettings && (
+        <div
+          className="modal fade show"
+          style={{
+            display: 'block',
+            background: 'rgba(0,0,0,0.5)',
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            width: '100vw',
+            height: '100vh',
+            zIndex: 2000
+          }}
+          tabIndex="-1"
+          onClick={() => setShowSettings(false)}
+        >
+          <div
+            className="d-flex flex-column align-items-center justify-content-center h-100"
+            style={{ pointerEvents: 'none' }}
+          >
+            <div
+              className="bg-white rounded p-4"
+              style={{ minWidth: 250, pointerEvents: 'auto' }}
+              onClick={e => e.stopPropagation()}
+            >
+              <h5 className="mb-3">Settings</h5>
+              <button className="btn btn-outline-secondary w-100 mb-2" onClick={() => { setShowSettings(false); navigate('/profile'); }}>
+                Account Settings
+              </button>
+              <button className="btn btn-outline-primary w-100 mb-2" onClick={() => { setShowSettings(false); navigate('/login'); }}>
+                Login
+              </button>
+              <button className="btn btn-outline-success w-100" onClick={() => { setShowSettings(false); navigate('/register'); }}>
+                Register
+              </button>
+              <button className="btn btn-link w-100 mt-3" onClick={() => setShowSettings(false)}>
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
