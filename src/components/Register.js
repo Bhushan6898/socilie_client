@@ -2,17 +2,27 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useUser } from '../hook/user/useUser';
 import logo from '../asset/logo.png';
+import { toast } from 'react-toastify';
 function Register() {
   const { getregister } = useUser();
-  const [form, setForm] = useState({ email: '', password: '', name: '' });
-
+  const [form, setForm] = useState({ email: '', password: '', name: '',username:'',number:'' });
+const [loading, setLoading] = useState(false);
   const handleChange = e => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async e => {
+    setLoading(true);
     e.preventDefault();
-    await getregister(form);
+   const response= await getregister(form);
+   if(response.status === 200) {
+      setLoading(false);
+      setForm({ email: '', password: '', name: '',username:'',number:'' });
+     
+    }
+   console.log(response);
+   
+   
   };
 
   return (
@@ -32,12 +42,30 @@ function Register() {
             onChange={handleChange}
             required
           />
+           <input
+            className="form-control mb-2"
+            type="text"
+            name="username"
+            placeholder="Username"
+            value={form.username}
+            onChange={handleChange}
+            required
+          />
           <input
             className="form-control mb-2"
             type="email"
             name="email"
             placeholder="Email"
             value={form.email}
+            onChange={handleChange}
+            required
+          />
+           <input
+            className="form-control mb-3"
+            type="text"
+            name="number"
+            placeholder="Number"
+            value={form.number}
             onChange={handleChange}
             required
           />

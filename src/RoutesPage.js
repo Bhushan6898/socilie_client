@@ -1,5 +1,9 @@
-import React from 'react';
-import { Routes, Route } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { OrbitProgress } from 'react-loading-indicators';
+
+// Dummy components (replace with actual imports if available)
 import Feed from './components/Feed';
 import Profile from './components/Profile';
 import Login from './components/Login';
@@ -9,36 +13,62 @@ import Messages from './pages/Messages';
 import PostPage from './pages/PostPage';
 import SearchBarPage from './pages/SearchBarPage';
 import VideoFeedPage from './pages/VideoFeedPage';
+import Navbar from './components/Navbar';
 
-function RoutesPage() {
-  // Dummy authentication flag (replace with real auth logic)
-  const isAuthenticated = false;
+import { useUser } from './hook/user/useUser';
+
+function App() {
+  const { getconnect } = useUser();
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+
+  const [loading, setLoading] = useState(true);
+  const [showSidebarAndNavbar, setShowSidebarAndNavbar] = useState(false);
+
+  useEffect(() => {
+    getconnect();
+
+    const timeout = setTimeout(() => {
+      setShowSidebarAndNavbar(isAuthenticated);
+      setLoading(false);
+    }, 1000);
+
+    return () => clearTimeout(timeout);
+  }, [isAuthenticated]);
+
+  const PrivateRoute = ({ children }) => {
+    return isAuthenticated ? children : <Navigate to="/login" replace />;
+  };
+
+  if (loading) {
+    return (
+      <div className="d-flex justify-content-center align-items-center vh-100">
+        <OrbitProgress color="#32cd32" size="medium" text="Loading..." textColor="" />
+      </div>
+    );
+  }
 
   return (
-    <Routes>
-      <Route path="/" element={
-        <div className="row">
-          <div className="col-md-8">
-            <Feed />
-          </div>
-          <div className="col-md-4">
+    
+     <>
 
-          </div>
-        </div>
-      } />
-      <Route path="/profile" element={<Profile />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
-      <Route path="/notifications" element={<Notifications />} />
-      <Route path="/messages" element={<Messages />} />
-      <Route path="/post" element={<PostPage />} />
-      <Route path="/searchbar" element={<SearchBarPage />} />
-      <Route path="/video" element={<VideoFeedPage />} />
-    </Routes>
+      <div className="container mt-4">
+        <Routes>
+          {/* Public Routes */}
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+
+          {/* Private Routes */}
+          <Route path="/" element={<PrivateRoute><Feed /></PrivateRoute>} />
+          <Route path="/profile" element={<PrivateRoute><Profile /></PrivateRoute>} />
+          <Route path="/notifications" element={<PrivateRoute><Notifications /></PrivateRoute>} />
+          <Route path="/messages" element={<PrivateRoute><Messages /></PrivateRoute>} />
+          <Route path="/post" element={<PrivateRoute><PostPage /></PrivateRoute>} />
+          <Route path="/searchbar" element={<PrivateRoute><SearchBarPage /></PrivateRoute>} />
+          <Route path="/video" element={<PrivateRoute><VideoFeedPage /></PrivateRoute>} />
+        </Routes>
+      </div>
+   </>
   );
 }
 
-
-
-
-export default RoutesPage;
+export default App;

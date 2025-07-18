@@ -30,25 +30,7 @@ export const useUser = () => {
                 console.error("Error while connecting:", error);
             }
         },
-        genrateotp: async (payload) => {
-            try {
-                const response = await UserRepository.otpgenrate(payload); // Call the correct method
-                if (response.status === 200) {
-                    toast.success(response.data?.message)
-                    return response;
-                } 
-                if (response.response.status === 401) {
-                    toast.warn(response.response.data?.message)
-                    return response;
-                }else {
-                    console.error("Connection failed with status:", response.status);
-                    return response;
-                }
-                return response;
-            } catch (error) {
-                console.error("Error while connecting:", error);
-            }
-        },
+       
         getlogin: async (payload) => {
             try {
                 const response = await UserRepository.login(payload); // Call the correct method
@@ -56,6 +38,7 @@ export const useUser = () => {
                     toast.success(response.data?.message)
                     const { role, _id: id } = response.data.user;
                     dispatch(login({ role, id })); 
+                     navigation('/');
                     return response;
                 } 
                 if (response.response.status === 401) {
@@ -93,15 +76,20 @@ export const useUser = () => {
             try {
                 const response = await UserRepository.registration(payload); // Call the correct method
                 console.log(response);
+               
                 
                 if (response.status === 200) {
                    toast.success(response.data?.message)
+                   navigation('/login');
+                   return response;
                 }
                 if (response.response.status === 401) {
                     toast.warn(response.response.data?.message)
+                    return response;
                 }
                  else{
                     console.error("Connection failed with status:", response.status);
+                    return response;
                 }
                 return response;
             } catch (error) {

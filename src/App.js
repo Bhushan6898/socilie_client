@@ -1,20 +1,35 @@
-import React from 'react';
-import { BrowserRouter as Router } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
 import Navbar from './components/Navbar';
 import RoutesPage from './RoutesPage';
+import { useUser } from './hook/user/useUser';
+import { useSelector } from 'react-redux';
 
 function App() {
+  const { getconnect } = useUser();
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+
+  const [loading, setLoading] = useState(true);
+  const [showSidebarAndNavbar, setShowSidebarAndNavbar] = useState(false);
+
+  useEffect(() => {
+    getconnect();
+
+    const timeout = setTimeout(() => {
+      setShowSidebarAndNavbar(isAuthenticated);
+      setLoading(false);
+    }, 1000);
+
+    return () => clearTimeout(timeout);
+  }, [isAuthenticated]);
+
   return (
-    <Router>
-      <Navbar />
+    <>
+      {showSidebarAndNavbar && <Navbar />}
       <div className="container mt-4">
         <RoutesPage />
       </div>
-    </Router>
+    </>
   );
 }
 
-
-
 export default App;
-

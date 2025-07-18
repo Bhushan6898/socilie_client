@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { logOut } from '../store/auth/reduser.slice';
+import { useUser } from '../hook/user/useUser';
 
 const posts = [
   "https://picsum.photos/id/1011/300/300",
@@ -22,6 +24,11 @@ function Profile() {
   const [selectedPost, setSelectedPost] = useState(null);
   const [modalType, setModalType] = useState(null); // 'followers' | 'following'
   const navigate = useNavigate();
+  const{logout}=useUser();
+
+  const handleLogout = () => {
+    logout();
+  };
 
   const [userData, setUserData] = useState({
     name: 'Bhushan Patil',
@@ -109,6 +116,7 @@ function Profile() {
           <button className="btn btn-outline-secondary w-100 mb-2" onClick={() => navigate('/profile')}>Account Settings</button>
           <button className="btn btn-outline-primary w-100 mb-2" onClick={() => navigate('/login')}>Login</button>
           <button className="btn btn-outline-success w-100" onClick={() => navigate('/register')}>Register</button>
+          <button className="btn btn-outline-success w-100" onClick={() => handleLogout()}>LOGOUT</button>
         </Modal>
       )}
 
