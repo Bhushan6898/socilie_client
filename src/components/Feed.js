@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Post from './Post';
 
 const stories = [
-  { username: 'john_doe', img: 'https://randomuser.me/api/portraits/men/1.jpg', status: 'Enjoying the sunshine!' },
+  { username: 'Bhushan Patil', img: 'https://res.cloudinary.com/dl35wuxhn/image/upload/v1751878744/user-images/user_652cb3593dbba5f70aa925df37650af581f20c63436823da4eb771d7e5878f00.jpg', status: 'Enjoying the sunshine!' },
   { username: 'jane_smith', img: 'https://randomuser.me/api/portraits/women/2.jpg', status: 'Lovely day at the beach.' },
   { username: 'alex', img: 'https://randomuser.me/api/portraits/men/3.jpg', status: 'Working hard!' },
   { username: 'emma', img: 'https://randomuser.me/api/portraits/women/4.jpg', status: 'Coffee time.' },
@@ -28,7 +28,7 @@ function Feed() {
           <div className="text-center" style={{ width: 70 }}>
             <div className="position-relative mx-auto" style={{ width: 56, height: 56 }}>
               <img
-                src="https://randomuser.me/api/portraits/men/10.jpg"
+                src="https://res.cloudinary.com/dl35wuxhn/image/upload/v1751899961/user-images/user_dc30631497e734f9d197e4d81572e6e8e57c58669ddd23b7487f5cd5b310e3d5.jpg"
                 alt="Your Story"
                 className="rounded-circle border"
                 style={{ width: 56, height: 56, objectFit: 'cover', border: '2px solid #e1306c' }}

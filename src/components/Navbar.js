@@ -47,7 +47,7 @@ function Navbar() {
           </Link>
           <Link to="/profile" className="nav-link text-center flex-fill py-2">
             <img
-              src="https://randomuser.me/api/portraits/men/1.jpg"
+              src="https://res.cloudinary.com/dl35wuxhn/image/upload/v1751899961/user-images/user_dc30631497e734f9d197e4d81572e6e8e57c58669ddd23b7487f5cd5b310e3d5.jpg"
               alt="Profile"
               className="rounded-circle border"
               style={{ width: 28, height: 28, objectFit: 'cover', borderColor: '#f39c12' }}
