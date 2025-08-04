@@ -49,6 +49,15 @@ class UserRepository {
             return error;
         }
     }
+
+    async updateduser(payload) {
+        try {
+            const response = await repository.post('/user/user-update',payload);
+            return response;
+        } catch (error) {
+            return error;
+        }
+    }
 }
 
 export default new UserRepository(); // Exporting an instance

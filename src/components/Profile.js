@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { logOut } from '../store/auth/reduser.slice';
 import { useUser } from '../hook/user/useUser';
+import profilpicture from '../asset/profile.png';
 
 const posts = [
   "https://picsum.photos/id/1011/300/300",
@@ -22,23 +22,83 @@ function Profile() {
   const [showSettings, setShowSettings] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
   const [selectedPost, setSelectedPost] = useState(null);
-  const [modalType, setModalType] = useState(null); // 'followers' | 'following'
+  const [modalType, setModalType] = useState(null);
+  const [newProfilePic, setNewProfilePic] = useState(null);
+
   const navigate = useNavigate();
-  const{logout}=useUser();
+  const { logout, getuser, userdatas, updatedata } = useUser();
 
   const handleLogout = () => {
     logout();
   };
 
+  useEffect(() => {
+    getuser();
+  }, []);
+
   const [userData, setUserData] = useState({
-    name: 'Bhushan Patil',
-    username: 'bhushan_19',
-    bio: 'Photographer & Traveler 🌍'
+    name: "",
+    username: '',
+    bio: '',
+    followers: 0,
+    following: 0,
+    post: 0,
+    profilepic: "",
+    email: "",
+    number: ""
   });
+
+  useEffect(() => {
+    if (userdatas) {
+      setUserData({
+        name: userdatas.name || "",
+        username: userdatas.username || 'bhushan_19',
+        bio: userdatas.bio || 'Photographer & Traveler 🌍',
+        followers: userdatas.followersCount || 0,
+        following: userdatas.followingCount || 0,
+        post: userdatas.postsCount || 0,
+        profilepic: userdatas.profilePicture || profilpicture,
+        email: userdatas.email || "",
+        number: userdatas.number || ""
+      });
+    }
+  }, [userdatas]);
+
+  useEffect(() => {
+    return () => {
+      if (newProfilePic) {
+        URL.revokeObjectURL(newProfilePic);
+      }
+    };
+  }, [newProfilePic]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setUserData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleSaveChanges = async () => {
+    const formData = new FormData();
+    formData.append('name', userData.name);
+    formData.append('username', userData.username);
+    formData.append('email', userData.email);
+    formData.append('bio', userData.bio);
+    formData.append('number', userData.number);
+    if (newProfilePic) {
+      formData.append('profileImage', newProfilePic);
+    }
+
+    await updatedata(formData);
+
+    if (newProfilePic) {
+      setUserData(prev => ({
+        ...prev,
+        profilepic: URL.createObjectURL(newProfilePic)
+      }));
+    }
+
+    closeModals();
+    getuser(); // refresh data
   };
 
   const openListModal = (type) => {
@@ -50,6 +110,7 @@ function Profile() {
     setShowEdit(false);
     setSelectedPost(null);
     setModalType(null);
+    setNewProfilePic(null);
   };
 
   return (
@@ -71,7 +132,7 @@ function Profile() {
       <div className="row mb-4 align-items-start">
         <div className="col-12 col-sm-3 text-center">
           <img
-            src="https://res.cloudinary.com/dl35wuxhn/image/upload/v1751899961/user-images/user_dc30631497e734f9d197e4d81572e6e8e57c58669ddd23b7487f5cd5b310e3d5.jpg"
+            src={userData.profilepic}
             alt="Profile"
             className="rounded-circle border mb-2"
             style={{ width: 100, height: 100, objectFit: 'cover' }}
@@ -82,15 +143,15 @@ function Profile() {
         <div className="col-12 col-sm-9 mt-3 mt-sm-0">
           <div className="d-flex justify-content-around text-center">
             <div>
-              <strong>50</strong>
+              <strong>{userData.post}</strong>
               <div className="text-muted small">Posts</div>
             </div>
             <div style={{ cursor: 'pointer' }} onClick={() => openListModal('followers')}>
-              <strong>850</strong>
+              <strong>{userData.followers}</strong>
               <div className="text-muted small">Followers</div>
             </div>
             <div style={{ cursor: 'pointer' }} onClick={() => openListModal('following')}>
-              <strong>1600</strong>
+              <strong>{userData.following}</strong>
               <div className="text-muted small">Following</div>
             </div>
           </div>
@@ -116,13 +177,29 @@ function Profile() {
           <button className="btn btn-outline-secondary w-100 mb-2" onClick={() => navigate('/profile')}>Account Settings</button>
           <button className="btn btn-outline-primary w-100 mb-2" onClick={() => navigate('/login')}>Login</button>
           <button className="btn btn-outline-success w-100" onClick={() => navigate('/register')}>Register</button>
-          <button className="btn btn-outline-success w-100" onClick={() => handleLogout()}>LOGOUT</button>
+          <button className="btn btn-outline-danger w-100" onClick={handleLogout}>Logout</button>
         </Modal>
       )}
 
       {/* Edit Modal */}
       {showEdit && (
         <Modal title="Edit Profile" onClose={closeModals}>
+          <div className="mb-3 text-center">
+            <img
+              src={newProfilePic ? URL.createObjectURL(newProfilePic) : userData.profilepic}
+              alt="Preview"
+              className="rounded-circle border"
+              style={{ width: 100, height: 100, objectFit: 'cover' }}
+            />
+            <div className="mt-2">
+              <input
+                type="file"
+                accept="image/*"
+                className="form-control"
+                onChange={(e) => setNewProfilePic(e.target.files[0])}
+              />
+            </div>
+          </div>
           <div className="mb-2">
             <label className="form-label">Name</label>
             <input type="text" className="form-control" name="name" value={userData.name} onChange={handleChange} />
@@ -135,7 +212,16 @@ function Profile() {
             <label className="form-label">Bio</label>
             <textarea className="form-control" name="bio" rows="2" value={userData.bio} onChange={handleChange}></textarea>
           </div>
-          <button className="btn btn-primary w-100 mb-2" onClick={closeModals}>Save Changes</button>
+          <div className="mb-2">
+            <label className="form-label">Email</label>
+            <input type="email" className="form-control" name="email" value={userData.email} onChange={handleChange}
+              required pattern="^[^\s@]+@[^\s@]+\.[^\s@]+$" title="Please enter a valid email address" />
+          </div>
+          <div className="mb-2">
+            <label className="form-label">Mobile Number</label>
+            <input type="text" className="form-control" name="number" value={userData.number} onChange={handleChange} />
+          </div>
+          <button className="btn btn-primary w-100 mb-2" onClick={handleSaveChanges}>Save Changes</button>
         </Modal>
       )}
 
@@ -164,7 +250,7 @@ function Profile() {
   );
 }
 
-// Reusable Modal
+// Reusable Modal Component
 function Modal({ title, children, onClose }) {
   return (
     <div

@@ -8,11 +8,11 @@ import { login} from "../../store/auth/reduser.slice";
 
 export const useUser = () => {
     const navigation=useNavigate();
-    const[userdata,setUserdata]=useState();
+    const[userdatas,setUserdatas]=useState();
     const [loading, setLoading] = useState(false);
     const dispatch = useDispatch();
     return {
-        userdata,
+        userdatas,
         getconnect: async () => {
             try {
                 setLoading(true)
@@ -102,13 +102,36 @@ export const useUser = () => {
                 setLoading(true)
                 const response = await UserRepository.UserData(); 
                 if (response.status === 200) {
+                    console.log(response);
                     
-                    setUserdata(response.data.user)
+                    setUserdatas(response.data.user)
                     setLoading(false);
                 } else {
                     console.error("Connection failed with status:", response.status);
                 }
                 setLoading(false);
+            } catch (error) {
+                console.error("Error while connecting:", error);
+            }
+        },
+         updatedata: async (payload) => {
+            try {
+                const response = await UserRepository.updateduser(payload); // Call the correct method
+                
+                if (response.status === 200) {
+                   toast.success(response.data?.message)
+                  
+                   return response;
+                }
+                if (response.response.status === 401) {
+                    toast.warn(response.response.data?.message)
+                    return response;
+                }
+                 else{
+                    console.error("Connection failed with status:", response.status);
+                    return response;
+                }
+       
             } catch (error) {
                 console.error("Error while connecting:", error);
             }
