@@ -4,8 +4,6 @@ const initialState = {
   role: null,
   isAuthenticated: false,
   id: null,
-  productDatas: [],
-  billdata: [],
   userdata: [],
   notificationdata:[],
   logsdata:[],
@@ -30,14 +28,7 @@ const authReducer = createSlice({
       state.id = null; // Clearing the ID on logout
       state.error = null; // Clear error on logout
     },
-    setProductDatas: (state, actions) => {
-      const { data } = actions.payload;
-      state.productDatas = data; // Store product data in the state
-    },
-    setBillDatas: (state, actions) => {
-      const { data } = actions.payload;
-      state.billdata = data; // Store bill data in the state
-    },
+   
     setError: (state, actions) => {
       state.error = actions.payload; // Set an error message
     },

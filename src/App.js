@@ -5,7 +5,7 @@ import { useUser } from './hook/user/useUser';
 import { useSelector } from 'react-redux';
 
 function App() {
-  const { getconnect } = useUser();
+  const { getconnect,getuser } = useUser();
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 
   const [loading, setLoading] = useState(true);
@@ -13,6 +13,7 @@ function App() {
 
   useEffect(() => {
     getconnect();
+    getuser();
 
     const timeout = setTimeout(() => {
       setShowSidebarAndNavbar(isAuthenticated);

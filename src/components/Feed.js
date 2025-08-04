@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Post from './Post';
+import { useSelector } from 'react-redux';
 
 const stories = [
   { username: 'Bhushan Patil', img: 'https://res.cloudinary.com/dl35wuxhn/image/upload/v1751878744/user-images/user_652cb3593dbba5f70aa925df37650af581f20c63436823da4eb771d7e5878f00.jpg', status: 'Enjoying the sunshine!' },
@@ -11,6 +12,7 @@ const stories = [
 ];
 
 function Feed() {
+    const user = useSelector((state) => state.auth.userdata);
   const [showModal, setShowModal] = useState(false);
   const [activeStory, setActiveStory] = useState(null);
 
@@ -28,7 +30,7 @@ function Feed() {
           <div className="text-center" style={{ width: 70 }}>
             <div className="position-relative mx-auto" style={{ width: 56, height: 56 }}>
               <img
-                src="https://res.cloudinary.com/dl35wuxhn/image/upload/v1751899961/user-images/user_dc30631497e734f9d197e4d81572e6e8e57c58669ddd23b7487f5cd5b310e3d5.jpg"
+                src={user.profilePicture}
                 alt="Your Story"
                 className="rounded-circle border"
                 style={{ width: 56, height: 56, objectFit: 'cover', border: '2px solid #e1306c' }}

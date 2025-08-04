@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useUser } from '../hook/user/useUser';
 import profilpicture from '../asset/profile.png';
-
+import { useSelector } from 'react-redux';
 const posts = [
   "https://picsum.photos/id/1011/300/300",
   "https://picsum.photos/id/1012/300/300",
@@ -26,15 +26,14 @@ function Profile() {
   const [newProfilePic, setNewProfilePic] = useState(null);
 
   const navigate = useNavigate();
-  const { logout, getuser, userdatas, updatedata } = useUser();
-
+  const { logout, updatedata } = useUser();
+  const user = useSelector((state) => state.auth.userdata);
+  console.log("userdatas",user);
+  
   const handleLogout = () => {
     logout();
   };
 
-  useEffect(() => {
-    getuser();
-  }, []);
 
   const [userData, setUserData] = useState({
     name: "",
@@ -49,20 +48,20 @@ function Profile() {
   });
 
   useEffect(() => {
-    if (userdatas) {
+    if (user) {
       setUserData({
-        name: userdatas.name || "",
-        username: userdatas.username || 'bhushan_19',
-        bio: userdatas.bio || 'Photographer & Traveler 🌍',
-        followers: userdatas.followersCount || 0,
-        following: userdatas.followingCount || 0,
-        post: userdatas.postsCount || 0,
-        profilepic: userdatas.profilePicture || profilpicture,
-        email: userdatas.email || "",
-        number: userdatas.number || ""
+        name: user.name || "",
+        username: user.username || 'bhushan_19',
+        bio: user.bio || 'Photographer & Traveler 🌍',
+        followers: user.followersCount || 0,
+        following: user.followingCount || 0,
+        post: user.postsCount || 0,
+        profilepic: user.profilePicture || profilpicture,
+        email: user.email || "",
+        number: user.number || ""
       });
     }
-  }, [userdatas]);
+  }, [user]);
 
   useEffect(() => {
     return () => {

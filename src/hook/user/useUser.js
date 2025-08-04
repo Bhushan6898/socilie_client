@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import UserRepository from "../../repository/user/useUserrepository.js";
-import { logOut } from "../../store/auth/reduser.slice";
+import { logOut, setUserdata } from "../../store/auth/reduser.slice";
 import { login} from "../../store/auth/reduser.slice";
 
 export const useUser = () => {
@@ -75,9 +75,7 @@ export const useUser = () => {
         getregister: async (payload) => {
             try {
                 const response = await UserRepository.registration(payload); // Call the correct method
-                console.log(response);
-               
-                
+              
                 if (response.status === 200) {
                    toast.success(response.data?.message)
                    navigation('/login');
@@ -102,7 +100,9 @@ export const useUser = () => {
                 setLoading(true)
                 const response = await UserRepository.UserData(); 
                 if (response.status === 200) {
-                    console.log(response);
+                    const data= response.data.user;
+                  console.log(data);
+                  dispatch(setUserdata({ data }));
                     
                     setUserdatas(response.data.user)
                     setLoading(false);
