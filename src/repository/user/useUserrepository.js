@@ -49,10 +49,40 @@ class UserRepository {
             return error;
         }
     }
+     async NotificationData() {
+        try {
+            const response = await repository.get('/user/notification');
+  
+            
+            return response;
+        } catch (error) {
+            return error;
+        }
+    }
 
     async updateduser(payload) {
         try {
             const response = await repository.post('/user/user-update',payload);
+            return response;
+        } catch (error) {
+            return error;
+        }
+    }
+
+     async postuserdata(payload) {
+        try {
+            const response = await repository.post('/user/user-post',payload);
+            return response;
+        } catch (error) {
+            return error;
+        }
+    }
+
+    async GetpostData() {
+        try {
+            const response = await repository.get('/user/get-post');
+  
+            
             return response;
         } catch (error) {
             return error;

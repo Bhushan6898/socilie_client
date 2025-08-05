@@ -6,8 +6,8 @@ const initialState = {
   id: null,
   userdata: [],
   notificationdata:[],
-  logsdata:[],
-  error: null, // Added error state
+  postdata:[],
+  error: null, 
 };
 
 const authReducer = createSlice({
@@ -19,8 +19,7 @@ const authReducer = createSlice({
       state.role = role;
       state.isAuthenticated = true;
       state.id = id;
-      state.error = null; // Clear any previous errors on successful login
-       // Log the updated state
+      state.error = null; 
     },
     logOut: (state) => {
       state.isAuthenticated = false;
@@ -39,9 +38,9 @@ const authReducer = createSlice({
     setNotificationdata: (state, actions) => {
       const { data } = actions.payload;
       state.notificationdata= data;
-    },setLogsdata: (state, actions) => {
+    },setPostdata: (state, actions) => {
       const { data } = actions.payload;
-      state.logsdata= data; // Store bill data in the state
+      state.postdata= data; // Store bill data in the state
       console.log(data); 
     },
     
@@ -49,5 +48,5 @@ const authReducer = createSlice({
   
 });
 
-export const { login, logOut, setProductDatas, setBillDatas, setError ,setUserdata,setNotificationdata,setLogsdata} = authReducer.actions;
+export const { login, logOut, setProductDatas, setBillDatas, setError ,setUserdata,setNotificationdata,setPostdata} = authReducer.actions;
 export default authReducer.reducer;

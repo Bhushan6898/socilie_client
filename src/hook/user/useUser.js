@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import UserRepository from "../../repository/user/useUserrepository.js";
-import { logOut, setUserdata } from "../../store/auth/reduser.slice";
+import { logOut, setNotificationdata, setPostdata, setUserdata } from "../../store/auth/reduser.slice";
 import { login} from "../../store/auth/reduser.slice";
 
 export const useUser = () => {
@@ -136,5 +136,68 @@ export const useUser = () => {
                 console.error("Error while connecting:", error);
             }
         },
+
+        getnotification: async () => {
+            try {
+                setLoading(true)
+                const response = await UserRepository.NotificationData(); 
+                if (response.status === 200) {
+                    const data= response.data.Notification;
+                  
+                  dispatch(setNotificationdata({ data }));
+                    setLoading(false);
+                } else {
+                    console.error("Connection failed with status:", response.status);
+                }
+                setLoading(false);
+            } catch (error) {
+                console.error("Error while connecting:", error);
+            }
+        },
+
+
+    createPost: async (payload) => {
+            try {
+                const response = await UserRepository.postuserdata(payload); // Call the correct method
+              
+                if (response.status === 200) {
+                   toast.success(response.data?.message)
+                     navigation('/');
+                   return response;
+                }
+                if (response.response.status === 401) {
+                    toast.warn(response.response.data?.message)
+                    return response;
+                }
+                 else{
+                    console.error("Connection failed with status:", response.status);
+                    return response;
+                }
+                return response;
+            } catch (error) {
+                console.error("Error while connecting:", error);
+            }
+        },
+
+         getpost: async () => {
+            try {
+                setLoading(true)
+                const response = await UserRepository.GetpostData(); 
+                if (response.status === 200) {
+                    const data= response.data.posts;
+                  console.log(data);
+                   dispatch(setPostdata({ data }));
+                    
+                    
+                    setLoading(false);
+                } else {
+                    console.error("Connection failed with status:", response.status);
+                }
+                setLoading(false);
+            } catch (error) {
+                console.error("Error while connecting:", error);
+            }
+        },
+
     };
 };

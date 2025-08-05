@@ -3,6 +3,7 @@ import Navbar from './components/Navbar';
 import RoutesPage from './RoutesPage';
 import { useUser } from './hook/user/useUser';
 import { useSelector } from 'react-redux';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
   const { getconnect,getuser } = useUser();
@@ -14,6 +15,7 @@ function App() {
   useEffect(() => {
     getconnect();
     getuser();
+  
 
     const timeout = setTimeout(() => {
       setShowSidebarAndNavbar(isAuthenticated);

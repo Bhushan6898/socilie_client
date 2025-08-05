@@ -16,7 +16,7 @@ function Login() {
   };
 
   return (
-    <div className="d-flex justify-content-center align-items-center" style={{ minHeight: '80vh' }}>
+    <div className="d-flex justify-content-center align-items-center bg-light" style={{ minHeight: '80vh' }}>
       <div className="card p-4" style={{ maxWidth: 350, width: '100%' }}>
         <div className="text-center mb-4">
           <img src={logo} alt="Instagram" width="48" style={{borderRadius:"10px"}} />

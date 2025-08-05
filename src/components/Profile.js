@@ -3,7 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import { useUser } from '../hook/user/useUser';
 import profilpicture from '../asset/profile.png';
 import { useSelector } from 'react-redux';
-const posts = [
+
+// Dummy post images
+const dummyPosts = [
   "https://picsum.photos/id/1011/300/300",
   "https://picsum.photos/id/1012/300/300",
   "https://picsum.photos/id/1013/300/300",
@@ -12,6 +14,7 @@ const posts = [
   "https://picsum.photos/id/1018/300/300"
 ];
 
+// Dummy followers/following
 const dummyUsers = [
   { name: "Alice", username: "alice_01" },
   { name: "Bob", username: "bob_travel" },
@@ -27,13 +30,9 @@ function Profile() {
 
   const navigate = useNavigate();
   const { logout, updatedata } = useUser();
-  const user = useSelector((state) => state.auth.userdata);
-  console.log("userdatas",user);
-  
-  const handleLogout = () => {
-    logout();
-  };
 
+  const user = useSelector((state) => state.auth.userdata);
+  const postData = useSelector((state) => state.auth.postdata); // actual posts from Redux
 
   const [userData, setUserData] = useState({
     name: "",
@@ -51,7 +50,7 @@ function Profile() {
     if (user) {
       setUserData({
         name: user.name || "",
-        username: user.username || 'bhushan_19',
+        username: user.username || 'username',
         bio: user.bio || 'Photographer & Traveler 🌍',
         followers: user.followersCount || 0,
         following: user.followingCount || 0,
@@ -70,6 +69,10 @@ function Profile() {
       }
     };
   }, [newProfilePic]);
+
+  const handleLogout = () => {
+    logout();
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -97,7 +100,6 @@ function Profile() {
     }
 
     closeModals();
-    getuser(); // refresh data
   };
 
   const openListModal = (type) => {
@@ -112,16 +114,18 @@ function Profile() {
     setNewProfilePic(null);
   };
 
+  const allPosts = (postData && postData.length > 0) ? postData : dummyPosts;
+
   return (
     <div className="container py-4">
       {/* Top Section */}
       <div className="d-flex justify-content-between align-items-center mb-3">
         <h4 className="mb-0">{userData.username}</h4>
         <div>
-          <button className="btn btn-link p-0 me-3" title="Edit Profile" onClick={() => setShowEdit(true)}>
+          <button className="btn btn-link p-0 me-3" onClick={() => setShowEdit(true)}>
             <i className="fas fa-user-edit fa-lg" style={{ color: '#3498db' }}></i>
           </button>
-          <button className="btn btn-link p-0" title="Settings" onClick={() => setShowSettings(true)}>
+          <button className="btn btn-link p-0" onClick={() => setShowSettings(true)}>
             <i className="fas fa-cog fa-lg" style={{ color: '#888' }}></i>
           </button>
         </div>
@@ -136,8 +140,8 @@ function Profile() {
             className="rounded-circle border mb-2"
             style={{ width: 100, height: 100, objectFit: 'cover' }}
           />
-          <h5 className="mb-0">{userData.name}</h5>
-          <div className="text-muted small">{userData.bio}</div>
+          <h5>{userData.name}</h5>
+          <p className="text-muted small">{userData.bio}</p>
         </div>
         <div className="col-12 col-sm-9 mt-3 mt-sm-0">
           <div className="d-flex justify-content-around text-center">
@@ -161,13 +165,16 @@ function Profile() {
 
       {/* Posts Grid */}
       <div className="row g-2">
-        {posts.map((url, idx) => (
-          <div className="col-6 col-md-4" key={idx} onClick={() => setSelectedPost(url)} style={{ cursor: 'pointer' }}>
-            <div className="ratio ratio-1x1 bg-light rounded overflow-hidden">
-              <img src={url} alt="Post" className="w-100 h-100" style={{ objectFit: 'cover' }} />
+        {allPosts.map((post, idx) => {
+          const postUrl = typeof post === 'string' ? post : post.media[0].url;
+          return (
+            <div className="col-6 col-md-4" key={idx} onClick={() => setSelectedPost(postUrl)} style={{ cursor: 'pointer' }}>
+              <div className="ratio ratio-1x1 bg-light rounded overflow-hidden">
+                <img src={postUrl} alt="Post" className="w-100 h-100" style={{ objectFit: 'cover' }} />
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       {/* Settings Modal */}
@@ -180,7 +187,7 @@ function Profile() {
         </Modal>
       )}
 
-      {/* Edit Modal */}
+      {/* Edit Profile Modal */}
       {showEdit && (
         <Modal title="Edit Profile" onClose={closeModals}>
           <div className="mb-3 text-center">
@@ -190,37 +197,19 @@ function Profile() {
               className="rounded-circle border"
               style={{ width: 100, height: 100, objectFit: 'cover' }}
             />
-            <div className="mt-2">
-              <input
-                type="file"
-                accept="image/*"
-                className="form-control"
-                onChange={(e) => setNewProfilePic(e.target.files[0])}
-              />
-            </div>
+            <input
+              type="file"
+              accept="image/*"
+              className="form-control mt-2"
+              onChange={(e) => setNewProfilePic(e.target.files[0])}
+            />
           </div>
-          <div className="mb-2">
-            <label className="form-label">Name</label>
-            <input type="text" className="form-control" name="name" value={userData.name} onChange={handleChange} />
-          </div>
-          <div className="mb-2">
-            <label className="form-label">Username</label>
-            <input type="text" className="form-control" name="username" value={userData.username} onChange={handleChange} />
-          </div>
-          <div className="mb-3">
-            <label className="form-label">Bio</label>
-            <textarea className="form-control" name="bio" rows="2" value={userData.bio} onChange={handleChange}></textarea>
-          </div>
-          <div className="mb-2">
-            <label className="form-label">Email</label>
-            <input type="email" className="form-control" name="email" value={userData.email} onChange={handleChange}
-              required pattern="^[^\s@]+@[^\s@]+\.[^\s@]+$" title="Please enter a valid email address" />
-          </div>
-          <div className="mb-2">
-            <label className="form-label">Mobile Number</label>
-            <input type="text" className="form-control" name="number" value={userData.number} onChange={handleChange} />
-          </div>
-          <button className="btn btn-primary w-100 mb-2" onClick={handleSaveChanges}>Save Changes</button>
+          <input type="text" className="form-control mb-2" name="name" value={userData.name} onChange={handleChange} placeholder="Name" />
+          <input type="text" className="form-control mb-2" name="username" value={userData.username} onChange={handleChange} placeholder="Username" />
+          <textarea className="form-control mb-2" name="bio" value={userData.bio} onChange={handleChange} rows="2" placeholder="Bio" />
+          <input type="email" className="form-control mb-2" name="email" value={userData.email} onChange={handleChange} placeholder="Email" />
+          <input type="text" className="form-control mb-3" name="number" value={userData.number} onChange={handleChange} placeholder="Phone" />
+          <button className="btn btn-primary w-100" onClick={handleSaveChanges}>Save Changes</button>
         </Modal>
       )}
 
@@ -234,11 +223,11 @@ function Profile() {
       {/* Followers / Following Modal */}
       {modalType && (
         <Modal title={modalType === 'followers' ? 'Followers' : 'Following'} onClose={closeModals}>
-          {dummyUsers.map((user, idx) => (
-            <div key={idx} className="d-flex justify-content-between align-items-center border-bottom py-2">
+          {dummyUsers.map((u, i) => (
+            <div key={i} className="d-flex justify-content-between align-items-center border-bottom py-2">
               <div>
-                <strong>{user.name}</strong>
-                <div className="text-muted small">@{user.username}</div>
+                <strong>{u.name}</strong>
+                <div className="text-muted small">@{u.username}</div>
               </div>
               <button className="btn btn-sm btn-outline-primary">View</button>
             </div>
@@ -252,29 +241,9 @@ function Profile() {
 // Reusable Modal Component
 function Modal({ title, children, onClose }) {
   return (
-    <div
-      className="modal fade show"
-      style={{
-        display: 'block',
-        background: 'rgba(0,0,0,0.5)',
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        width: '100vw',
-        height: '100vh',
-        zIndex: 2000
-      }}
-      onClick={onClose}
-    >
-      <div
-        className="d-flex flex-column align-items-center justify-content-center h-100"
-        style={{ pointerEvents: 'none' }}
-      >
-        <div
-          className="bg-white rounded p-4"
-          style={{ width: '90%', maxWidth: 400, pointerEvents: 'auto' }}
-          onClick={(e) => e.stopPropagation()}
-        >
+    <div className="modal fade show" style={{ display: 'block', background: 'rgba(0,0,0,0.5)' }} onClick={onClose}>
+      <div className="d-flex flex-column align-items-center justify-content-center h-100" style={{ pointerEvents: 'none' }}>
+        <div className="bg-white rounded p-4" style={{ width: '90%', maxWidth: 400, pointerEvents: 'auto' }} onClick={(e) => e.stopPropagation()}>
           <div className="d-flex justify-content-between align-items-center mb-3">
             <h5 className="mb-0">{title}</h5>
             <button className="btn-close" onClick={onClose}></button>

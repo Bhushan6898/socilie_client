@@ -1,10 +1,23 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import logo from '../asset/logo.png'; // Assuming you have a logo image
 import { useSelector } from 'react-redux';
+import { useUser } from '../hook/user/useUser';
+
 function Navbar() {
+
   const user = useSelector((state) => state.auth.userdata);
-  
+  const notifications = useSelector((state) => state.auth.notificationdata);
+  const { getnotification,getpost } = useUser();
+
+
+
+
+  useEffect(() => {
+    getnotification();
+    getpost();
+  }, []);
+
   return (
     <>
       {/* Top Navbar */}
@@ -13,15 +26,24 @@ function Navbar() {
           <Link className="navbar-brand d-flex align-items-center" to="/">
             <img
               src={logo}
-              alt="Instagram"
+              alt="Socilite"
               className="img-fluid"
-              style={{ maxWidth: 70, height: 'auto',borderRadius: '10%' }}
+              style={{ maxWidth: 70, height: 'auto', borderRadius: '10%' }}
             />
           </Link>
-         
+
           <div className="d-flex align-items-center">
             <Link to="/notifications" className="btn btn-link me-2">
-              <i className="fas fa-bell fa-lg" style={{ color: '#f34a12ff' }}></i>
+              <div className="position-relative">
+                <i className="fas fa-bell fa-lg" style={{ color: '#f34a12ff' }}></i>
+
+                <span
+                  className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                  style={{ fontSize: '0.65rem' }}
+                >
+                  {notifications && notifications.length > 0 ? notifications.length : 0}
+                </span>
+              </div>
             </Link>
             <Link to="/messages" className="btn btn-link me-2">
               <i className="fas fa-envelope fa-lg" style={{ color: '#3498db' }}></i>
@@ -30,7 +52,7 @@ function Navbar() {
         </div>
       </nav>
 
-      
+
       <nav
         className="navbar bg-white border-top fixed-bottom"
         style={{ minHeight: 30, zIndex: 1000 }}
