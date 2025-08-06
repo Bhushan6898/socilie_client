@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
 import { Form, Button, Container, Row, Col, Card } from 'react-bootstrap';
 import { useUser } from '../hook/user/useUser';
-
+import dummyLocations from '../pages/location.json';
 const PostCreationPage = () => {
-  
+
   const [files, setFiles] = useState([]);
   const [step, setStep] = useState(1);
   const [caption, setCaption] = useState('');
   const [location, setLocation] = useState('');
   const [music, setMusic] = useState('');
   const [locationSuggestions, setLocationSuggestions] = useState([]);
-const { createPost } = useUser();
+  const { createPost } = useUser();
   const handleFileChange = (e) => {
     setFiles([...e.target.files]);
   };
@@ -19,23 +19,22 @@ const { createPost } = useUser();
     const value = e.target.value;
     setLocation(value);
 
-    const dummyLocations = ['Mumbai', 'Pune', 'Delhi', 'Nagpur', 'Nashik', 'Hyderabad'];
     const filtered = dummyLocations.filter(loc =>
       loc.toLowerCase().includes(value.toLowerCase())
     );
     setLocationSuggestions(filtered);
   };
 
-  const handleSubmit = async(e) => {
-   
-   e.preventDefault();
+  const handleSubmit = async (e) => {
+
+    e.preventDefault();
 
     const formData = new FormData();
     files.forEach(file => formData.append('files', file));
     formData.append('caption', caption);
     formData.append('location', location);
     formData.append('music', music);
- await createPost(formData)
+    await createPost(formData)
 
   };
 
@@ -98,7 +97,15 @@ const { createPost } = useUser();
                     placeholder="Search location..."
                   />
                   {locationSuggestions.length > 0 && (
-                    <div className="border rounded mt-1 p-2 bg-light position-absolute w-100" style={{ zIndex: 1000 }}>
+                    <div
+                      className="border rounded mt-1 p-2 bg-light position-absolute w-100"
+                      style={{
+                        zIndex: 1000,
+                        minHeight: '200px',
+                        maxHeight: '300px',
+                        overflowY: 'auto',
+                      }}
+                    >
                       {locationSuggestions.map((loc, idx) => (
                         <div
                           key={idx}
@@ -113,6 +120,7 @@ const { createPost } = useUser();
                       ))}
                     </div>
                   )}
+
                 </Form.Group>
 
                 <Form.Group className="mb-3">

@@ -115,9 +115,10 @@ function Profile() {
   };
 
   const allPosts = (postData && postData.length > 0) ? postData : dummyPosts;
+  console.log(allPosts);
 
   return (
-    <div className="container py-4">
+    <div className="container py-4" style={{ paddingBottom: 70 }}>
       {/* Top Section */}
       <div className="d-flex justify-content-between align-items-center mb-3">
         <h4 className="mb-0">{userData.username}</h4>
@@ -166,16 +167,69 @@ function Profile() {
       {/* Posts Grid */}
       <div className="row g-2">
         {allPosts.map((post, idx) => {
-          const postUrl = typeof post === 'string' ? post : post.media[0].url;
+          const mediaItems = typeof post === 'string' ? [{ url: post, type: 'image' }] : post.media;
+          const firstMedia = mediaItems[0];
+
           return (
-            <div className="col-6 col-md-4" key={idx} onClick={() => setSelectedPost(postUrl)} style={{ cursor: 'pointer' }}>
-              <div className="ratio ratio-1x1 bg-light rounded overflow-hidden">
-                <img src={postUrl} alt="Post" className="w-100 h-100" style={{ objectFit: 'cover' }} />
+            <div
+              className="col-6 col-md-4"
+              key={idx}
+              onClick={() => setSelectedPost(mediaItems)} // Pass all media
+              style={{ cursor: 'pointer' }}
+            >
+              <div
+                className="ratio ratio-1x1 rounded overflow-hidden position-relative bg-light"
+                style={{ minHeight: '250px' }} // Optional: to ensure height when content is loading
+              >
+                {firstMedia.type === 'video' ? (
+                  <video
+                    src={firstMedia.url}
+                    className="w-100 h-100"
+                    style={{ objectFit: 'cover' }}
+                    muted
+                    autoPlay
+                    loop
+                  />
+                ) : (
+                  <img
+                    src={firstMedia.url}
+                    alt="Post"
+                    className="w-100 h-100"
+                    style={{
+                      objectFit: 'cover',
+                      imageRendering: 'auto'
+                    }}
+                  />
+                )}
+
+                {mediaItems.length > 1 && (
+                  <span
+                    className="position-absolute top-0 end-0 m-1 d-flex justify-content-center align-items-center"
+                    style={{
+                      width: '16px',
+                      height: '16px',
+                      backgroundColor: '#fff',
+                      color: '#000',
+                      fontSize: '13px',
+                      borderRadius: '3px',
+                      fontWeight: 'bold',
+                      border: '1px solid #ccc',
+                    }}
+                  >
+
+                    {mediaItems.length}
+                  </span>
+                )}
+
+
               </div>
+
             </div>
           );
         })}
       </div>
+
+
 
       {/* Settings Modal */}
       {showSettings && (
@@ -215,10 +269,96 @@ function Profile() {
 
       {/* Post Viewer Modal */}
       {selectedPost && (
-        <Modal title="Post" onClose={closeModals}>
-          <img src={selectedPost} alt="Full Post" className="w-100 rounded" style={{ maxHeight: '70vh', objectFit: 'contain' }} />
-        </Modal>
+        <div className="modal d-block" tabIndex="-1" onClick={() => setSelectedPost(null)}>
+          <div
+            className="modal-dialog modal-dialog-centered modal-lg"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="modal-content bg-dark text-white">
+              <div className="modal-body p-0">
+                <div id="carouselPost" className="carousel slide" data-bs-ride="carousel">
+                  <div className="carousel-inner">
+                    {selectedPost?.map((media, i) => (
+                      <div
+                        className={`carousel-item ${i === 0 ? 'active' : ''}`}
+                        key={i}
+                        style={{ position: 'relative' }}
+                      >
+                        {/* Index Number Box */}
+                        <div
+                          style={{
+                            position: 'absolute',
+                            top: '10px',
+                            left: '10px',
+                            backgroundColor: 'rgba(255, 255, 255, 0.85)',
+                            color: '#000',
+                            fontSize: '12px',
+                            padding: '2px 6px',
+                            borderRadius: '4px',
+                            zIndex: 10,
+                          }}
+                        >
+                          {i + 1} / {selectedPost.length}
+                        </div>
+
+                        {/* Media */}
+                        {media.type === 'video' ? (
+                          <video
+                            src={media.url}
+                            className="d-block w-100"
+                            controls
+                            style={{ maxHeight: '80vh', objectFit: 'contain' }}
+                          />
+                        ) : (
+                          <img
+                            src={media.url}
+                            className="d-block w-100"
+                            alt={`media-${i}`}
+                            style={{ maxHeight: '80vh', objectFit: 'contain' }}
+                          />
+                        )}
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Carousel Controls */}
+                  {selectedPost?.length > 1 && (
+                    <>
+                      <button
+                        className="carousel-control-prev"
+                        type="button"
+                        data-bs-target="#carouselPost"
+                        data-bs-slide="prev"
+                      >
+                        <span className="carousel-control-prev-icon" />
+                      </button>
+                      <button
+                        className="carousel-control-next"
+                        type="button"
+                        data-bs-target="#carouselPost"
+                        data-bs-slide="next"
+                      >
+                        <span className="carousel-control-next-icon" />
+                      </button>
+                    </>
+                  )}
+                </div>
+              </div>
+              <div className="modal-footer justify-content-center">
+                <button
+                  type="button"
+                  className="btn btn-light"
+                  onClick={() => setSelectedPost(null)}
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
       )}
+
+
 
       {/* Followers / Following Modal */}
       {modalType && (
