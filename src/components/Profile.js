@@ -172,14 +172,14 @@ function Profile() {
 
           return (
             <div
-              className="col-6 col-md-4"
+              className="col-4 col-md-3"
               key={idx}
               onClick={() => setSelectedPost(mediaItems)} // Pass all media
               style={{ cursor: 'pointer' }}
             >
               <div
                 className="ratio ratio-1x1 rounded overflow-hidden position-relative bg-light"
-                style={{ minHeight: '250px' }} // Optional: to ensure height when content is loading
+                style={{ minHeight: '150px' }} // Optional: to ensure height when content is loading
               >
                 {firstMedia.type === 'video' ? (
                   <video
@@ -206,11 +206,11 @@ function Profile() {
                   <span
                     className="position-absolute top-0 end-0 m-1 d-flex justify-content-center align-items-center"
                     style={{
-                      width: '16px',
-                      height: '16px',
+                      width: '13px',
+                      height: '13px',
                       backgroundColor: '#fff',
                       color: '#000',
-                      fontSize: '13px',
+                      fontSize: '10px',
                       borderRadius: '3px',
                       fontWeight: 'bold',
                       border: '1px solid #ccc',
