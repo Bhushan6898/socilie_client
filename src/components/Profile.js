@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useUser } from '../hook/user/useUser';
 import profilpicture from '../asset/profile.png';
 import { useSelector } from 'react-redux';
+import { FaVolumeUp, FaVolumeMute } from 'react-icons/fa';
+
 
 // Dummy post images
 const dummyPosts = [
@@ -28,6 +30,9 @@ function Profile() {
   const [modalType, setModalType] = useState(null);
   const [newProfilePic, setNewProfilePic] = useState(null);
 
+   const audioRefs = useRef({});
+  const [playingIndex, setPlayingIndex] = useState(null);
+    const [play, setPlay] = useState([]);
   const navigate = useNavigate();
   const { logout, updatedata } = useUser();
 
@@ -115,8 +120,33 @@ function Profile() {
   };
 
   const allPosts = (postData && postData.length > 0) ? postData : dummyPosts;
-  console.log(allPosts);
+  console.log("play", play);
 
+
+
+  const toggleAudio = (index) => {
+    const audio = audioRefs.current[index];
+
+
+    if (!audio) return;
+
+    // Pause currently playing audio
+    Object.entries(audioRefs.current).forEach(([key, ref]) => {
+      if (ref && parseInt(key) !== index) {
+        ref.pause();
+        ref.currentTime = 0;
+      }
+    });
+
+    // Play or Pause clicked audio
+    if (playingIndex === index) {
+      audio.pause();
+      setPlayingIndex(null);
+    } else {
+      audio.play();
+      setPlayingIndex(index);
+    }
+  };
   return (
     <div className="container py-4" style={{ paddingBottom: 70 }}>
       {/* Top Section */}
@@ -268,97 +298,141 @@ function Profile() {
       )}
 
       {/* Post Viewer Modal */}
-      {selectedPost && (
-        <div className="modal d-block" tabIndex="-1" onClick={() => setSelectedPost(null)}>
-          <div
-            className="modal-dialog modal-dialog-centered modal-lg"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="modal-content bg-dark text-white">
-              <div className="modal-body p-0">
-                <div id="carouselPost" className="carousel slide" data-bs-ride="carousel">
-                  <div className="carousel-inner">
-                    {selectedPost?.map((media, i) => (
+     ;
+
+{selectedPost && (
+      <div className="modal d-block" tabIndex="-1" onClick={() => setSelectedPost(null)}>
+        <div
+          className="modal-dialog modal-dialog-centered modal-lg"
+          onClick={(e) => e.stopPropagation()}
+        >
+          <div className="modal-content bg-dark text-white">
+            <div className="modal-body p-0 position-relative">
+              <div id="carouselPost" className="carousel slide" data-bs-ride="carousel">
+                <div className="carousel-inner">
+                  {selectedPost.map((media, i) => (
+                     
+                    <div
+                      className={`carousel-item ${i === 0 ? 'active' : ''}`}
+                      key={i}
+                      style={{ position: 'relative' }}
+                     
+
+                    >
+                      
+                      {/* Music Icon & Audio */}
+                      {media.music && (
+                        
+                        <>
+                          <audio
+                            ref={(el) => (audioRefs.current[i] = el)}
+                            src={media.music}
+                            
+                          />
+                          
+                          <div
+                          
+                            onClick={() => toggleAudio(i)}
+                            style={{
+                              position: 'absolute',
+                              bottom: '50px',
+                              right: '10px',
+                              backgroundColor: 'rgba(187, 33, 33, 0.5)',
+                              color: 'white',
+                              padding: '8px',
+                              borderRadius: '50%',
+                              cursor: 'pointer',
+                              zIndex: 10,
+                            }}
+                          >
+                            {playingIndex === i ? <FaVolumeUp /> : <FaVolumeMute />}
+                          </div>
+                        </>
+                      )}
+
+                      {/* Index */}
                       <div
-                        className={`carousel-item ${i === 0 ? 'active' : ''}`}
-                        key={i}
-                        style={{ position: 'relative' }}
+                        style={{
+                          position: 'absolute',
+                          top: '10px',
+                          left: '10px',
+                          backgroundColor: 'rgba(255, 255, 255, 0.85)',
+                          color: '#000',
+                          fontSize: '12px',
+                          padding: '2px 6px',
+                          borderRadius: '4px',
+                          zIndex: 10,
+                        }}
                       >
-                        {/* Index Number Box */}
-                        <div
-                          style={{
-                            position: 'absolute',
-                            top: '10px',
-                            left: '10px',
-                            backgroundColor: 'rgba(255, 255, 255, 0.85)',
-                            color: '#000',
-                            fontSize: '12px',
-                            padding: '2px 6px',
-                            borderRadius: '4px',
-                            zIndex: 10,
-                          }}
-                        >
-                          {i + 1} / {selectedPost.length}
-                        </div>
-
-                        {/* Media */}
-                        {media.type === 'video' ? (
-                          <video
-                            src={media.url}
-                            className="d-block w-100"
-                            controls
-                            style={{ maxHeight: '80vh', objectFit: 'contain' }}
-                          />
-                        ) : (
-                          <img
-                            src={media.url}
-                            className="d-block w-100"
-                            alt={`media-${i}`}
-                            style={{ maxHeight: '80vh', objectFit: 'contain' }}
-                          />
-                        )}
+                        {i + 1} / {selectedPost.length}
                       </div>
-                    ))}
-                  </div>
 
-                  {/* Carousel Controls */}
-                  {selectedPost?.length > 1 && (
-                    <>
-                      <button
-                        className="carousel-control-prev"
-                        type="button"
-                        data-bs-target="#carouselPost"
-                        data-bs-slide="prev"
-                      >
-                        <span className="carousel-control-prev-icon" />
-                      </button>
-                      <button
-                        className="carousel-control-next"
-                        type="button"
-                        data-bs-target="#carouselPost"
-                        data-bs-slide="next"
-                      >
-                        <span className="carousel-control-next-icon" />
-                      </button>
-                    </>
-                  )}
+                      {/* Media Content */}
+                      {media.type === 'video' ? (
+                        <video
+                          src={media.url}
+                          className="d-block w-100"
+                          controls
+                          style={{ maxHeight: '80vh', objectFit: 'contain' }}
+                        />
+                      ) : (
+                        <img
+                          src={media.url}
+                          className="d-block w-100"
+                          alt={`media-${i}`}
+                          style={{ maxHeight: '80vh', objectFit: 'contain' }}
+                        />
+                      )}
+                    </div>
+                  ))}
                 </div>
+
+                {/* Carousel Controls */}
+                {selectedPost?.length > 1 && (
+                  <>
+                    <button
+                      className="carousel-control-prev"
+                      type="button"
+                      data-bs-target="#carouselPost"
+                      data-bs-slide="prev"
+                    >
+                      <span className="carousel-control-prev-icon" />
+                    </button>
+                    <button
+                      className="carousel-control-next"
+                      type="button"
+                      data-bs-target="#carouselPost"
+                      data-bs-slide="next"
+                    >
+                      <span className="carousel-control-next-icon" />
+                    </button>
+                  </>
+                )}
               </div>
-              <div className="modal-footer justify-content-center">
-                <button
-                  type="button"
-                  className="btn btn-light"
-                  onClick={() => setSelectedPost(null)}
-                >
-                  Close
-                </button>
-              </div>
+            </div>
+
+            <div className="modal-footer justify-content-center">
+              <button
+                type="button"
+                className="btn btn-light"
+                onClick={() => {
+                  // Stop all audio when closing
+                  Object.values(audioRefs.current).forEach((audio) => {
+                    audio.pause();
+                    audio.currentTime = 0;
+                  });
+                  setSelectedPost(null);
+                  setPlayingIndex(null);
+                }}
+              >
+                Close
+              </button>
             </div>
           </div>
         </div>
-      )}
+      </div>
 
-
+              )}
 
       {/* Followers / Following Modal */}
       {modalType && (

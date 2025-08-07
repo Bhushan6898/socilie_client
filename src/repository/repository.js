@@ -1,7 +1,6 @@
 import axios from "axios";
-//export const BaseURL="http://localhost:3001"
-export const BaseURL="https://socilite-server-1.onrender.com"
-
+export const BaseURL="http://localhost:3001"
+//export const BaseURL="https://socilite-server-1.onrender.com"
 const axiosInstance=axios.create({
     baseURL:BaseURL,
     withCredentials:true
@@ -15,10 +14,7 @@ const checkConnection = async () => {
         console.error('Connection failed:', error);
     }
 };
-
-
-
-checkConnection(); // Call this function to test the connection
+checkConnection(); 
 
 export default axiosInstance;
 

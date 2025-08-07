@@ -48,13 +48,14 @@ function App() {
   }
 
   return (
-    
-     <>
+
+    <>
 
       <div className="container mt-4">
         <Routes>
-          {/* Public Routes */}
-          <Route path="/login" element={<Login />} />
+          {!isAuthenticated &&
+            <Route path="/login" element={<Login />} />
+          }
           <Route path="/register" element={<Register />} />
 
           {/* Private Routes */}
@@ -67,7 +68,7 @@ function App() {
           <Route path="/video" element={<PrivateRoute><VideoFeedPage /></PrivateRoute>} />
         </Routes>
       </div>
-   </>
+    </>
   );
 }
 

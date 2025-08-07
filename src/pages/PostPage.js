@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import { Form, Button, Container, Row, Col, Card } from 'react-bootstrap';
 import { useUser } from '../hook/user/useUser';
 import dummyLocations from '../pages/location.json';
+import {useRef, useEffect } from 'react';
+import musicList from './musiclist.js';
+
 const PostCreationPage = () => {
 
   const [files, setFiles] = useState([]);
@@ -37,6 +40,21 @@ const PostCreationPage = () => {
     await createPost(formData)
 
   };
+
+
+   const audioRef = useRef(null);
+
+ const dummyMusicOptions = musicList;
+
+  // Play audio when music is selected
+  useEffect(() => {
+    if (music && audioRef.current) {
+      audioRef.current.load(); // Reset the audio source
+      audioRef.current.play().catch((err) => {
+        console.error('Audio play error:', err);
+      });
+    }
+  }, [music]);
 
   return (
     <Container className="py-4">
@@ -123,15 +141,26 @@ const PostCreationPage = () => {
 
                 </Form.Group>
 
-                <Form.Group className="mb-3">
-                  <Form.Label>Music</Form.Label>
-                  <Form.Control
-                    type="text"
-                    value={music}
-                    onChange={(e) => setMusic(e.target.value)}
-                    placeholder="Add background music (optional)"
-                  />
-                </Form.Group>
+             <Form.Group className="mb-3">
+        <Form.Label>Select Background Music</Form.Label>
+        <Form.Select
+          value={music}
+          onChange={(e) => setMusic(e.target.value)}
+        >
+          <option value="">Select music...</option>
+          {dummyMusicOptions.map((option, index) => (
+            <option key={index} value={option.url}>
+              {option.name}
+            </option>
+          ))}
+        </Form.Select>
+      </Form.Group>
+
+      {/* Hidden audio element */}
+      <audio ref={audioRef} controls style={{ display: music ? 'block' : 'none' }}>
+        <source src={music} type="audio/mpeg" />
+        Your browser does not support the audio element.
+      </audio>
 
                 <div className="d-flex justify-content-between">
                   <Button variant="secondary" onClick={() => setStep(1)}>
