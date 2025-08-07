@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import Post from '../components/Post';
 
 const videoPosts = [
@@ -112,13 +112,59 @@ const videoPosts = [
 
 
 function VideoFeedPage() {
+  const videoRefs = useRef([]);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          const video = entry.target;
+          if (entry.isIntersecting) {
+            // Pause all videos first
+            videoRefs.current.forEach((vid) => {
+              if (vid && vid !== video) {
+                vid.pause();
+              }
+            });
+            video.play().catch((e) => {
+              console.log('Autoplay error:', e);
+            });
+          } else {
+            video.pause();
+          }
+        });
+      },
+      {
+        threshold: 0.7, // 70% of video must be visible
+      }
+    );
+
+    videoRefs.current.forEach((video) => {
+      if (video) observer.observe(video);
+    });
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <div className="d-flex justify-content-center" style={{ paddingBottom: 70 }}>
-      <div style={{ maxWidth: 500, width: '100%' }}>
-        {videoPosts.map((post, idx) => (
-          <Post key={idx} {...post} />
-        ))}
-      </div>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+      {videoPosts.map((video, i) => (
+        <div key={i} style={{ width: '100%', maxHeight: '100vh', overflow: 'hidden' }}>
+          <video
+            ref={(el) => (videoRefs.current[i] = el)}
+            src={video.videoUrl}
+            controls={false}
+            muted={false}
+            autoPlay
+            playsInline
+            style={{
+              width: '100%',
+              height: '100vh',
+              objectFit: 'cover',
+            }}
+          />
+        </div>
+      ))}
     </div>
   );
 }

@@ -12,8 +12,8 @@ import Notifications from './pages/Notifications';
 import Messages from './pages/Messages';
 import PostPage from './pages/PostPage';
 import SearchBarPage from './pages/SearchBarPage';
-import VideoFeedPage from './pages/VideoFeedPage';
-import Navbar from './components/Navbar';
+import VideoFeedPage from './pages/VideoFeedPage.js';
+
 
 import { useUser } from './hook/user/useUser';
 

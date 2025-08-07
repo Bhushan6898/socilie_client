@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAdmin } from '../hook/admin/useAdmin';
+import { useSelector } from 'react-redux';
 
 function Post() {
   const navigate = useNavigate();
-  const { getallpost, postdatas } = useAdmin();
-
+  const { getallpost } = useAdmin();
+  const postData = useSelector((state) => state.auth.allpostdata);
   useEffect(() => {
     getallpost();
   }, []);
@@ -13,16 +14,18 @@ function Post() {
   const handleProfileClick = (username) => {
     navigate(`/user/${username}`);
   };
+  
+  
 
   return (
     <div className="container">
-      {postdatas?.map((post, idx) => {
+      {postData?.map((post, idx) => {
         const user = post.userId || {};
         const mediaItems = post.media || [];
         const hasMultipleMedia = mediaItems.length > 1;
 
         return (
-          <div className="card mb-4" key={idx}>
+          <div className="card mb-4" key={idx} >
             {/* Profile Section */}
             <div className="card-header d-flex align-items-center justify-content-between">
               <div

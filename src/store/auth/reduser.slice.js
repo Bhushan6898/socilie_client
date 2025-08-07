@@ -7,7 +7,8 @@ const initialState = {
   userdata: [],
   notificationdata:[],
   postdata:[],
-  error: null, 
+  error: null,
+   allpostdata:[], 
 };
 
 const authReducer = createSlice({
@@ -43,10 +44,15 @@ const authReducer = createSlice({
       state.postdata= data; // Store bill data in the state
       console.log(data); 
     },
+    setAllPostdata: (state, actions) => {
+      const { data } = actions.payload;
+      state.allpostdata= data; // Store bill data in the state
+      console.log(data); 
+    },
     
   },
   
 });
 
-export const { login, logOut, setProductDatas, setBillDatas, setError ,setUserdata,setNotificationdata,setPostdata} = authReducer.actions;
+export const { login, logOut, setProductDatas, setBillDatas, setError ,setUserdata,setNotificationdata,setPostdata,setAllPostdata} = authReducer.actions;
 export default authReducer.reducer;

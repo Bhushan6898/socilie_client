@@ -4,11 +4,11 @@ import RoutesPage from './RoutesPage';
 import { useUser } from './hook/user/useUser';
 import { useSelector } from 'react-redux';
 import 'bootstrap/dist/css/bootstrap.min.css';
-
+import { useAdmin } from './hook/admin/useAdmin';
 
 function App() {
   const { getconnect,getuser } = useUser();
-
+   const { getallpost } = useAdmin();
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 
   const [loading, setLoading] = useState(true);
@@ -17,7 +17,7 @@ function App() {
   useEffect(() => {
     getconnect();
     getuser();
-  
+  getallpost();
 
     const timeout = setTimeout(() => {
       setShowSidebarAndNavbar(isAuthenticated);

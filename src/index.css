@@ -1,0 +1,18 @@
+/* Apply only on mobile (max-width: 768px) */
+@media (max-width: 768px) {
+  .responsive-card {
+    height: 400px;
+    overflow: hidden;
+  }
+
+  .responsive-card .carousel-inner img,
+  .responsive-card .carousel-inner video {
+    max-height: 200px;
+    object-fit: cover;
+  }
+
+  .responsive-card .card-body {
+    max-height: 150px;
+    overflow-y: auto;
+  }
+}

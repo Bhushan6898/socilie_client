@@ -1,13 +1,18 @@
 
 import { useState } from "react";
 import UserRepository from "../../repository/admin/useAdminrepository.js";
+import { useDispatch } from "react-redux";
+
+
+import { setAllPostdata } from "../../store/auth/reduser.slice";
+
 
 
 export const useAdmin = () => {
       const [loading, setLoading] = useState(false);
-      const[postdatas,setPostdatas]=useState();
+         const dispatch = useDispatch();
     return {
-     postdatas,
+     
         getallpost: async () => {
            
             try {
@@ -16,7 +21,11 @@ export const useAdmin = () => {
                 
                 
                 if (response.status === 200) {
-                   setPostdatas(response.data.posts);
+                    const data=response.data.posts
+                    dispatch(setAllPostdata({ data }));
+                 
+                 
+                   
         
                     setLoading(false);
                    
