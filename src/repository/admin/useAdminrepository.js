@@ -9,6 +9,15 @@ class AdminRepository {
             return error;
         }
     }
+
+     async alluser() {
+        try {
+            const response = await repository.get('/all-users');
+            return response;
+        } catch (error) {
+            return error;
+        }
+    }
     
 }
 

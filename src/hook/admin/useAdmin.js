@@ -11,8 +11,9 @@ import { setAllPostdata } from "../../store/auth/reduser.slice";
 export const useAdmin = () => {
       const [loading, setLoading] = useState(false);
          const dispatch = useDispatch();
+           const [allUsers, setAllUsers] = useState([]);
     return {
-     
+     allUsers,
         getallpost: async () => {
            
             try {
@@ -27,6 +28,29 @@ export const useAdmin = () => {
                  
                    
         
+                    setLoading(false);
+                   
+                } else {
+                    console.error("Connection failed with status:", response.status);
+                    
+                }
+                setLoading(false);
+            } catch (error) {
+                console.error("Error while connecting:", error);
+            }
+        },
+
+         getallusers: async () => {
+           
+            try {
+                setLoading(true)
+                const response = await UserRepository.alluser(); 
+                
+                if (response.status === 200) {
+                    // const data=response.data.posts
+                    // dispatch(setAllPostdata({ data }));
+                 console.log("All users data:", response.data.users);
+                 setAllUsers(response.data.users);
                     setLoading(false);
                    
                 } else {

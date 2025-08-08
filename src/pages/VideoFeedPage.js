@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import Post from '../components/Post';
+
 
 const videoPosts = [
   {
@@ -148,8 +148,17 @@ function VideoFeedPage() {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+      
       {videoPosts.map((video, i) => (
         <div key={i} style={{ width: '100%', maxHeight: '100vh', overflow: 'hidden' }}>
+          <div style={{ display: 'flex', alignItems: 'center', padding: '10px' }}>
+            <img
+              src={video.profileImg}
+              alt="Profile"
+              style={{ width: '40px', height: '40px', borderRadius: '50%', marginRight: '10px' }}
+            />
+            <strong>{video.username}</strong>
+          </div>
           <video
             ref={(el) => (videoRefs.current[i] = el)}
             src={video.videoUrl}
@@ -163,6 +172,10 @@ function VideoFeedPage() {
               objectFit: 'cover',
             }}
           />
+           <div style={{ padding: '10px' }}>
+            <p>{video.caption}</p>
+          </div>
+          
         </div>
       ))}
     </div>

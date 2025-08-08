@@ -13,9 +13,8 @@ import Messages from './pages/Messages';
 import PostPage from './pages/PostPage';
 import SearchBarPage from './pages/SearchBarPage';
 import VideoFeedPage from './pages/VideoFeedPage.js';
-
-
 import { useUser } from './hook/user/useUser';
+import UserProfile from './pages/userinformation.js';
 
 function App() {
   const { getconnect } = useUser();
@@ -66,6 +65,7 @@ function App() {
           <Route path="/post" element={<PrivateRoute><PostPage /></PrivateRoute>} />
           <Route path="/searchbar" element={<PrivateRoute><SearchBarPage /></PrivateRoute>} />
           <Route path="/video" element={<PrivateRoute><VideoFeedPage /></PrivateRoute>} />
+          <Route path="/userinfo/:id" element={<PrivateRoute><UserProfile /></PrivateRoute>} />
         </Routes>
       </div>
     </>

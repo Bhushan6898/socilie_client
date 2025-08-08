@@ -11,8 +11,9 @@ function Post() {
     getallpost();
   }, []);
 
-  const handleProfileClick = (username) => {
-    navigate(`/user/${username}`);
+  const handleProfileClick = (userid) => {
+    console.log(userid);
+     navigate(`userinfo/${userid}`); // Navigate to user profile with user ID
   };
   
   
@@ -30,7 +31,7 @@ function Post() {
             <div className="card-header d-flex align-items-center justify-content-between">
               <div
                 className="d-flex align-items-center"
-                onClick={() => handleProfileClick(user.username)}
+                onClick={() => handleProfileClick(user._id)}
                 style={{ cursor: 'pointer' }}
               >
                 <img
