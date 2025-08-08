@@ -4,7 +4,7 @@ import profilpicture from '../asset/profile.png';
 import { useSelector } from 'react-redux';
 import { FaVolumeUp, FaVolumeMute } from 'react-icons/fa';
 import { useParams } from 'react-router-dom';
-
+import { OrbitProgress } from 'react-loading-indicators';
 
 
 // Dummy followers/following
@@ -26,6 +26,7 @@ function UserProfile() {
   const [selectedPost, setSelectedPost] = useState(null);
   const [modalType, setModalType] = useState(null);
     const [postData, setPostData] = useState(null);
+    const [loading, setLoading] = useState(true); 
    const { id } = useParams();
 
 const { allUsers, getallusers } = useAdmin();
@@ -68,7 +69,8 @@ const { allUsers, getallusers } = useAdmin();
         email: selectedUser.email || "",
         number: selectedUser.number || ""
       });
-      setPostData(selectedUser.posts); // Use actual posts or dummy data
+      setPostData(selectedUser.posts); 
+       setLoading(false);
     }
   }
 }, [allUsers, id]);
@@ -123,6 +125,15 @@ console.log(allPosts);
       setPlayingIndex(index);
     }
   };
+
+
+  if (loading) {
+      return (
+        <div className="d-flex justify-content-center align-items-center vh-100">
+          <OrbitProgress color="#32cd32" size="medium" text="Loading..." textColor="" />
+        </div>
+      );
+    }
   return (
     
     <div className="container py-4" style={{ paddingBottom: 70 }}>

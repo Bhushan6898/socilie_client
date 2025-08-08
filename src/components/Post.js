@@ -1,33 +1,50 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAdmin } from '../hook/admin/useAdmin';
 import { useSelector } from 'react-redux';
 import profilpicture from '../asset/profile.png';
+import { OrbitProgress } from 'react-loading-indicators';
+
 function Post() {
   const navigate = useNavigate();
   const { getallpost } = useAdmin();
   const postData = useSelector((state) => state.auth.allpostdata);
   const currentUserId = useSelector((state) => state.auth.id);
+
+  const [loading, setLoading] = useState(true); // ✅ Loading state
+
   useEffect(() => {
-    getallpost();
+    const fetchPosts = async () => {
+      setLoading(true);
+      await getallpost();
+      setLoading(false);
+    };
+    fetchPosts();
   }, []);
 
   const handleProfileClick = (userid) => {
-    console.log(userid);
-    navigate(`userinfo/${userid}`); // Navigate to user profile with user ID
+    navigate(`userinfo/${userid}`);
   };
 
+ 
 
+ if (loading) {
+     return (
+       <div className="d-flex justify-content-center align-items-center vh-100">
+         <OrbitProgress color="#32cd32" size="medium" text="Loading..." textColor="" />
+       </div>
+     );
+   }
 
   return (
     <div className="container">
-      {postData?.map((post, idx) => {
+      {postData.map((post, idx) => {
         const user = post.userId || {};
         const mediaItems = post.media || [];
         const hasMultipleMedia = mediaItems.length > 1;
 
         return (
-          <div className="card mb-4" key={idx} >
+          <div className="card mb-4" key={idx}>
             {/* Profile Section */}
             <div className="card-header d-flex align-items-center justify-content-between">
               <div
@@ -70,7 +87,6 @@ function Post() {
                   ))}
                 </div>
 
-                {/* Show controls only if multiple media */}
                 {hasMultipleMedia && (
                   <>
                     <button
@@ -98,7 +114,6 @@ function Post() {
             <div className="card-body">
               <p className="card-text">{post.caption}</p>
 
-              {/* Music Player Icon (bottom right) */}
               {post.music && (
                 <div className="d-flex justify-content-end align-items-center mb-2">
                   <audio id={`audio-${idx}`} src={post.music}></audio>
