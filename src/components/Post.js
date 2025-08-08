@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAdmin } from '../hook/admin/useAdmin';
 import { useSelector } from 'react-redux';
-
+import profilpicture from '../asset/profile.png';
 function Post() {
   const navigate = useNavigate();
   const { getallpost } = useAdmin();
@@ -35,7 +35,7 @@ function Post() {
                 style={{ cursor: 'pointer' }}
               >
                 <img
-                  src={user.profilePicture || 'https://randomuser.me/api/portraits/men/1.jpg'}
+                  src={user.profilePicture || profilpicture}
                   alt={user.username}
                   className="rounded-circle border me-2"
                   style={{ width: 36, height: 36, objectFit: 'cover' }}

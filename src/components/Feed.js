@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Post from './Post';
 import { useSelector } from 'react-redux';
-
+import profilpicture from '../asset/profile.png';
 const stories = [
   { username: 'Bhushan Patil', img: 'https://res.cloudinary.com/dl35wuxhn/image/upload/v1751878744/user-images/user_652cb3593dbba5f70aa925df37650af581f20c63436823da4eb771d7e5878f00.jpg', status: 'Enjoying the sunshine!' },
   { username: 'jane_smith', img: 'https://randomuser.me/api/portraits/women/2.jpg', status: 'Lovely day at the beach.' },
@@ -30,7 +30,7 @@ function Feed() {
           <div className="text-center" style={{ width: 70 }}>
             <div className="position-relative mx-auto" style={{ width: 56, height: 56 }}>
               <img
-                src={user.profilePicture}
+                src={user.profilePicture || profilpicture}
                 alt="Your Story"
                 className="rounded-circle border"
                 style={{ width: 56, height: 56, objectFit: 'cover', border: '2px solid #e1306c' }}

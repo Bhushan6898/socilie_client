@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import logo from '../asset/logo.png'; // Assuming you have a logo image
 import { useSelector } from 'react-redux';
 import { useUser } from '../hook/user/useUser';
-
+import profilpicture from '../asset/profile.png';
 function Navbar() {
 
   const user = useSelector((state) => state.auth.userdata);
@@ -72,7 +72,7 @@ function Navbar() {
           </Link>
           <Link to="/profile" className="nav-link text-center flex-fill py-2">
             <img
-              src={user.profilePicture}
+              src={user.profilePicture ||profilpicture}
               alt="Profile"
               className="rounded-circle border"
               style={{ width: 28, height: 28, objectFit: 'cover', borderColor: '#f39c12' }}

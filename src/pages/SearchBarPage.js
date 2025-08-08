@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useAdmin } from '../hook/admin/useAdmin';
 import { useNavigate } from 'react-router-dom';
-
+import profilpicture from '../asset/profile.png';
 function SearchBarPage() {
   const { allUsers, getallusers } = useAdmin();
   const [searchTerm, setSearchTerm] = useState(''); 
@@ -43,7 +43,7 @@ function SearchBarPage() {
                   onClick={() => handleProfileClick(user._id)}
               >
                 <img
-                  src={user.profilePicture}
+                  src={user.profilePicture||profilpicture}
                   alt={user.username}
                   className="rounded-circle me-3"
                   style={{ width: '40px', height: '40px', objectFit: 'cover' }}
