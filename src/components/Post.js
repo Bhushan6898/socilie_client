@@ -7,16 +7,17 @@ function Post() {
   const navigate = useNavigate();
   const { getallpost } = useAdmin();
   const postData = useSelector((state) => state.auth.allpostdata);
+  const currentUserId = useSelector((state) => state.auth.id);
   useEffect(() => {
     getallpost();
   }, []);
 
   const handleProfileClick = (userid) => {
     console.log(userid);
-     navigate(`userinfo/${userid}`); // Navigate to user profile with user ID
+    navigate(`userinfo/${userid}`); // Navigate to user profile with user ID
   };
-  
-  
+
+
 
   return (
     <div className="container">
@@ -43,7 +44,9 @@ function Post() {
                 <strong>{user.username}</strong>
               </div>
 
-              <button className="btn btn-outline-primary btn-sm">Follow</button>
+              {currentUserId !== user._id && (
+                <button className="btn btn-outline-primary btn-sm">Follow</button>
+              )}
             </div>
 
             {/* Media Section */}

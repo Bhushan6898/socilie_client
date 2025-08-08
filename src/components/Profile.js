@@ -29,7 +29,7 @@ function Profile() {
   const [selectedPost, setSelectedPost] = useState(null);
   const [modalType, setModalType] = useState(null);
   const [newProfilePic, setNewProfilePic] = useState(null);
-
+const [showModal, setShowModal] = useState(false);
    const audioRefs = useRef({});
   const [playingIndex, setPlayingIndex] = useState(null);
     const [play, setPlay] = useState([]);
@@ -165,15 +165,16 @@ function Profile() {
       {/* Profile Info */}
       <div className="row mb-4 align-items-start">
         <div className="col-12 col-sm-3 text-center">
-          <img
-            src={userData.profilepic}
-            alt="Profile"
-            className="rounded-circle border mb-2"
-            style={{ width: 100, height: 100, objectFit: 'cover' }}
-          />
-          <h5>{userData.name}</h5>
-          <p className="text-muted small">{userData.bio}</p>
-        </div>
+        <img
+          src={userData.profilepic}
+          alt="Profile"
+          className="rounded-circle border mb-2"
+          style={{ width: 100, height: 100, objectFit: "cover", cursor: "pointer" }}
+          onClick={() => setShowModal(true)}
+        />
+        <h5>{userData.name}</h5>
+        <p className="text-muted small">{userData.bio}</p>
+      </div>
         <div className="col-12 col-sm-9 mt-3 mt-sm-0">
           <div className="d-flex justify-content-around text-center">
             <div>
@@ -433,6 +434,25 @@ function Profile() {
       </div>
 
               )}
+
+{/* //profile large image modal */}
+              {showModal && (
+        <div
+          className="modal fade show"
+          style={{ display: "block", backgroundColor: "rgba(0,0,0,0.8)" }}
+          onClick={() => setShowModal(false)}
+        >
+          <div className="d-flex justify-content-center align-items-center" style={{ height: "100vh" }}>
+            <img
+              src={userData.profilepic}
+              alt="Profile Large"
+              className="img-fluid rounded"
+              style={{ maxHeight: "90%", maxWidth: "90%" }}
+              onClick={(e) => e.stopPropagation()} // prevent closing when clicking image
+            />
+          </div>
+        </div>
+      )}
 
       {/* Followers / Following Modal */}
       {modalType && (
