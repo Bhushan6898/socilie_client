@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useUser } from '../hook/user/useUser';
 import logo from '../asset/logo.png';
 import { toast } from 'react-toastify';
+import { OrbitProgress } from 'react-loading-indicators';
 function Register() {
   const { getregister } = useUser();
   const [form, setForm] = useState({ email: '', password: '', name: '',username:'',number:'' });
@@ -16,14 +17,24 @@ const [loading, setLoading] = useState(false);
     e.preventDefault();
    const response= await getregister(form);
    if(response.status === 200) {
-      setLoading(false);
+     
       setForm({ email: '', password: '', name: '',username:'',number:'' });
      
     }
-   console.log(response);
+     setLoading(false);
+  
    
    
   };
+
+   if (loading) {
+         return (
+           <div className="d-flex justify-content-center align-items-center vh-100">
+             <OrbitProgress color="#32cd32" size="medium" text="Loading..." textColor="" />
+           </div>
+         );
+       }
+  
 
   return (
     <div className="d-flex justify-content-center align-items-center" style={{ minHeight: '80vh' }}>

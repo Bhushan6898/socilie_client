@@ -11,7 +11,7 @@ function Post() {
   const postData = useSelector((state) => state.auth.allpostdata);
   const currentUserId = useSelector((state) => state.auth.id);
 
-  const [loading, setLoading] = useState(true); // ✅ Loading state
+  const [loading, setLoading] = useState(true); 
 
   useEffect(() => {
     const fetchPosts = async () => {
