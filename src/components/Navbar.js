@@ -4,11 +4,13 @@ import logo from '../asset/logo.png'; // Assuming you have a logo image
 import { useSelector } from 'react-redux';
 import { useUser } from '../hook/user/useUser';
 import profilpicture from '../asset/profile.png';
+import { useAdmin } from '../hook/admin/useAdmin';
 function Navbar() {
 
   const user = useSelector((state) => state.auth.userdata);
   const notifications = useSelector((state) => state.auth.notificationdata);
   const { getnotification,getpost } = useUser();
+  const {getallpost}=useAdmin();
 
 
 
@@ -16,6 +18,8 @@ function Navbar() {
   useEffect(() => {
     getnotification();
     getpost();
+    getallpost();
+    
   }, []);
 
   return (

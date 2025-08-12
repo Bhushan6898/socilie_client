@@ -57,33 +57,9 @@ function Feed() {
             </div>
           ))}
         </div>
-        {/* Posts */}
-        <Post
-          username="john_doe"
-          image="https://picsum.photos/500/300"
-          caption="Enjoying the sunshine!"
-          profileImg="https://randomuser.me/api/portraits/men/1.jpg"
-        />
-        <Post
-          username="jane_smith"
-          image="https://picsum.photos/500/301"
-          caption="Lovely day at the beach."
-          profileImg="https://randomuser.me/api/portraits/women/2.jpg"
-        />
-        <Post
-          username="video_user"
-          type="video"
-          videoUrl="https://www.w3schools.com/html/mov_bbb.mp4"
-          caption="Check out this cool video!"
-          profileImg="https://randomuser.me/api/portraits/men/3.jpg"
-        />
-        <Post
-          username="reel_user"
-          type="reel"
-          videoUrl="https://www.w3schools.com/html/movie.mp4"
-          caption="My latest reel!"
-          profileImg="https://randomuser.me/api/portraits/women/4.jpg"
-        />
+       
+       
+      <Post />
 
         {/* Status Modal */}
         {showModal && activeStory && (

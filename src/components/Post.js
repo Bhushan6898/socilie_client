@@ -7,19 +7,15 @@ import { OrbitProgress } from 'react-loading-indicators';
 
 function Post() {
   const navigate = useNavigate();
-  const { getallpost } = useAdmin();
   const postData = useSelector((state) => state.auth.allpostdata);
   const currentUserId = useSelector((state) => state.auth.id);
 
   const [loading, setLoading] = useState(true); 
 
   useEffect(() => {
-    const fetchPosts = async () => {
-      setLoading(true);
-      await getallpost();
-      setLoading(false);
-    };
-    fetchPosts();
+   if (postData) {
+    setLoading(false);
+   }
   }, []);
 
   const handleProfileClick = (userid) => {
@@ -38,13 +34,13 @@ function Post() {
 
   return (
     <div className="container">
-      {postData.map((post, idx) => {
+      {postData.map((post) => {
         const user = post.userId || {};
         const mediaItems = post.media || [];
         const hasMultipleMedia = mediaItems.length > 1;
 
         return (
-          <div className="card mb-4" key={idx}>
+          <div className="card mb-4" key={user._id}>
             {/* Profile Section */}
             <div className="card-header d-flex align-items-center justify-content-between">
               <div
@@ -68,7 +64,7 @@ function Post() {
 
             {/* Media Section */}
             {mediaItems.length > 0 && (
-              <div id={`carousel-${idx}`} className="carousel slide" data-bs-ride="carousel">
+              <div id={`carousel-${user._id}`} className="carousel slide" data-bs-ride="carousel">
                 <div className="carousel-inner">
                   {mediaItems.map((item, i) => (
                     <div
@@ -116,11 +112,11 @@ function Post() {
 
               {post.music && (
                 <div className="d-flex justify-content-end align-items-center mb-2">
-                  <audio id={`audio-${idx}`} src={post.music}></audio>
+                  <audio id={`audio-${user._id}`} src={post.music}></audio>
                   <button
                     className="btn btn-sm btn-light"
                     onClick={() => {
-                      const audio = document.getElementById(`audio-${idx}`);
+                      const audio = document.getElementById(`audio-${user._id}`);
                       if (audio.paused) {
                         document.querySelectorAll('audio').forEach((a) => a.pause());
                         audio.play();
