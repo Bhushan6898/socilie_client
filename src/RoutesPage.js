@@ -51,22 +51,27 @@ function App() {
     <>
 
       <div className="container mt-4">
-        <Routes>
-          {!isAuthenticated &&
-            <Route path="/login" element={<Login />} />
-          }
-          <Route path="/register" element={<Register />} />
+      <Routes>
+  <Route
+    path="/login"
+    element={
+      isAuthenticated
+        ? <Navigate to="/" replace />
+        : <Login />
+    }
+  />
+  <Route path="/register" element={<Register />} />
 
-          {/* Private Routes */}
-          <Route path="/" element={<PrivateRoute><Feed /></PrivateRoute>} />
-          <Route path="/profile" element={<PrivateRoute><Profile /></PrivateRoute>} />
-          <Route path="/notifications" element={<PrivateRoute><Notifications /></PrivateRoute>} />
-          <Route path="/messages" element={<PrivateRoute><Messages /></PrivateRoute>} />
-          <Route path="/post" element={<PrivateRoute><PostPage /></PrivateRoute>} />
-          <Route path="/searchbar" element={<PrivateRoute><SearchBarPage /></PrivateRoute>} />
-          <Route path="/video" element={<PrivateRoute><VideoFeedPage /></PrivateRoute>} />
-          <Route path="/userinfo/:id" element={<PrivateRoute><UserProfile /></PrivateRoute>} />
-        </Routes>
+  <Route path="/" element={<PrivateRoute><Feed /></PrivateRoute>} />
+  <Route path="/profile" element={<PrivateRoute><Profile /></PrivateRoute>} />
+  <Route path="/notifications" element={<PrivateRoute><Notifications /></PrivateRoute>} />
+  <Route path="/messages" element={<PrivateRoute><Messages /></PrivateRoute>} />
+  <Route path="/post" element={<PrivateRoute><PostPage /></PrivateRoute>} />
+  <Route path="/searchbar" element={<PrivateRoute><SearchBarPage /></PrivateRoute>} />
+  <Route path="/video" element={<PrivateRoute><VideoFeedPage /></PrivateRoute>} />
+  <Route path="/userinfo/:id" element={<PrivateRoute><UserProfile /></PrivateRoute>} />
+</Routes>
+
       </div>
     </>
   );
