@@ -15,7 +15,6 @@ function Post() {
   const [loading, setLoading] = useState(true);
   const [showMenu, setShowMenu] = useState(false);
   const [playingIndex, setPlayingIndex] = useState(null);
-  const [currentSlides, setCurrentSlides] = useState({}); // Track slide per post
 
   const audioRefs = useRef({});
 
@@ -49,13 +48,6 @@ function Post() {
     }
   };
 
-  const handleSlideChange = (postIdx, slideIdx) => {
-    setCurrentSlides(prev => ({
-      ...prev,
-      [postIdx]: slideIdx
-    }));
-  };
-
   if (loading) {
     return (
       <div className="d-flex justify-content-center align-items-center vh-100">
@@ -70,7 +62,6 @@ function Post() {
         const user = post.userId || {};
         const mediaItems = post.media || [];
         const hasMultipleMedia = mediaItems.length > 1;
-        const activeSlide = currentSlides[idx] || 0;
 
         return (
           <div className="card mb-4" key={idx}>
@@ -125,10 +116,6 @@ function Post() {
                 className="carousel slide"
                 data-bs-ride="carousel"
                 data-bs-interval="false"
-                onSlide={(e) => {
-                  const newIndex = e.to || e.detail?.to || 0;
-                  handleSlideChange(idx, newIndex);
-                }}
               >
                 {post.music && (
                   <audio
@@ -152,26 +139,6 @@ function Post() {
                         </video>
                       ) : (
                         <img src={item.url} className="d-block w-100" alt={`media-${i}`} />
-                      )}
-
-                      {/* Slide counter top-right */}
-                      {hasMultipleMedia && (
-                        <div
-                          style={{
-                            position: "absolute",
-                            top: "10px",
-                            right: "10px",
-                            backgroundColor: "rgba(0,0,0,0.6)",
-                            color: "white",
-                            padding: "3px 8px",
-                            borderRadius: "12px",
-                            fontSize: "12px",
-                            fontWeight: "bold",
-                            zIndex: 5
-                          }}
-                        >
-                          {activeSlide + 1}/{mediaItems.length}
-                        </div>
                       )}
 
                       {/* Music icon overlay */}
