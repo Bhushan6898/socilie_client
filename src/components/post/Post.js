@@ -15,8 +15,8 @@ function Post() {
   const [loading, setLoading] = useState(true);
   const [showMenu, setShowMenu] = useState(false);
   const [playingIndex, setPlayingIndex] = useState(null);
+  const [currentSlides, setCurrentSlides] = useState({}); // Track slide per post
 
-  // Keep refs to each post's audio element
   const audioRefs = useRef({});
 
   useEffect(() => {
@@ -28,7 +28,6 @@ function Post() {
   };
 
   const handleToggleMusic = (idx, e) => {
-    // stop carousel/page side-effects
     if (e) {
       e.preventDefault();
       e.stopPropagation();
@@ -38,19 +37,23 @@ function Post() {
     if (!audio) return;
 
     if (audio.paused) {
-      // Pause other audios
       Object.values(audioRefs.current).forEach(a => {
         if (a && !a.paused) a.pause();
       });
       audio.play().then(() => {
         setPlayingIndex(idx);
-      }).catch(() => {
-        // play() can reject on some browsers; ignore silently
-      });
+      }).catch(() => {});
     } else {
       audio.pause();
       setPlayingIndex(null);
     }
+  };
+
+  const handleSlideChange = (postIdx, slideIdx) => {
+    setCurrentSlides(prev => ({
+      ...prev,
+      [postIdx]: slideIdx
+    }));
   };
 
   if (loading) {
@@ -62,11 +65,12 @@ function Post() {
   }
 
   return (
-    <div className="container">
+    <div className="">
       {postData.map((post, idx) => {
         const user = post.userId || {};
         const mediaItems = post.media || [];
         const hasMultipleMedia = mediaItems.length > 1;
+        const activeSlide = currentSlides[idx] || 0;
 
         return (
           <div className="card mb-4" key={idx}>
@@ -116,8 +120,16 @@ function Post() {
 
             {/* Media Section */}
             {mediaItems.length > 0 && (
-              <div id={`carousel-${idx}`} className="carousel slide" data-bs-ride="carousel">
-                {/* Single audio element per post, referenced by ref */}
+              <div
+                id={`carousel-${idx}`}
+                className="carousel slide"
+                data-bs-ride="carousel"
+                data-bs-interval="false"
+                onSlide={(e) => {
+                  const newIndex = e.to || e.detail?.to || 0;
+                  handleSlideChange(idx, newIndex);
+                }}
+              >
                 {post.music && (
                   <audio
                     ref={(el) => { audioRefs.current[idx] = el; }}
@@ -142,7 +154,27 @@ function Post() {
                         <img src={item.url} className="d-block w-100" alt={`media-${i}`} />
                       )}
 
-                      {/* Music icon overlay (works on any slide) */}
+                      {/* Slide counter top-right */}
+                      {hasMultipleMedia && (
+                        <div
+                          style={{
+                            position: "absolute",
+                            top: "10px",
+                            right: "10px",
+                            backgroundColor: "rgba(0,0,0,0.6)",
+                            color: "white",
+                            padding: "3px 8px",
+                            borderRadius: "12px",
+                            fontSize: "12px",
+                            fontWeight: "bold",
+                            zIndex: 5
+                          }}
+                        >
+                          {activeSlide + 1}/{mediaItems.length}
+                        </div>
+                      )}
+
+                      {/* Music icon overlay */}
                       {post.music && (
                         <button
                           type="button"
@@ -194,8 +226,8 @@ function Post() {
 
             {/* Caption + Actions */}
             <div className="card-body">
-              <p className="card-text">{post.caption}</p>
               <PostActions />
+              <p className="card-text" style={{ fontSize: "14px" }}>{post.caption}</p>
             </div>
           </div>
         );
