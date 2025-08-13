@@ -16,6 +16,7 @@ function Post() {
   const [showMenu, setShowMenu] = useState(false);
   const [playingIndex, setPlayingIndex] = useState(null);
 
+  // Keep refs to each post's audio element
   const audioRefs = useRef({});
 
   useEffect(() => {
@@ -27,6 +28,7 @@ function Post() {
   };
 
   const handleToggleMusic = (idx, e) => {
+    // stop carousel/page side-effects
     if (e) {
       e.preventDefault();
       e.stopPropagation();
@@ -36,12 +38,15 @@ function Post() {
     if (!audio) return;
 
     if (audio.paused) {
+      // Pause other audios
       Object.values(audioRefs.current).forEach(a => {
         if (a && !a.paused) a.pause();
       });
       audio.play().then(() => {
         setPlayingIndex(idx);
-      }).catch(() => {});
+      }).catch(() => {
+        // play() can reject on some browsers; ignore silently
+      });
     } else {
       audio.pause();
       setPlayingIndex(null);
@@ -111,12 +116,8 @@ function Post() {
 
             {/* Media Section */}
             {mediaItems.length > 0 && (
-              <div
-                id={`carousel-${idx}`}
-                className="carousel slide"
-                data-bs-ride="carousel"
-                data-bs-interval="false"
-              >
+              <div id={`carousel-${idx}`} className="carousel slide" data-bs-ride="carousel">
+                {/* Single audio element per post, referenced by ref */}
                 {post.music && (
                   <audio
                     ref={(el) => { audioRefs.current[idx] = el; }}
@@ -141,7 +142,7 @@ function Post() {
                         <img src={item.url} className="d-block w-100" alt={`media-${i}`} />
                       )}
 
-                      {/* Music icon overlay */}
+                      {/* Music icon overlay (works on any slide) */}
                       {post.music && (
                         <button
                           type="button"
@@ -193,8 +194,9 @@ function Post() {
 
             {/* Caption + Actions */}
             <div className="card-body">
-              <PostActions />
-              <p className="card-text" style={{ fontSize: "14px" }}>{post.caption}</p>
+                <PostActions />
+              <p className="card-text" style={{fontSize:"14px"}}>{post.caption}</p>
+            
             </div>
           </div>
         );
