@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ThreeDotsVertical } from 'react-bootstrap-icons';
 import { useSelector } from 'react-redux';
@@ -14,26 +14,39 @@ function Post() {
 
   const [loading, setLoading] = useState(true);
   const [showMenu, setShowMenu] = useState(false);
-  const [playingIndex, setPlayingIndex] = useState(null); // Track which post is playing
+  const [playingIndex, setPlayingIndex] = useState(null);
+
+  // Keep refs to each post's audio element
+  const audioRefs = useRef({});
 
   useEffect(() => {
-    if (postData) {
-      setLoading(false);
-    }
+    if (postData) setLoading(false);
   }, [postData]);
 
   const handleProfileClick = (userid) => {
     navigate(`userinfo/${userid}`);
   };
 
-  const handleToggleMusic = (idx) => {
-    const audio = document.getElementById(`audio-${idx}`);
+  const handleToggleMusic = (idx, e) => {
+    // stop carousel/page side-effects
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+
+    const audio = audioRefs.current[idx];
     if (!audio) return;
 
     if (audio.paused) {
-      document.querySelectorAll('audio').forEach((a) => a.pause());
-      audio.play();
-      setPlayingIndex(idx);
+      // Pause other audios
+      Object.values(audioRefs.current).forEach(a => {
+        if (a && !a.paused) a.pause();
+      });
+      audio.play().then(() => {
+        setPlayingIndex(idx);
+      }).catch(() => {
+        // play() can reject on some browsers; ignore silently
+      });
     } else {
       audio.pause();
       setPlayingIndex(null);
@@ -87,12 +100,13 @@ function Post() {
 
               <div className="d-flex align-items-center gap-2">
                 {currentUserId !== user._id && (
-                  <button className="btn btn-outline-primary btn-sm">Follow</button>
+                  <button className="btn btn-outline-primary btn-sm" type="button">Follow</button>
                 )}
                 <button
                   className="btn p-0 border-0 bg-transparent"
                   style={{ lineHeight: 0 }}
                   onClick={() => setShowMenu(!showMenu)}
+                  type="button"
                 >
                   <ThreeDotsVertical size={18} />
                 </button>
@@ -103,6 +117,15 @@ function Post() {
             {/* Media Section */}
             {mediaItems.length > 0 && (
               <div id={`carousel-${idx}`} className="carousel slide" data-bs-ride="carousel">
+                {/* Single audio element per post, referenced by ref */}
+                {post.music && (
+                  <audio
+                    ref={(el) => { audioRefs.current[idx] = el; }}
+                    src={post.music}
+                    preload="none"
+                  />
+                )}
+
                 <div className="carousel-inner">
                   {mediaItems.map((item, i) => (
                     <div
@@ -119,32 +142,32 @@ function Post() {
                         <img src={item.url} className="d-block w-100" alt={`media-${i}`} />
                       )}
 
-                      {/* Music icon overlay */}
+                      {/* Music icon overlay (works on any slide) */}
                       {post.music && (
-                        <>
-                          <audio id={`audio-${idx}`} src={post.music}></audio>
-                          <button
-                            className="btn btn-light btn-sm"
-                            style={{
-                              position: "absolute",
-                              bottom: "10px",
-                              right: "10px",
-                              borderRadius: "100%",
-                              padding: "2px",
-                              fontSize: "14px",
-                              backgroundColor: "rgba(255,255,255,0.8)"
-                            }}
-                            onClick={() => handleToggleMusic(idx)}
-                          >
-                            <i
-                              className={
-                                playingIndex === idx
-                                  ? "bi bi-volume-up-fill"
-                                  : "bi bi-volume-mute-fill"
-                              }
-                            ></i>
-                          </button>
-                        </>
+                        <button
+                          type="button"
+                          className="btn btn-light btn-sm"
+                          style={{
+                            position: "absolute",
+                            bottom: "10px",
+                            right: "10px",
+                            borderRadius: "100%",
+                            padding: "2px",
+                            fontSize: "14px",
+                            backgroundColor: "rgba(255,255,255,0.8)",
+                            zIndex: 5
+                          }}
+                          onClick={(e) => handleToggleMusic(idx, e)}
+                          onMouseDown={(e) => { e.preventDefault(); e.stopPropagation(); }}
+                        >
+                          <i
+                            className={
+                              playingIndex === idx
+                                ? "bi bi-volume-up-fill"
+                                : "bi bi-volume-mute-fill"
+                            }
+                          />
+                        </button>
                       )}
                     </div>
                   ))}
