@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAdmin } from '../hook/admin/useAdmin';
+import { Dropdown } from 'react-bootstrap';
+import { ThreeDotsVertical } from 'react-bootstrap-icons';
 import { useSelector } from 'react-redux';
 import profilpicture from '../asset/profile.png';
 import { OrbitProgress } from 'react-loading-indicators';
@@ -10,61 +11,133 @@ function Post() {
   const postData = useSelector((state) => state.auth.allpostdata);
   const currentUserId = useSelector((state) => state.auth.id);
 
-  const [loading, setLoading] = useState(true); 
-
+  const [loading, setLoading] = useState(true);
+  const [showMenu, setShowMenu] = useState(false);
   useEffect(() => {
-   if (postData) {
-    setLoading(false);
-   }
+    if (postData) {
+      setLoading(false);
+    }
   }, []);
 
   const handleProfileClick = (userid) => {
     navigate(`userinfo/${userid}`);
   };
 
- 
 
- if (loading) {
-     return (
-       <div className="d-flex justify-content-center align-items-center vh-100">
-         <OrbitProgress color="#32cd32" size="medium" text="Loading..." textColor="" />
-       </div>
-     );
-   }
+
+  if (loading) {
+    return (
+      <div className="d-flex justify-content-center align-items-center vh-100">
+        <OrbitProgress color="#32cd32" size="medium" text="Loading..." textColor="" />
+      </div>
+    );
+  }
 
   return (
     <div className="container">
-      {postData.map((post) => {
+      {postData.map((post,idx) => {
         const user = post.userId || {};
         const mediaItems = post.media || [];
         const hasMultipleMedia = mediaItems.length > 1;
 
         return (
-          <div className="card mb-4" key={user._id}>
+          <div className="card mb-4" key={idx}>
             {/* Profile Section */}
-            <div className="card-header d-flex align-items-center justify-content-between">
-              <div
-                className="d-flex align-items-center"
-                onClick={() => handleProfileClick(user._id)}
-                style={{ cursor: 'pointer' }}
-              >
-                <img
-                  src={user.profilePicture || profilpicture}
-                  alt={user.username}
-                  className="rounded-circle border me-2"
-                  style={{ width: 36, height: 36, objectFit: 'cover' }}
-                />
-                <strong>{user.username}</strong>
-              </div>
+           <div className="card-header d-flex align-items-center justify-content-between">
+      {/* Profile Section */}
+      <div
+        className="d-flex align-items-center"
+        onClick={() => handleProfileClick(user._id)}
+        style={{ cursor: "pointer", marginLeft: "-15px" }}
+      >
+        <img
+          src={user.profilePicture || profilpicture}
+          alt={user.username}
+          className="rounded-circle border me-1"
+          style={{ width: 36, height: 36, objectFit: "cover" }}
+        />
+        <strong
+          style={{
+            fontSize: "13px",
+            maxWidth: window.innerWidth <= 576 ? "90px" : "150px",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            whiteSpace: "nowrap",
+            display: "inline-block",
+            verticalAlign: "middle",
+          }}
+        >
+          {user.username}
+        </strong>
+      </div>
 
-              {currentUserId !== user._id && (
-                <button className="btn btn-outline-primary btn-sm">Follow</button>
-              )}
-            </div>
+      {/* Follow + Three Dots */}
+      <div className="d-flex align-items-center gap-2">
+        <button className="btn btn-outline-primary btn-sm">Follow</button>
+
+        {/* Three Dots Button */}
+        <button
+          className="btn p-0 border-0 bg-transparent"
+          style={{ lineHeight: 0 }}
+          onClick={() => setShowMenu(!showMenu)}
+        >
+          <ThreeDotsVertical size={18} />
+        </button>
+      </div>
+
+      {/* Instagram Style Menu */}
+      {showMenu && (
+        <div
+          style={{
+            position: "fixed",
+            bottom: "50%", // middle-ish
+            left: "50%",
+            transform: "translate(-50%, 50%)",
+            background: "white",
+            borderRadius: "12px",
+            boxShadow: "0 4px 10px rgba(0,0,0,0.15)",
+            minWidth: "200px",
+            zIndex: 1050,
+            textAlign: "center",
+            overflow: "hidden",
+          }}
+        >
+          <div
+            style={{
+              padding: "10px",
+              borderBottom: "1px solid #ddd",
+              cursor: "pointer",
+              fontWeight: "bold",
+              color: "red",
+            }}
+            onClick={() => alert("Report")}
+          >
+            Report
+          </div>
+          <div
+            style={{
+              padding: "10px",
+              borderBottom: "1px solid #ddd",
+              cursor: "pointer",
+            }}
+            onClick={() => alert("Unfollow")}
+          >
+            Unfollow
+          </div>
+          <div
+            style={{ padding: "10px", cursor: "pointer" }}
+            onClick={() => setShowMenu(false)}
+          >
+            Cancel
+          </div>
+        </div>
+      )}
+    </div>
+
 
             {/* Media Section */}
             {mediaItems.length > 0 && (
-              <div id={`carousel-${user._id}`} className="carousel slide" data-bs-ride="carousel">
+              <div id={`carousel-${idx}`} className="carousel slide" data-bs-ride="carousel">
                 <div className="carousel-inner">
                   {mediaItems.map((item, i) => (
                     <div
@@ -112,11 +185,11 @@ function Post() {
 
               {post.music && (
                 <div className="d-flex justify-content-end align-items-center mb-2">
-                  <audio id={`audio-${user._id}`} src={post.music}></audio>
+                  <audio id={`audio-${idx}`} src={post.music}></audio>
                   <button
                     className="btn btn-sm btn-light"
                     onClick={() => {
-                      const audio = document.getElementById(`audio-${user._id}`);
+                      const audio = document.getElementById(`audio-${idx}`);
                       if (audio.paused) {
                         document.querySelectorAll('audio').forEach((a) => a.pause());
                         audio.play();
