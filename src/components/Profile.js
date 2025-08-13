@@ -397,7 +397,7 @@ const [showModal, setShowModal] = useState(false);
                       data-bs-target="#carouselPost"
                       data-bs-slide="prev"
                     >
-                      <span className="carousel-control-prev-icon" />
+                     
                     </button>
                     <button
                       className="carousel-control-next"
@@ -405,7 +405,6 @@ const [showModal, setShowModal] = useState(false);
                       data-bs-target="#carouselPost"
                       data-bs-slide="next"
                     >
-                      <span className="carousel-control-next-icon" />
                     </button>
                   </>
                 )}

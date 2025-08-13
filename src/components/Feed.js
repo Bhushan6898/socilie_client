@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Post from './Post';
+import Post from './post/Post';
 import { useSelector } from 'react-redux';
 import profilpicture from '../asset/profile.png';
 const stories = [
