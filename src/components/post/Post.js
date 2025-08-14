@@ -61,6 +61,16 @@ function Post() {
     );
   }
 
+
+  const formatPostDate = (dateString) => {
+  const date = new Date(dateString);
+  return date.toLocaleDateString("en-US", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  });
+};
+
   return (
     <div className="">
       {postData.map((post, idx) => {
@@ -195,7 +205,7 @@ function Post() {
             {/* Caption + Actions */}
             <div className="card-body">
                 <PostActions />
-              <p className="card-text" style={{fontSize:"14px"}}>{post.caption}</p>
+              <p className="card-text" style={{fontSize:"14px"}}>{post.caption} <p>  <small className="text-muted">{formatPostDate(post.createdAt)}</small></p>  </p>
             
             </div>
           </div>
