@@ -15,6 +15,7 @@ import SearchBarPage from './pages/SearchBarPage';
 import VideoFeedPage from './pages/VideoFeedPage.js';
 import { useUser } from './hook/user/useUser';
 import UserProfile from './pages/userinformation.js';
+import Setting from './components/setting/index.js';
 
 function App() {
   const { getconnect } = useUser();
@@ -70,6 +71,7 @@ function App() {
   <Route path="/searchbar" element={<PrivateRoute><SearchBarPage /></PrivateRoute>} />
   <Route path="/video" element={<PrivateRoute><VideoFeedPage /></PrivateRoute>} />
   <Route path="/userinfo/:id" element={<PrivateRoute><UserProfile /></PrivateRoute>} />
+  <Route path="/setting" element={<PrivateRoute><Setting /></PrivateRoute>} />
 </Routes>
 
       </div>

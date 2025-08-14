@@ -4,7 +4,7 @@ import { useUser } from '../hook/user/useUser';
 import profilpicture from '../asset/profile.png';
 import { useSelector } from 'react-redux';
 import { FaVolumeUp, FaVolumeMute } from 'react-icons/fa';
-
+import Setting from './setting/index.js'
 
 // Dummy post images
 const dummyPosts = [
@@ -29,10 +29,10 @@ function Profile() {
   const [selectedPost, setSelectedPost] = useState(null);
   const [modalType, setModalType] = useState(null);
   const [newProfilePic, setNewProfilePic] = useState(null);
-const [showModal, setShowModal] = useState(false);
-   const audioRefs = useRef({});
+  const [showModal, setShowModal] = useState(false);
+  const audioRefs = useRef({});
   const [playingIndex, setPlayingIndex] = useState(null);
-    const [play, setPlay] = useState([]);
+  const [play, setPlay] = useState([]);
   const navigate = useNavigate();
   const { logout, updatedata } = useUser();
 
@@ -75,9 +75,7 @@ const [showModal, setShowModal] = useState(false);
     };
   }, [newProfilePic]);
 
-  const handleLogout = () => {
-    logout();
-  };
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -156,7 +154,7 @@ const [showModal, setShowModal] = useState(false);
           <button className="btn btn-link p-0 me-3" onClick={() => setShowEdit(true)}>
             <i className="fas fa-user-edit fa-lg" style={{ color: '#3498db' }}></i>
           </button>
-          <button className="btn btn-link p-0" onClick={() => setShowSettings(true)}>
+          <button className="btn btn-link p-0" onClick={() => navigate('/setting')}>
             <i className="fas fa-cog fa-lg" style={{ color: '#888' }}></i>
           </button>
         </div>
@@ -165,16 +163,16 @@ const [showModal, setShowModal] = useState(false);
       {/* Profile Info */}
       <div className="row mb-4 align-items-start">
         <div className="col-12 col-sm-3 text-center">
-        <img
-          src={userData.profilepic}
-          alt="Profile"
-          className="rounded-circle border mb-2"
-          style={{ width: 100, height: 100, objectFit: "cover", cursor: "pointer" }}
-          onClick={() => setShowModal(true)}
-        />
-        <h5>{userData.name}</h5>
-        <p className="text-muted small">{userData.bio}</p>
-      </div>
+          <img
+            src={userData.profilepic}
+            alt="Profile"
+            className="rounded-circle border mb-2"
+            style={{ width: 100, height: 100, objectFit: "cover", cursor: "pointer" }}
+            onClick={() => setShowModal(true)}
+          />
+          <h5>{userData.name}</h5>
+          <p className="text-muted small">{userData.bio}</p>
+        </div>
         <div className="col-12 col-sm-9 mt-3 mt-sm-0">
           <div className="d-flex justify-content-around text-center">
             <div>
@@ -262,15 +260,8 @@ const [showModal, setShowModal] = useState(false);
 
 
 
-      {/* Settings Modal */}
-      {showSettings && (
-        <Modal title="Settings" onClose={closeModals}>
-          <button className="btn btn-outline-secondary w-100 mb-2" onClick={() => navigate('/profile')}>Account Settings</button>
-          <button className="btn btn-outline-primary w-100 mb-2" onClick={() => navigate('/login')}>Login</button>
-          <button className="btn btn-outline-success w-100" onClick={() => navigate('/register')}>Register</button>
-          <button className="btn btn-outline-danger w-100" onClick={handleLogout}>Logout</button>
-        </Modal>
-      )}
+  
+      
 
       {/* Edit Profile Modal */}
       {showEdit && (
@@ -299,143 +290,143 @@ const [showModal, setShowModal] = useState(false);
       )}
 
       {/* Post Viewer Modal */}
-     ;
+      ;
 
-{selectedPost && (
-      <div className="modal d-block" tabIndex="-1" onClick={() => setSelectedPost(null)}>
-        <div
-          className="modal-dialog modal-dialog-centered modal-lg"
-          onClick={(e) => e.stopPropagation()}
-        >
-          <div className="modal-content bg-dark text-white">
-            <div className="modal-body p-0 position-relative">
-              <div id="carouselPost" className="carousel slide" data-bs-ride="carousel">
-                <div className="carousel-inner">
-                  {selectedPost.map((media, i) => (
-                     
-                    <div
-                      className={`carousel-item ${i === 0 ? 'active' : ''}`}
-                      key={i}
-                      style={{ position: 'relative' }}
-                     
+      {selectedPost && (
+        <div className="modal d-block" tabIndex="-1" onClick={() => setSelectedPost(null)}>
+          <div
+            className="modal-dialog modal-dialog-centered modal-lg"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="modal-content bg-dark text-white">
+              <div className="modal-body p-0 position-relative">
+                <div id="carouselPost" className="carousel slide" data-bs-ride="carousel">
+                  <div className="carousel-inner">
+                    {selectedPost.map((media, i) => (
 
-                    >
-                      
-                      {/* Music Icon & Audio */}
-                      {media.music && (
-                        
-                        <>
-                          <audio
-                            ref={(el) => (audioRefs.current[i] = el)}
-                            src={media.music}
-                            
-                          />
-                          
-                          <div
-                          
-                            onClick={() => toggleAudio(i)}
-                            style={{
-                              position: 'absolute',
-                              bottom: '50px',
-                              right: '10px',
-                              backgroundColor: 'rgba(187, 33, 33, 0.5)',
-                              color: 'white',
-                              padding: '8px',
-                              borderRadius: '50%',
-                              cursor: 'pointer',
-                              zIndex: 10,
-                            }}
-                          >
-                            {playingIndex === i ? <FaVolumeUp /> : <FaVolumeMute />}
-                          </div>
-                        </>
-                      )}
-
-                      {/* Index */}
                       <div
-                        style={{
-                          position: 'absolute',
-                          top: '10px',
-                          left: '10px',
-                          backgroundColor: 'rgba(255, 255, 255, 0.85)',
-                          color: '#000',
-                          fontSize: '12px',
-                          padding: '2px 6px',
-                          borderRadius: '4px',
-                          zIndex: 10,
-                        }}
+                        className={`carousel-item ${i === 0 ? 'active' : ''}`}
+                        key={i}
+                        style={{ position: 'relative' }}
+
+
                       >
-                        {i + 1} / {selectedPost.length}
+
+                        {/* Music Icon & Audio */}
+                        {media.music && (
+
+                          <>
+                            <audio
+                              ref={(el) => (audioRefs.current[i] = el)}
+                              src={media.music}
+
+                            />
+
+                            <div
+
+                              onClick={() => toggleAudio(i)}
+                              style={{
+                                position: 'absolute',
+                                bottom: '50px',
+                                right: '10px',
+                                backgroundColor: 'rgba(187, 33, 33, 0.5)',
+                                color: 'white',
+                                padding: '8px',
+                                borderRadius: '50%',
+                                cursor: 'pointer',
+                                zIndex: 10,
+                              }}
+                            >
+                              {playingIndex === i ? <FaVolumeUp /> : <FaVolumeMute />}
+                            </div>
+                          </>
+                        )}
+
+                        {/* Index */}
+                        <div
+                          style={{
+                            position: 'absolute',
+                            top: '10px',
+                            left: '10px',
+                            backgroundColor: 'rgba(255, 255, 255, 0.85)',
+                            color: '#000',
+                            fontSize: '12px',
+                            padding: '2px 6px',
+                            borderRadius: '4px',
+                            zIndex: 10,
+                          }}
+                        >
+                          {i + 1} / {selectedPost.length}
+                        </div>
+
+                        {/* Media Content */}
+                        {media.type === 'video' ? (
+                          <video
+                            src={media.url}
+                            className="d-block w-100"
+                            controls
+                            style={{ maxHeight: '80vh', objectFit: 'contain' }}
+                          />
+                        ) : (
+                          <img
+                            src={media.url}
+                            className="d-block w-100"
+                            alt={`media-${i}`}
+                            style={{ maxHeight: '80vh', objectFit: 'contain' }}
+                          />
+                        )}
                       </div>
+                    ))}
+                  </div>
 
-                      {/* Media Content */}
-                      {media.type === 'video' ? (
-                        <video
-                          src={media.url}
-                          className="d-block w-100"
-                          controls
-                          style={{ maxHeight: '80vh', objectFit: 'contain' }}
-                        />
-                      ) : (
-                        <img
-                          src={media.url}
-                          className="d-block w-100"
-                          alt={`media-${i}`}
-                          style={{ maxHeight: '80vh', objectFit: 'contain' }}
-                        />
-                      )}
-                    </div>
-                  ))}
+                  {/* Carousel Controls */}
+                  {selectedPost?.length > 1 && (
+                    <>
+                      <button
+                        className="carousel-control-prev"
+                        type="button"
+                        data-bs-target="#carouselPost"
+                        data-bs-slide="prev"
+                      >
+
+                      </button>
+                      <button
+                        className="carousel-control-next"
+                        type="button"
+                        data-bs-target="#carouselPost"
+                        data-bs-slide="next"
+                      >
+                      </button>
+                    </>
+                  )}
                 </div>
-
-                {/* Carousel Controls */}
-                {selectedPost?.length > 1 && (
-                  <>
-                    <button
-                      className="carousel-control-prev"
-                      type="button"
-                      data-bs-target="#carouselPost"
-                      data-bs-slide="prev"
-                    >
-                     
-                    </button>
-                    <button
-                      className="carousel-control-next"
-                      type="button"
-                      data-bs-target="#carouselPost"
-                      data-bs-slide="next"
-                    >
-                    </button>
-                  </>
-                )}
               </div>
-            </div>
 
-            <div className="modal-footer justify-content-center">
-              <button
-                type="button"
-                className="btn btn-light"
-                onClick={() => {
-                  // Stop all audio when closing
-                  Object.values(audioRefs.current).forEach((audio) => {
-                    audio.pause();
-                    audio.currentTime = 0;
-                  });
-                  setSelectedPost(null);
-                  setPlayingIndex(null);
-                }}
-              >
-                Close
-              </button>
+              <div className="modal-footer justify-content-center">
+                <button
+                  type="button"
+                  className="btn btn-light"
+                  onClick={() => {
+                    // Stop all audio when closing
+                    Object.values(audioRefs.current).forEach((audio) => {
+                      audio.pause();
+                      audio.currentTime = 0;
+                    });
+                    setSelectedPost(null);
+                    setPlayingIndex(null);
+                  }}
+                >
+                  Close
+                </button>
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-              )}
+      )}
 
-{/* //profile large image modal */}
-              {showModal && (
+      {/* //profile large image modal */}
+      {showModal && (
         <div
           className="modal fade show"
           style={{ display: "block", backgroundColor: "rgba(0,0,0,0.8)" }}
