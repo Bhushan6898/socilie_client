@@ -5,6 +5,9 @@ import { ArrowLeft } from 'react-bootstrap-icons'; // npm install react-bootstra
 import YourAccount from './acount';
 import UserSocialite from './use';
 import YourContent from './contents';
+import OthersInteraction from './interract'; // Assuming this is another component you might have
+import SupportPage from './support';
+import AppMediaSettings from './app_and_media';
 function Setting() {
     const navigate = useNavigate();
     const { logout } = useUser();
@@ -28,6 +31,9 @@ function Setting() {
             <YourAccount />
             <UserSocialite />
             <YourContent/>
+            <OthersInteraction/>
+            <SupportPage/>
+            <AppMediaSettings/>
 
             <div className="list-group list-group-flush">
                 <button
