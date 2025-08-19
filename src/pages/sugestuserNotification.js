@@ -13,38 +13,39 @@ function SuggestUser() {
         getallusers();
     }, []);
     const [suggestedUsers, setSuggestedUsers] = useState([]);
-console.log(id);
+    console.log(id);
 
-  useEffect(() => {
-    if (allUsers && id) {
-      const filteredUsers = allUsers
-        .filter((user) => user._id !== id)
-        .map((user) => ({
-          ...user,
-          followedBy: [
-            // Dummy "followed by" data
-            { name: 'Dummy1', profilePic: 'https://randomuser.me/api/portraits/men/10.jpg' },
-            { name: 'Dummy2', profilePic: 'https://randomuser.me/api/portraits/women/11.jpg' },
-          ],
-        }));
-      setSuggestedUsers(filteredUsers);
-    }
-  }, [allUsers, id]);
+    useEffect(() => {
+        if (allUsers && id) {
+            const filteredUsers = allUsers
+                .filter((user) => user._id !== id)
+                .map((user) => ({
+                    ...user,
+                    followedBy: [
+                        // Dummy "followed by" data
+                        { name: 'Dummy1', profilePic: 'https://randomuser.me/api/portraits/men/10.jpg' },
+                        { name: 'Dummy2', profilePic: 'https://randomuser.me/api/portraits/women/11.jpg' },
+                    ],
+                }));
+            setSuggestedUsers(filteredUsers);
+        }
+    }, [allUsers, id]);
     // Remove suggested user by ID
     const handleRemoveSuggestion = (id) => {
         setSuggestedUsers(prev => prev.filter(user => user.id !== id));
     };
-
+    const handleProfileClick = (userid) => {
+        navigate(`/userinfo/${userid}`);
+    };
     return (
-
-
         <div className="p-3 shadow-sm bg-white rounded-3 mb-5">
-            <h5 className="mb-3">✨ Suggested for You</h5>
+            <h6 className="mb-3">✨ Suggested for You</h6>
             <div className="d-flex flex-column gap-4">
                 {suggestedUsers.map((user) => (
                     <div
                         key={user.id}
                         className="d-flex justify-content-between align-items-center gap-2 flex-nowrap"
+                        onClick={() => handleProfileClick(user._id)}
                     >
                         {/* Left: Avatar + Name + Followed by */}
                         <div className="d-flex align-items-start flex-grow-1 overflow-hidden">
@@ -79,7 +80,7 @@ console.log(id);
 
                         {/* Right: Follow + X buttons */}
                         <div className="d-flex align-items-center gap-1 flex-shrink-0">
-                            <button className="btn btn-outline-primary btn-sm"  style={{ fontSize: '0.75rem', lineHeight: '1' }}>Follow</button>
+                            <button className="btn btn-outline-primary btn-sm" style={{ fontSize: '0.75rem', lineHeight: '1' }}>Follow</button>
                             <button
                                 className="btn btn-sm btn-light p-1"
                                 title="Remove"
