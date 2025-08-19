@@ -45,7 +45,7 @@ function SuggestUser() {
                     <div
                         key={user.id}
                         className="d-flex justify-content-between align-items-center gap-2 flex-nowrap"
-                        onClick={() => handleProfileClick(user._id)}
+                        
                     >
                         {/* Left: Avatar + Name + Followed by */}
                         <div className="d-flex align-items-start flex-grow-1 overflow-hidden">
@@ -55,6 +55,7 @@ function SuggestUser() {
                                 alt={user.name}
                                 className="rounded-circle me-3"
                                 style={{ width: '30px', height: '30px', objectFit: 'cover', flexShrink: 0 }}
+                                 onClick={() => handleProfileClick(user._id)}
                             />
 
                             {/* Name + Followed by */}
