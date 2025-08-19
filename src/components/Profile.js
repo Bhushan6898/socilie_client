@@ -37,6 +37,7 @@ function Profile() {
   const { logout, updatedata } = useUser();
 
   const user = useSelector((state) => state.auth.userdata);
+
   const postData = useSelector((state) => state.auth.postdata); // actual posts from Redux
 
   const [userData, setUserData] = useState({

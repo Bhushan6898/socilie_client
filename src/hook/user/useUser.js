@@ -25,7 +25,9 @@ export const useUser = () => {
                 } else {
                     console.error("Connection failed with status:", response.status);
                 }
-                setLoading(false);
+                  setLoading(false);
+                return response;
+              
             } catch (error) {
                 console.error("Error while connecting:", error);
             }

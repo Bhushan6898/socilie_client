@@ -17,7 +17,6 @@ function SearchBarPage() {
 
   
   const handleProfileClick = (userid) => {
-    console.log(userid);
      navigate(`/userinfo/${userid}`);
  
   };
