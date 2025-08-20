@@ -5,6 +5,7 @@ import profilpicture from '../asset/profile.png';
 import { useSelector } from 'react-redux';
 import { FaVolumeUp, FaVolumeMute } from 'react-icons/fa';
 import Setting from './setting/index.js'
+import { useAdmin } from '../hook/admin/useAdmin.js';
 
 // Dummy post images
 const dummyPosts = [
@@ -34,7 +35,8 @@ function Profile() {
   const [playingIndex, setPlayingIndex] = useState(null);
   const [play, setPlay] = useState([]);
   const navigate = useNavigate();
-  const { logout, updatedata } = useUser();
+  const {  updatedata } = useUser();
+  const { setting } = useAdmin();
 
   const user = useSelector((state) => state.auth.userdata);
 
@@ -66,6 +68,7 @@ function Profile() {
         number: user.number || ""
       });
     }
+    setting();
   }, [user]);
 
   useEffect(() => {

@@ -12,7 +12,6 @@ import { useUser } from '../../hook/user/useUser.js';
 
 function Post() {
   const navigate = useNavigate();
-    const {getconnect } = useUser();
   const postData = useSelector((state) => state.auth.allpostdata);
   const currentUserId = useSelector((state) => state.auth.id);
 

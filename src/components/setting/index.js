@@ -8,9 +8,13 @@ import YourContent from './contents';
 import OthersInteraction from './interract'; // Assuming this is another component you might have
 import SupportPage from './support';
 import AppMediaSettings from './app_and_media';
+import { useSelector } from 'react-redux';
 function Setting() {
     const navigate = useNavigate();
     const { logout } = useUser();
+    const setting = useSelector((state) => state.auth.setting);
+    console.log('setting', setting);
+    
 
     const handleLogout = () => {
         logout();

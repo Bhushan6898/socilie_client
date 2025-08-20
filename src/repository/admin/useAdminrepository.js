@@ -18,6 +18,14 @@ class AdminRepository {
             return error;
         }
     }
+     async getsetting() {
+        try {
+            const response = await repository.get('/setting');
+            return response;
+        } catch (error) {
+            return error;
+        }
+    }
     
 }
 

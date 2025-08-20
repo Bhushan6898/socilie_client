@@ -32,8 +32,8 @@ function SuggestUserHomepage() {
     // Remove suggested user by ID
     const handleRemoveSuggestion = (userIdToRemove) => {
         setSuggestedUsers(prevUsers =>
-    prevUsers.filter(user => user._id !== userIdToRemove)
-  );
+            prevUsers.filter(user => user._id !== userIdToRemove)
+        );
     };
 
     const handleProfileClick = (userid) => {
@@ -41,60 +41,65 @@ function SuggestUserHomepage() {
     };
 
     return (
+        <>
+        {
+            suggestedUsers?.length > 0 && (
+                <div className="p-3 shadow-sm bg-white rounded-3 mb-4">
+                    <h6 className="mb-3">✨ Suggested for You</h6>
 
-        <div className="p-3 shadow-sm bg-white rounded-3 mb-4">
-            <h6 className="mb-3">✨ Suggested for You</h6>
+                    {/* Horizontal scroll container */}
+                    <div className="d-flex flex-row gap-3 overflow-auto" style={{ whiteSpace: 'nowrap' }}>
+                        {suggestedUsers.map((user) => (
+                            <div
 
-            {/* Horizontal scroll container */}
-            <div className="d-flex flex-row gap-3 overflow-auto" style={{ whiteSpace: 'nowrap' }}>
-                {suggestedUsers.map((user) => (
-                    <div
+                                key={user._id}
+                                className="d-flex flex-column align-items-center text-center p-2 border rounded position-relative"
+                                style={{ minWidth: '120px', maxWidth: '130px', flex: '0 0 auto' }}
 
-                        key={user._id}
-                        className="d-flex flex-column align-items-center text-center p-2 border rounded position-relative"
-                        style={{ minWidth: '120px', maxWidth: '130px', flex: '0 0 auto' }}
+                            >
+                                <button
+                                    className="btn btn-sm text-muted  p-0"
+                                    onClick={() => handleRemoveSuggestion(user._id)}
+                                    style={{ fontSize: '0.8rem', padding: '0 4px', position: 'absolute', top: '2px', right: '5px' }}
+                                >
+                                    <IoClose />
+                                </button>
+                                {/* Avatar */}
+                                <img
+                                    src={user.profilePicture}
+                                    alt={user.name}
+                                    className="rounded-circle mb-2"
+                                    style={{ width: '60px', height: '60px', objectFit: 'cover' }}
+                                    onClick={() => handleProfileClick(user._id)}
+                                />
 
-                    >
-                        <button
-                            className="btn btn-sm text-muted  p-0"
-                            onClick={() => handleRemoveSuggestion(user._id)}
-                            style={{ fontSize: '0.8rem', padding: '0 4px', position: 'absolute', top: '2px', right: '5px' }}
-                        >
-                            <IoClose />
-                        </button>
-                        {/* Avatar */}
-                        <img
-                            src={user.profilePicture}
-                            alt={user.name}
-                            className="rounded-circle mb-2"
-                            style={{ width: '60px', height: '60px', objectFit: 'cover' }}
-                            onClick={() => handleProfileClick(user._id)}
-                        />
+                                {/* Name */}
+                                <strong
+                                    className="text-truncate mb-1"
+                                    style={{ fontSize: '0.85rem', maxWidth: '100%' }}
+                                >
+                                    {user.name}
+                                </strong>
 
-                        {/* Name */}
-                        <strong
-                            className="text-truncate mb-1"
-                            style={{ fontSize: '0.85rem', maxWidth: '100%' }}
-                        >
-                            {user.name}
-                        </strong>
+                                {/* Follow Button */}
+                                <button
+                                    className="btn btn-outline-primary btn-sm w-100"
+                                    style={{ fontSize: '0.7rem', padding: '2px 6px' }}
+                                >
+                                    Follow
+                                </button>
 
-                        {/* Follow Button */}
-                        <button
-                            className="btn btn-outline-primary btn-sm w-100"
-                            style={{ fontSize: '0.7rem', padding: '2px 6px' }}
-                        >
-                            Follow
-                        </button>
+                                {/* Remove Button */}
 
-                        {/* Remove Button */}
+                            </div>
+                        ))}
+
 
                     </div>
-                ))}
-
-                
-            </div>
-        </div>
+                </div>
+            )
+        }
+        </>
 
     );
 }
