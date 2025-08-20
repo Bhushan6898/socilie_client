@@ -4,7 +4,9 @@ class UserRepository {
     async connection() {
         try {
             const response = await repository.get('/verify');
+          
             return response;
+            
         } catch (error) {
             return error;
         }

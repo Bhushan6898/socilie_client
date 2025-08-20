@@ -7,9 +7,12 @@ import { OrbitProgress } from 'react-loading-indicators';
 import PostActions from './postaction';
 import MenuModal from './dropdownmenu.js';
 import SuggestUserHomepage from '../../pages/suggestforHomepage.js';
+import { useUser } from '../../hook/user/useUser.js';
+
 
 function Post() {
   const navigate = useNavigate();
+    const {getconnect } = useUser();
   const postData = useSelector((state) => state.auth.allpostdata);
   const currentUserId = useSelector((state) => state.auth.id);
 
@@ -21,6 +24,8 @@ function Post() {
 
   useEffect(() => {
     if (postData) setLoading(false);
+
+    
   }, [postData]);
 
   const handleProfileClick = (userid) => {
@@ -66,6 +71,8 @@ function Post() {
       </div>
     );
   }
+
+   
 
   return (
     <div className="">

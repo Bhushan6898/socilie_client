@@ -17,6 +17,7 @@ export const useUser = () => {
             try {
                 setLoading(true)
                 const response = await UserRepository.connection(); 
+               
                 if (response.status === 200) {
                     const { role,  id } = response.data;
                     dispatch(login({ role, id })); 

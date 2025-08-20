@@ -3,44 +3,67 @@ import { Link } from 'react-router-dom';
 import logo from '../asset/logo.png';
 import { useUser } from '../hook/user/useUser';
 import { OrbitProgress } from 'react-loading-indicators';
-import { useSelector } from 'react-redux';
+
 function Login() {
-  const { getlogin,getconnect } = useUser();
+  const { getlogin, getconnect } = useUser();
   const [form, setForm] = useState({ email: '', password: '' });
   const [loading, setLoading] = useState(false);
-   
+  const [isConnected, setIsConnected] = useState(false); // 🟢 New state to track connection status
+
   const handleChange = e => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
+
   useEffect(() => {
     const checkConnection = async () => {
-     await getconnect();
-     
+      try {
+        const response = await getconnect();
+        console.log('Connection successful: ', response);
+        if (response?.status === 200) {
+          setIsConnected(true); // ✅ Set connection as successful
+        }
+      } catch (error) {
+        console.error('Connection failed:', error);
+      }
     };
     checkConnection();
   }, []);
+console.log(isConnected);
 
   const handleSubmit = async e => {
-     setLoading(true);
     e.preventDefault();
+    setLoading(true);
     await getlogin(form);
-     setLoading(false);
+    setLoading(false);
   };
 
-   if (loading) {
-       return (
-         <div className="d-flex justify-content-center align-items-center vh-100">
-           <OrbitProgress color="#32cd32" size="medium" text="Loading..." textColor="" />
-         </div>
-       );
-     }
+  if (loading) {
+    return (
+      <div className="d-flex justify-content-center align-items-center vh-100">
+        <OrbitProgress color="#32cd32" size="medium" text="Loading..." />
+      </div>
+    );
+  }
 
   return (
     <div className="d-flex justify-content-center align-items-center bg-light" style={{ minHeight: '80vh' }}>
       <div className="card p-4" style={{ maxWidth: 350, width: '100%' }}>
         <div className="text-center mb-4">
           <img src={logo} alt="Instagram" width="48" style={{ borderRadius: "10px" }} />
-          <h4 className="mt-2 mb-0 fw-bold">SOCILITE</h4>
+          <h4 className="mt-2 mb-0 fw-bold d-flex align-items-center justify-content-center gap-2">
+            SOCILITE
+            {isConnected && (
+              <span
+                style={{
+                  display: 'inline-block',
+                  width: 5,
+                  height: 5,
+                  backgroundColor: 'green',
+                  borderRadius: '50%',
+                }}
+              ></span>
+            )}
+          </h4>
         </div>
         <form onSubmit={handleSubmit}>
           <input
