@@ -48,7 +48,7 @@ export const useAdmin = () => {
                 if (response.status === 200) {
                     // const data=response.data.posts
                     // dispatch(setAllPostdata({ data }));
-                    console.log("All users data:", response.data.users);
+                   
                     setAllUsers(response.data.users);
                     setLoading(false);
 
@@ -70,7 +70,7 @@ export const useAdmin = () => {
 
                 if (response.status === 200) {
                    dispatch(setSetting({ data: response.data.settings }));
-                   console.log("Settings data:", response.data.settings);
+                  
                    
                     setLoading(false);
 

@@ -39,6 +39,7 @@ function Profile() {
   const { setting } = useAdmin();
 
   const user = useSelector((state) => state.auth.userdata);
+  
 
   const postData = useSelector((state) => state.auth.postdata); // actual posts from Redux
 
