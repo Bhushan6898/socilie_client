@@ -6,12 +6,14 @@ import {
   Bell,
   HourglassSplit
 } from 'react-bootstrap-icons'; // npm install react-bootstrap-icons
+import { useNavigate } from 'react-router-dom';
 
 function UserSocialite() {
+    const navigate = useNavigate();
   const items = [
     { icon: <Bookmark size={20} className="me-3 text-primary" />, label: 'Saved' },
     { icon: <Archive size={20} className="me-3 text-success" />, label: 'Archive' },
-    { icon: <ClockHistory size={20} className="me-3 text-info" />, label: 'Your Activity' },
+    { icon: <ClockHistory size={20} className="me-3 text-info"  onClick={() => navigate('/activity')} />, label: 'Your Activity' },
     { icon: <Bell size={20} className="me-3 text-warning" />, label: 'Notifications' },
     { icon: <HourglassSplit size={20} className="me-3 text-danger" />, label: 'Time Management' }
   ];

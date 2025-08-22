@@ -16,7 +16,7 @@ import VideoFeedPage from './pages/VideoFeedPage.js';
 import { useUser } from './hook/user/useUser';
 import UserProfile from './pages/userinformation.js';
 import Setting from './components/setting/index.js';
-
+import Activity from './components/setting/activity/index.js';
 function App() {
   const { getconnect } = useUser();
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
@@ -72,6 +72,7 @@ function App() {
   <Route path="/video" element={<PrivateRoute><VideoFeedPage /></PrivateRoute>} />
   <Route path="/userinfo/:id" element={<PrivateRoute><UserProfile /></PrivateRoute>} />
   <Route path="/setting" element={<PrivateRoute><Setting /></PrivateRoute>} />
+    <Route path="/activity" element={<PrivateRoute><Activity /></PrivateRoute>} />
 </Routes>
 
       </div>
