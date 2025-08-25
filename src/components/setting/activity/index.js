@@ -1,17 +1,17 @@
 import React from 'react';
 
-import { ArrowLeft } from 'react-bootstrap-icons'; 
+import { ArrowLeft } from 'react-bootstrap-icons';
 import { useNavigate } from 'react-router-dom';
 import Interact from './interactions';
 import Removed from './removed';
 import Content from './content';
 import UseSocilite from './usesocilite';
 function Activity() {
-    
-  
-      const navigate = useNavigate();
 
-    
+
+    const navigate = useNavigate();
+
+
 
     return (
         <div className="bg-white " style={{ paddingBottom: 70 }}>
@@ -25,12 +25,12 @@ function Activity() {
                 />
                 <h5 className=" fw-bold mb-0">Your Activity</h5>
             </div>
-          
-<Interact/>
-<Removed/>
-<Content/>
-<UseSocilite/>
-           
+
+            <Interact />
+            <Removed />
+            <Content />
+            <UseSocilite />
+
         </div>
     );
 }

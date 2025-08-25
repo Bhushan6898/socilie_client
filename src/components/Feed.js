@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Post from './post/Post';
 import { useSelector } from 'react-redux';
 import profilpicture from '../asset/profile.png';
+import { useNavigate } from 'react-router-dom';
 const stories = [
   { username: 'Bhushan Patil', img: 'https://res.cloudinary.com/dl35wuxhn/image/upload/v1751878744/user-images/user_652cb3593dbba5f70aa925df37650af581f20c63436823da4eb771d7e5878f00.jpg', status: 'Enjoying the sunshine!' },
   { username: 'jane_smith', img: 'https://randomuser.me/api/portraits/women/2.jpg', status: 'Lovely day at the beach.' },
@@ -12,6 +13,7 @@ const stories = [
 ];
 
 function Feed() {
+   const navigate = useNavigate();
     const user = useSelector((state) => state.auth.userdata);
   const [showModal, setShowModal] = useState(false);
   const [activeStory, setActiveStory] = useState(null);
@@ -39,7 +41,7 @@ function Feed() {
                 className="position-absolute bottom-0 end-0 bg-primary rounded-circle d-flex justify-content-center align-items-center"
                 style={{ width: 22, height: 22, border: '2px solid #fff' }}
               >
-                <i className="fas fa-plus text-white"></i>
+                <i className="fas fa-plus text-white"onClick={() => navigate("/create/story")} ></i>
               </span>
             </div>
             <div style={{ fontSize: 12, whiteSpace: 'nowrap' }}>Your Story</div>
