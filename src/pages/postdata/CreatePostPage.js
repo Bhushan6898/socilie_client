@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Form, Button, Container, Row, Col, Card } from "react-bootstrap";
 import { useUser } from "../../hook/user/useUser.js";
 import dummyLocations from "../../pages/location.json";
@@ -12,7 +12,15 @@ const CreatePostPage = () => {
   const [locationSuggestions, setLocationSuggestions] = useState([]);
   const [step, setStep] = useState(1);
 
+  const fileInputRef = useRef(null); // ref for file input
   const { createPost } = useUser();
+
+  useEffect(() => {
+    // Automatically click the file input when page loads
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  }, []);
 
   const handleFileChange = (e) => {
     setFiles([...e.target.files]);
@@ -58,6 +66,7 @@ const CreatePostPage = () => {
                       type="file"
                       multiple
                       accept="image/*,video/*"
+                      ref={fileInputRef} // attach ref here
                       onChange={handleFileChange}
                     />
                   </Form.Group>
