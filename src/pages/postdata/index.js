@@ -27,6 +27,13 @@ const ChooseTypePage = () => {
       path: "/create/story",
       variant: "warning",
     },
+    {
+      title: "Music",
+      desc: "Post moments that disappear in 24h",
+      icon: <Book size={40} className="text-black" />,
+      path: "/music",
+      variant: "warning",
+    },
   ];
 
   return (
