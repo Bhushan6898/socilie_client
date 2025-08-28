@@ -18,7 +18,6 @@ export default function MusicPicker() {
   const [duration, setDuration] = useState(0);
   const [volume, setVolume] = useState(0.8); // default 80%
 
-
   const audioRef = useRef(null);
   const debounceRef = useRef(null);
 
@@ -124,8 +123,16 @@ export default function MusicPicker() {
     }
   };
 
+  // format mm:ss
+  const formatTime = (time) => {
+    if (!time || isNaN(time)) return "0:00";
+    const minutes = Math.floor(time / 60);
+    const seconds = Math.floor(time % 60);
+    return `${minutes}:${seconds.toString().padStart(2, "0")}`;
+  };
+
   return (
-    <div className="bg-dark text-white min-vh-100">
+    <div className="bg-dark text-white " style={{ paddingBottom: "80px" }}>
       {/* Hero Section */}
       <div
         className="p-4 text-center"
@@ -207,14 +214,31 @@ export default function MusicPicker() {
           )}
         </div>
       </div>
-        {currentSong && (
+
+      {/* Bottom Player */}
+    {currentSong && (
   <div
-    className="card fixed-bottom text-white shadow-lg px-3 py-2"
+    className="card  text-white shadow-lg px-3 py-2 position-relative"
     style={{
       background: "rgba(20,20,20,0.85)",
       backdropFilter: "blur(12px)",
     }}
   >
+    {/* Close Button */}
+    <button
+      className="btn btn-sm btn-outline-light position-absolute top-0 end-0 m-2 rounded-circle"
+      onClick={() => {
+        if (audioRef.current) {
+          audioRef.current.pause();
+          audioRef.current.currentTime = 0;
+        }
+        setCurrentSong(null);
+        setIsPlaying(false);
+      }}
+    >
+      ✕
+    </button>
+
     <div className="d-flex flex-column flex-md-row align-items-center justify-content-between gap-3">
       {/* Song Info */}
       <div className="d-flex align-items-center gap-3 text-center text-md-start">
@@ -230,10 +254,16 @@ export default function MusicPicker() {
           }}
         />
         <div className="overflow-hidden">
-          <div className="fw-bold text-truncate" style={{ maxWidth: "150px" }}>
+          <div
+            className="fw-bold text-truncate"
+            style={{ maxWidth: "150px" }}
+          >
             {currentSong.title}
           </div>
-          <div className="text-muted small text-truncate " style={{ maxWidth: "150px",color:"#ccc" }}>
+          <div
+            className="text-muted small text-truncate"
+            style={{ maxWidth: "150px", color: "#ccc" }}
+          >
             {currentSong.artist.name}
           </div>
         </div>
@@ -284,8 +314,12 @@ export default function MusicPicker() {
       </div>
     </div>
 
-    {/* Progress Bar */}
+    {/* Progress Bar + Time */}
     <div className="mt-2">
+      <div className="d-flex justify-content-between small text-white px-1">
+        <span>{formatTime(progress)}</span>
+        <span>{formatTime(duration)}</span>
+      </div>
       <input
         type="range"
         className="form-range w-100"
@@ -300,10 +334,6 @@ export default function MusicPicker() {
     </div>
   </div>
 )}
-
-
-      {/* Sticky Bottom Player */}
-
 
     </div>
   );
