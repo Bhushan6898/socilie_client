@@ -16,10 +16,14 @@ export default function MusicPicker() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
   const [duration, setDuration] = useState(0);
-  const [volume, setVolume] = useState(0.8); // default 80%
+  const [volume, setVolume] = useState(0.8);
+
+  const [category, setCategory] = useState("trending"); // ✅ default category
 
   const audioRef = useRef(null);
   const debounceRef = useRef(null);
+
+  const categories = ["Trending", "Recent", "Bollywood", "Happy", "Romantic", "Party", "Workout", "Classical", "Devotional"];
 
   const fetchMusic = async (q) => {
     if (!q) {
@@ -53,14 +57,20 @@ export default function MusicPicker() {
     }
   };
 
+  // load default category
   useEffect(() => {
-    fetchMusic("trending");
-  }, []);
+    fetchMusic(category);
+  }, [category]);
 
+  // search override
   useEffect(() => {
     clearTimeout(debounceRef.current);
     debounceRef.current = setTimeout(() => {
-      if (query.trim()) fetchMusic(query.trim());
+      if (query.trim()) {
+        fetchMusic(query.trim());
+      } else {
+        fetchMusic(category); // reset back to category if search is cleared
+      }
     }, 400);
     return () => clearTimeout(debounceRef.current);
   }, [query]);
@@ -72,6 +82,7 @@ export default function MusicPicker() {
     audio.pause();
     audio.src = song.preview;
     audio.currentTime = 0;
+    audio.volume = volume;
     audio.play().then(() => setIsPlaying(true)).catch(() => {});
   };
 
@@ -102,16 +113,13 @@ export default function MusicPicker() {
     }
   };
 
-  // Track song progress
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio) return;
-
     audio.ontimeupdate = () => {
       setProgress(audio.currentTime);
       setDuration(audio.duration || 0);
     };
-
     audio.onended = () => handleNext();
   }, [currentIndex, songs]);
 
@@ -123,7 +131,6 @@ export default function MusicPicker() {
     }
   };
 
-  // format mm:ss
   const formatTime = (time) => {
     if (!time || isNaN(time)) return "0:00";
     const minutes = Math.floor(time / 60);
@@ -142,6 +149,24 @@ export default function MusicPicker() {
       >
         <h2 className="fw-bold display-6">🎵 Discover Music</h2>
         <p className="text-light">Search, play and vibe like never before.</p>
+         <div className="d-flex justify-content-center gap-2 mb-3 flex-wrap">
+          {categories.map((cat) => (
+            <button
+              key={cat}
+              className={`btn btn-sm rounded-pill ${
+                category === cat.toLowerCase()
+                  ? "btn-success"
+                  : "btn-outline-light"
+              }`}
+              onClick={() => {
+                setQuery(""); // reset search when switching
+                setCategory(cat.toLowerCase());
+              }}
+            >
+              {cat}
+            </button>
+          ))}
+        </div>
 
         <div className="mx-auto" style={{ maxWidth: "500px" }}>
           <input
