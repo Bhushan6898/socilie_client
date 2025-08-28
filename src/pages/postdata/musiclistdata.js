@@ -218,7 +218,7 @@ export default function MusicPicker() {
       {/* Bottom Player */}
     {currentSong && (
   <div
-    className="card  text-white shadow-lg px-3 py-2 position-relative"
+    className="card fixed-bottom text-white shadow-lg px-3 py-2"
     style={{
       background: "rgba(20,20,20,0.85)",
       backdropFilter: "blur(12px)",
