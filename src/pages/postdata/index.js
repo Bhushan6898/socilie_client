@@ -1,6 +1,6 @@
 import { Card } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import { Camera, Film, Book } from "react-bootstrap-icons";
+import { Camera, Film, Book,MusicNote } from "react-bootstrap-icons";
 
 const ChooseTypePage = () => {
   const navigate = useNavigate();
@@ -27,13 +27,13 @@ const ChooseTypePage = () => {
       path: "/create/story",
       variant: "warning",
     },
-    {
-      title: "Music",
-      desc: "Post moments that disappear in 24h",
-      icon: <Book size={40} className="text-black" />,
-      path: "/music",
-      variant: "warning",
-    },
+   {
+  title: "Music",
+  desc: "Listen, explore and enjoy trending tracks anytime 🎶",
+  icon: <MusicNote size={40} className="text-black" />,
+  path: "/music",
+  variant: "warning",
+}
   ];
 
   return (
