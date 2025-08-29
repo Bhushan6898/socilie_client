@@ -10,18 +10,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify'; 
 import { BrowserRouter } from 'react-router-dom';
 
-if ("serviceWorker" in navigator) {
-  window.addEventListener("load", () => {
-    navigator.serviceWorker
-      .register("/service-worker.js")
-      .then((registration) => {
-        console.log("ServiceWorker registered:", registration);
-      })
-      .catch((error) => {
-        console.log("ServiceWorker registration failed:", error);
-      });
-  });
-}
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
