@@ -17,6 +17,7 @@ export const useUser = () => {
             try {
                 setLoading(true)
                 const response = await UserRepository.connection(); 
+               console.log("respobse all");
                
                 if (response.status === 200) {
                     const { role,  id } = response.data;
