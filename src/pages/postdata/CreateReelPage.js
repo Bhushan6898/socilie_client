@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
 import { Form, Button, Container, Row, Col, Card } from "react-bootstrap";
 import { useUser } from "../../hook/user/useUser.js";
-import musicList from "../musiclist.js";
+import MusicList from "./addmusic.js";
 
 const templates = [
     { id: 1, name: "None", style: { filter: "none" } },
@@ -34,7 +34,7 @@ const CreateReelPage = () => {
     const [music, setMusic] = useState("");
     const [selectedTemplate, setSelectedTemplate] = useState(templates[0]);
     const [step, setStep] = useState(1);
-
+const [selectedSong, setSelectedSong] = useState(null);
     const { createPost } = useUser();
 
     const videoRef = useRef(null);
@@ -175,19 +175,7 @@ const CreateReelPage = () => {
                                 {/* Step 3: Select Music */}
                                 {step === 3 && (
                                     <Form.Group className="mb-4">
-                                        <Form.Label className="fw-semibold">Background Music</Form.Label>
-                                        <Form.Select
-                                            value={music}
-                                            onChange={(e) => setMusic(e.target.value)}
-                                            className="rounded-3"
-                                        >
-                                            <option value="">Select music...</option>
-                                            {musicList.map((option, index) => (
-                                                <option key={index} value={option.url}>
-                                                    🎵 {option.name}
-                                                </option>
-                                            ))}
-                                        </Form.Select>
+                                        <MusicList onSelect={setSelectedSong} />
                                     </Form.Group>
                                 )}
 

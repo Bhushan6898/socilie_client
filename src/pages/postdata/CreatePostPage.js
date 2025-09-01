@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { Form, Button, Container, Row, Col, Card } from "react-bootstrap";
 import { useUser } from "../../hook/user/useUser.js";
 import dummyLocations from "../../pages/location.json";
-import musicList from "../musiclist.js";
+import MusicList from "./addmusic.js";
 
 const CreatePostPage = () => {
   const [files, setFiles] = useState([]);
@@ -11,6 +11,8 @@ const CreatePostPage = () => {
   const [music, setMusic] = useState("");
   const [locationSuggestions, setLocationSuggestions] = useState([]);
   const [step, setStep] = useState(1);
+  const [media, setMedia] = useState(null);
+  const [selectedSong, setSelectedSong] = useState(null);
 
   const fileInputRef = useRef(null); // ref for file input
   const { createPost } = useUser();
@@ -46,7 +48,7 @@ const CreatePostPage = () => {
     formData.append("music", music);
     formData.append("type", "post");
 
-    await createPost(formData);
+   // await createPost(formData);
   };
 
   return (
@@ -175,18 +177,7 @@ const CreatePostPage = () => {
               {step === 4 && (
                 <>
                   <Form.Group className="mb-3">
-                    <Form.Label>Select Background Music</Form.Label>
-                    <Form.Select
-                      value={music}
-                      onChange={(e) => setMusic(e.target.value)}
-                    >
-                      <option value="">Select music...</option>
-                      {musicList.map((option, index) => (
-                        <option key={index} value={option.url}>
-                          {option.name}
-                        </option>
-                      ))}
-                    </Form.Select>
+                  <MusicList onSelect={setSelectedSong} />
                   </Form.Group>
 
                   <div className="d-flex justify-content-between">

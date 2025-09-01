@@ -33,6 +33,13 @@ const ChooseTypePage = () => {
   icon: <MusicNote size={40} className="text-black" />,
   path: "/music",
   variant: "info",
+},
+ {
+  title: "Music-selection",
+  desc: "Listen, explore and enjoy trending tracks anytime 🎶",
+  icon: <MusicNote size={40} className="text-black" />,
+  path: "/music-select",
+  variant: "info",
 }
   ];
 

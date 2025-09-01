@@ -1,16 +1,15 @@
 // MusicPicker.jsx
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-export default function MusicPicker() {
+export default function MusicPicker({ onSelect }) {
   const [query, setQuery] = useState("");
   const [songs, setSongs] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [currentSong, setCurrentSong] = useState(null); // track which song is active
-  const [isPlaying, setIsPlaying] = useState(false); // track play/pause
+  const [playing, setPlaying] = useState(null);
   const audioRef = useRef(null);
-  const debounceRef = useRef(null);
 
+    const [category, setCategory] = useState("shorts"); // ✅ default category
   const fetchMusic = async (q) => {
     if (!q) {
       setSongs([]);
@@ -19,125 +18,149 @@ export default function MusicPicker() {
     setLoading(true);
     try {
       const res = await fetch(
-        `https://saavn.dev/api/search/songs?query=${encodeURIComponent(q)}&page=1&limit=50`
+        `https://saavn.dev/api/search/songs?query=${encodeURIComponent(
+          q
+        )}&page=1&limit=40`
       );
       const data = await res.json();
+
       const mapped =
         data?.data?.results?.map((song) => ({
           id: song.id,
           title: song.name,
-          artist: { name: song.artists?.primary?.[0]?.name || "Unknown" },
+          artist: song.primaryArtists,
           album: {
             cover_medium: song.image?.[2]?.url,
             cover_small: song.image?.[0]?.url,
           },
-          preview: song.downloadUrl?.[3]?.url || "",
+          url: song.downloadUrl?.[0]?.url || "",
         })) || [];
 
       setSongs(mapped);
     } catch (err) {
       console.error(err);
-      setSongs([]);
-    } finally {
-      setLoading(false);
     }
+    setLoading(false);
   };
+   useEffect(() => {
+      fetchMusic(category);
+    }, [category]);
 
-  // default fetch on mount
-  useEffect(() => {
-    fetchMusic("trending");
-  }, []);
-
-  // debounce typing
-  useEffect(() => {
-    clearTimeout(debounceRef.current);
-    debounceRef.current = setTimeout(() => {
-      if (query.trim()) fetchMusic(query.trim());
-    }, 400);
-    return () => clearTimeout(debounceRef.current);
-  }, [query]);
-
-  const handlePlayToggle = (song) => {
-    const audio = audioRef.current ?? (audioRef.current = new Audio());
-
-    if (currentSong?.id === song.id) {
-      // toggle play/pause for same song
-      if (isPlaying) {
-        audio.pause();
-        setIsPlaying(false);
-      } else {
-        audio.play();
-        setIsPlaying(true);
-      }
+  // Play / Pause 30-second preview
+  const handlePlay = (song) => {
+    if (playing?.id === song.id) {
+      audioRef.current?.pause();
+      setPlaying(null);
     } else {
-      // play a new song
-      setCurrentSong(song);
-      audio.pause();
-      audio.src = song.preview;
-      audio.currentTime = 0;
-      audio.play().then(() => setIsPlaying(true)).catch(() => {});
+      if (audioRef.current) {
+        audioRef.current.pause();
+      }
+      const audio = new Audio(song.url);
+      audioRef.current = audio;
+
+      // Limit to 30 seconds
+      audio.ontimeupdate = () => {
+        if (audio.currentTime >= 30) {
+          audio.pause();
+          setPlaying(null);
+        }
+      };
+
+      audio.play();
+      setPlaying(song);
+      audio.onended = () => setPlaying(null);
     }
   };
 
-  // Reset state when audio ends
-  useEffect(() => {
-    const audio = audioRef.current;
-    if (!audio) return;
-    audio.onended = () => setIsPlaying(false);
-  }, [audioRef.current]);
+  // Handle save/select song
+  const handleSave = (song) => {
+    if (onSelect) {
+      onSelect(song); // send song to parent
+    }
+    alert(`✅ Selected: ${song.title} by ${song.artist}`);
+  };
 
   return (
-    <div className="container py-3">
-      <h3 className="mb-3">🎵 Pick Music</h3>
+    <div className="container mt-3">
+      {/* Search Bar */}
+      <input
+        type="text"
+        className="form-control mb-3"
+        placeholder="Search music..."
+        value={query}
+        onChange={(e) => {
+          setQuery(e.target.value);
+          fetchMusic(e.target.value);
+        }}
+      />
 
-      {/* Search */}
-      <div className="mb-3">
-        <input
-          className="form-control"
-          placeholder="Search songs..."
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-        />
-      </div>
+      {/* Song List */}
+      <div className="list-group" style={{ maxHeight: "400px", overflowY: "auto" }}>
+        {loading && <div className="text-center p-3">Loading...</div>}
+        {!loading && songs.length === 0 && query && (
+          <div className="text-center p-3 text-muted">No songs found</div>
+        )}
 
-      {loading && <div className="text-center my-3">Loading…</div>}
-
-      {/* Song grid */}
-      <div className="row g-3">
         {songs.map((song) => (
-          <div className="col-6 col-sm-4 col-md-3 col-lg-2" key={song.id}>
-            <div className="card h-100 shadow-sm">
+          <div
+            key={song.id}
+            className="list-group-item d-flex align-items-center justify-content-between"
+          >
+            {/* Left Side: Thumbnail + Info */}
+            <div className="d-flex align-items-center">
+              {/* Album with Play Button */}
               <div
-                className="position-relative"
-                style={{ cursor: "pointer" }}
-                onClick={() => handlePlayToggle(song)}
+                style={{
+                  position: "relative",
+                  width: "50px",
+                  height: "50px",
+                  marginRight: "12px",
+                }}
               >
                 <img
                   src={song.album.cover_medium}
-                  className="card-img-top"
                   alt={song.title}
+                  style={{
+                    width: "50px",
+                    height: "50px",
+                    objectFit: "cover",
+                    borderRadius: "8px",
+                  }}
                 />
-                <div
-                  className="position-absolute top-50 start-50 translate-middle text-white fs-4"
-                  style={{ textShadow: "0 0 6px rgba(0,0,0,.6)" }}
+                <button
+                  onClick={() => handlePlay(song)}
+                  className="btn btn-sm "
+                  style={{
+                    position: "absolute",
+                    top: "50%",
+                    left: "50%",
+                    transform: "translate(-50%, -50%)",
+                    borderRadius: "50%",
+                    padding: "2px 6px",
+                  }}
                 >
-                  {currentSong?.id === song.id && isPlaying ? "⏸" : "▶"}
+                  {playing?.id === song.id ? "⏸" : "▶"}
+                </button>
+              </div>
+
+              {/* Title + Artist */}
+              <div>
+                <div className="fw-bold">{song.title}</div>
+                <div className="text-muted" style={{ fontSize: "0.85rem" }}>
+                  {song.artist}
                 </div>
               </div>
-
-              <div className="card-body p-2">
-                <h6 className="card-title text-truncate mb-1">{song.title}</h6>
-                <p className="card-text text-muted small mb-2">
-                  {song.artist.name}
-                </p>
-              </div>
             </div>
+
+            {/* Right Side: Save/Select Button */}
+            <button
+              className="btn btn-success btn-sm"
+              onClick={() => handleSave(song)}
+            >
+              <i className={song ? "fas fa-bookmark" : "far fa-bookmark"}></i>
+            </button>
           </div>
         ))}
-
-        {!loading && songs.length === 0 && query.trim() !== "" && (
-          <div className="text-center text-muted">No results</div>
-        )}
       </div>
     </div>
   );

@@ -3,8 +3,8 @@ import axios from "axios";
 export const BaseURL="https://socilite-server-1.onrender.com"
 const axiosInstance = axios.create({
   baseURL: BaseURL,
-  withCredentials: true,
-  timeout: 10000 // 10s to avoid hanging requests
+  withCredentials: true
+  
 });
 const checkConnection = async () => {
     try {
