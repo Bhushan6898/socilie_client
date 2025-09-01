@@ -83,7 +83,7 @@ export default function MusicPicker() {
     audio.src = song.preview;
     audio.currentTime = 0;
     audio.volume = volume;
-    audio.play().then(() => setIsPlaying(true)).catch(() => {});
+    audio.play().then(() => setIsPlaying(true)).catch(() => { });
   };
 
   const handlePlayToggle = (song, index) => {
@@ -149,15 +149,14 @@ export default function MusicPicker() {
       >
         <h2 className="fw-bold display-6">🎵 Discover Music</h2>
         <p className="text-light">Search, play and vibe like never before.</p>
-         <div className="d-flex justify-content-center gap-2 mb-3 flex-wrap">
+        <div className="d-flex justify-content-center gap-2 mb-3 flex-wrap">
           {categories.map((cat) => (
             <button
               key={cat}
-              className={`btn btn-sm rounded-pill ${
-                category === cat.toLowerCase()
+              className={`btn btn-sm rounded-pill ${category === cat.toLowerCase()
                   ? "btn-success"
                   : "btn-outline-light"
-              }`}
+                }`}
               onClick={() => {
                 setQuery(""); // reset search when switching
                 setCategory(cat.toLowerCase());
@@ -182,20 +181,20 @@ export default function MusicPicker() {
       <div className="container py-4">
         {loading && <div className="text-center my-3">Loading…</div>}
 
-        <div className="row g-4">
+        <div className="row g-2">
           {songs.map((song, index) => (
             <div
-              className="col-6 col-sm-4 col-md-3 col-lg-2"
+              className="col-6 col-sm-3 col-md-2 col-lg-2"
               key={song.id}
               onClick={() => handlePlayToggle(song, index)}
             >
               <div
-                className="card border-0 h-100 rounded-4 overflow-hidden shadow-lg"
+                className="card border-0 h-100 rounded-3 overflow-hidden shadow-sm"
                 style={{
                   cursor: "pointer",
-                  background: "rgba(255,255,255,0.05)",
+                  background: "rgba(255,255,255,0.08)",
                   backdropFilter: "blur(10px)",
-                  transition: "transform 0.3s",
+                  transition: "transform 0.2s",
                 }}
               >
                 <div className="position-relative">
@@ -204,29 +203,43 @@ export default function MusicPicker() {
                     className="card-img-top"
                     alt={song.title}
                     style={{
-                      borderRadius: "12px",
-                      height: "180px",
-                      objectFit: "cover",
+                      borderRadius: "10px",
+                      height: "140px",
+                      width: "100%",
+                      objectFit: "contain", 
+                      backgroundColor: "#000", 
                       transition: "0.3s",
                     }}
                   />
+
                   <div
-                    className="position-absolute top-50 start-50 translate-middle bg-success bg-opacity-75 text-white fs-3 rounded-circle d-flex justify-content-center align-items-center"
-                    style={{ width: "60px", height: "60px" }}
+                    className="position-absolute top-50 start-50 translate-middle bg-success bg-opacity-75 text-white fs-6 rounded-circle d-flex justify-content-center align-items-center"
+                    style={{ width: "35px", height: "35px" }}
                   >
-                    {currentSong?.id === song.id && isPlaying ? (
-                      <PauseFill />
-                    ) : (
-                      <PlayFill />
-                    )}
+                    {currentSong?.id === song.id && isPlaying ? <PauseFill /> : <PlayFill />}
                   </div>
                 </div>
 
-                <div className="card-body text-center p-2">
-                  <h6 className="card-title text-truncate fw-semibold mb-1 text-white">
+                <div className="card-body text-center p-1">
+                  <h6
+                    className="fw-semibold mb-1"
+                    style={{
+                      fontSize: "0.75rem",
+                      lineHeight: "1.1rem",
+                      color: "#fff",
+                      whiteSpace: "normal", // ✅ allow wrapping
+                    }}
+                  >
                     {song.title}
                   </h6>
-                  <p className="card-text text-muted small mb-0 text-white">
+                  <p
+                    className="mb-0"
+                    style={{
+                      fontSize: "0.7rem",
+                      color: "#ddd",
+                      whiteSpace: "normal", // ✅ allow wrapping
+                    }}
+                  >
                     {song.artist.name}
                   </p>
                 </div>
@@ -238,127 +251,129 @@ export default function MusicPicker() {
             <div className="text-center text-muted">No results</div>
           )}
         </div>
+
+
       </div>
 
       {/* Bottom Player */}
-    {currentSong && (
-  <div
-    className="card fixed-bottom text-white shadow-lg px-3 py-2"
-    style={{
-      background: "rgba(20,20,20,0.85)",
-      backdropFilter: "blur(12px)",
-    }}
-  >
-    {/* Close Button */}
-    <button
-      className="btn btn-sm btn-outline-light position-absolute top-0 end-0 m-2 rounded-circle"
-      onClick={() => {
-        if (audioRef.current) {
-          audioRef.current.pause();
-          audioRef.current.currentTime = 0;
-        }
-        setCurrentSong(null);
-        setIsPlaying(false);
-      }}
-    >
-      ✕
-    </button>
-
-    <div className="d-flex flex-column flex-md-row align-items-center justify-content-between gap-3">
-      {/* Song Info */}
-      <div className="d-flex align-items-center gap-3 text-center text-md-start">
-        <img
-          src={currentSong.album.cover_small}
-          alt={currentSong.title}
-          className="rounded"
+      {currentSong && (
+        <div
+          className="card fixed-bottom text-white shadow-lg px-3 py-2"
           style={{
-            width: 55,
-            height: 55,
-            objectFit: "cover",
-            boxShadow: "0 4px 10px rgba(0,0,0,0.5)",
+            background: "rgba(20,20,20,0.85)",
+            backdropFilter: "blur(12px)",
           }}
-        />
-        <div className="overflow-hidden">
-          <div
-            className="fw-bold text-truncate"
-            style={{ maxWidth: "150px" }}
+        >
+          {/* Close Button */}
+          <button
+            className="btn btn-sm btn-outline-light position-absolute top-0 end-0 m-2 rounded-circle"
+            onClick={() => {
+              if (audioRef.current) {
+                audioRef.current.pause();
+                audioRef.current.currentTime = 0;
+              }
+              setCurrentSong(null);
+              setIsPlaying(false);
+            }}
           >
-            {currentSong.title}
+            ✕
+          </button>
+
+          <div className="d-flex flex-column flex-md-row align-items-center justify-content-between gap-3">
+            {/* Song Info */}
+            <div className="d-flex align-items-center gap-3 text-center text-md-start">
+              <img
+                src={currentSong.album.cover_medium}
+                alt={currentSong.title}
+                className="rounded"
+                style={{
+                  width: 55,
+                  height: 55,
+                  objectFit: "cover",
+                  boxShadow: "0 4px 10px rgba(0,0,0,0.5)",
+                }}
+              />
+              <div className="overflow-hidden">
+                <div
+                  className="fw-bold text-truncate"
+                  style={{ maxWidth: "150px" }}
+                >
+                  {currentSong.title}
+                </div>
+                <div
+                  className="text-muted small text-truncate"
+                  style={{ maxWidth: "150px", color: "#ccc" }}
+                >
+                  {currentSong.artist.name}
+                </div>
+              </div>
+            </div>
+
+            {/* Controls */}
+            <div className="d-flex align-items-center justify-content-center gap-3 flex-shrink-0">
+              <button
+                className="btn btn-outline-light rounded-circle"
+                onClick={handlePrev}
+                disabled={currentIndex <= 0}
+              >
+                <SkipStartFill size={18} />
+              </button>
+              <button
+                className="btn btn-success rounded-circle"
+                style={{ width: "50px", height: "50px" }}
+                onClick={() => handlePlayToggle(currentSong, currentIndex)}
+              >
+                {isPlaying ? <PauseFill size={28} /> : <PlayFill size={28} />}
+              </button>
+              <button
+                className="btn btn-outline-light rounded-circle"
+                onClick={handleNext}
+                disabled={currentIndex >= songs.length - 1}
+              >
+                <SkipEndFill size={18} />
+              </button>
+            </div>
+
+            {/* Volume Control */}
+            <div className="d-flex align-items-center gap-2">
+              <i className="bi bi-volume-up"></i>
+              <input
+                type="range"
+                min="0"
+                max="1"
+                step="0.01"
+                value={volume}
+                onChange={(e) => {
+                  const newVolume = parseFloat(e.target.value);
+                  setVolume(newVolume);
+                  if (audioRef.current) audioRef.current.volume = newVolume;
+                }}
+                className="form-range"
+                style={{ width: "100px", accentColor: "#1DB954" }}
+              />
+            </div>
           </div>
-          <div
-            className="text-muted small text-truncate"
-            style={{ maxWidth: "150px", color: "#ccc" }}
-          >
-            {currentSong.artist.name}
+
+          {/* Progress Bar + Time */}
+          <div className="mt-2">
+            <div className="d-flex justify-content-between small text-white px-1">
+              <span>{formatTime(progress)}</span>
+              <span>{formatTime(duration)}</span>
+            </div>
+            <input
+              type="range"
+              className="form-range w-100"
+              min="0"
+              max={duration || 0}
+              value={progress}
+              onChange={handleSeek}
+              style={{
+                accentColor: "#1DB954", // Spotify green
+              }}
+            />
           </div>
         </div>
-      </div>
-
-      {/* Controls */}
-      <div className="d-flex align-items-center justify-content-center gap-3 flex-shrink-0">
-        <button
-          className="btn btn-outline-light rounded-circle"
-          onClick={handlePrev}
-          disabled={currentIndex <= 0}
-        >
-          <SkipStartFill size={18} />
-        </button>
-        <button
-          className="btn btn-success rounded-circle"
-          style={{ width: "50px", height: "50px" }}
-          onClick={() => handlePlayToggle(currentSong, currentIndex)}
-        >
-          {isPlaying ? <PauseFill size={28} /> : <PlayFill size={28} />}
-        </button>
-        <button
-          className="btn btn-outline-light rounded-circle"
-          onClick={handleNext}
-          disabled={currentIndex >= songs.length - 1}
-        >
-          <SkipEndFill size={18} />
-        </button>
-      </div>
-
-      {/* Volume Control */}
-      <div className="d-flex align-items-center gap-2">
-        <i className="bi bi-volume-up"></i>
-        <input
-          type="range"
-          min="0"
-          max="1"
-          step="0.01"
-          value={volume}
-          onChange={(e) => {
-            const newVolume = parseFloat(e.target.value);
-            setVolume(newVolume);
-            if (audioRef.current) audioRef.current.volume = newVolume;
-          }}
-          className="form-range"
-          style={{ width: "100px", accentColor: "#1DB954" }}
-        />
-      </div>
-    </div>
-
-    {/* Progress Bar + Time */}
-    <div className="mt-2">
-      <div className="d-flex justify-content-between small text-white px-1">
-        <span>{formatTime(progress)}</span>
-        <span>{formatTime(duration)}</span>
-      </div>
-      <input
-        type="range"
-        className="form-range w-100"
-        min="0"
-        max={duration || 0}
-        value={progress}
-        onChange={handleSeek}
-        style={{
-          accentColor: "#1DB954", // Spotify green
-        }}
-      />
-    </div>
-  </div>
-)}
+      )}
 
     </div>
   );

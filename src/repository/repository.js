@@ -4,19 +4,18 @@ export const BaseURL="https://socilite-server-1.onrender.com"
 const axiosInstance = axios.create({
   baseURL: BaseURL,
   withCredentials: true,
-  timeout: 10000 
+  timeout: 10000 // 10s to avoid hanging requests
 });
-axiosInstance.interceptors.response.use(
-  (res) => res,
-  (err) => {
-    if (err.response?.status === 401 || err.response?.status === 403) {
-      localStorage.clear();
-      window.location.href = "/login";
+const checkConnection = async () => {
+    try {
+        const response = await axiosInstance.get('/connection');
+        console.log('Connection successful:', response.data);
+        
+    } catch (error) {
+        console.error('Connection failed:', error);
     }
-    return Promise.reject(err);
-  }
-);
-
+};
+checkConnection(); 
 
 export default axiosInstance;
 //

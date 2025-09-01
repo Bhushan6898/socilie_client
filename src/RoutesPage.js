@@ -34,7 +34,7 @@ function App() {
     const timeout = setTimeout(() => {
       setShowSidebarAndNavbar(isAuthenticated);
       setLoading(false);
-    }, 1000);
+    }, 3000);
 
     return () => clearTimeout(timeout);
   }, [isAuthenticated]);

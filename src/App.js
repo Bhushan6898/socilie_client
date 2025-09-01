@@ -1,35 +1,36 @@
-import React, { useEffect, useState } from 'react';
-import Navbar from './components/Navbar';
-import RoutesPage from './RoutesPage';
-import { useUser } from './hook/user/useUser';
-import { useSelector } from 'react-redux';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import { useAdmin } from './hook/admin/useAdmin';
+import React, { useEffect, useState } from "react";
+import Navbar from "./components/Navbar";
+import RoutesPage from "./RoutesPage";
+import { useUser } from "./hook/user/useUser";
+import { useSelector } from "react-redux";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 function App() {
-  const { getconnect,getuser } = useUser();
-  
+  const { getconnect, getuser } = useUser();
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 
   const [loading, setLoading] = useState(true);
-  const [showSidebarAndNavbar, setShowSidebarAndNavbar] = useState(false);
 
   useEffect(() => {
-    getconnect();
-    getuser();
-  
+    const init = async () => {
+      try {
+        await getconnect();   // Check backend/server connection
+        await getuser();      // Load user if available
+      } catch (err) {
+        console.error("Connection or user fetch failed:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-    const timeout = setTimeout(() => {
-      setShowSidebarAndNavbar(isAuthenticated);
-      setLoading(false);
-    }, 3000);
+    init();
+  }, []);
 
-    return () => clearTimeout(timeout);
-  }, [isAuthenticated]);
+
 
   return (
     <>
-      {showSidebarAndNavbar && <Navbar />}
+      {isAuthenticated && <Navbar />}
       <div className="container mt-4">
         <RoutesPage />
       </div>
