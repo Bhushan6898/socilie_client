@@ -19,3 +19,11 @@
 
 /* api key for music data fetch: 
 c6b1ae4326msh32419369928c436p13b71djsn3890b14be4c4 */
+@media (max-width: 576px) {
+  .song-title {
+    font-size: 0.8rem !important;
+  }
+  .song-artist {
+    font-size: 0.7rem !important;
+  }
+}

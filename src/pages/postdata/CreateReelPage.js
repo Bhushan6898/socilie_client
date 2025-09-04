@@ -174,9 +174,9 @@ const [selectedSong, setSelectedSong] = useState(null);
 
                                 {/* Step 3: Select Music */}
                                 {step === 3 && (
-                                    <Form.Group className="mb-4">
+                                    
                                         <MusicList onSelect={setSelectedSong} />
-                                    </Form.Group>
+                                   
                                 )}
 
                                 {/* Step 4: Caption + Preview */}

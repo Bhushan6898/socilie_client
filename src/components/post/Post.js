@@ -1,14 +1,12 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { ThreeDotsVertical } from 'react-bootstrap-icons';
-import { useSelector } from 'react-redux';
-import profilpicture from '../../asset/profile.png';
-import { OrbitProgress } from 'react-loading-indicators';
-import PostActions from './postaction';
-import MenuModal from './dropdownmenu.js';
-import SuggestUserHomepage from '../../pages/suggestforHomepage.js';
-import { useUser } from '../../hook/user/useUser.js';
-
+import React, { useEffect, useState, useRef } from "react";
+import { useNavigate } from "react-router-dom";
+import { ThreeDotsVertical } from "react-bootstrap-icons";
+import { useSelector } from "react-redux";
+import profilpicture from "../../asset/profile.png";
+import { OrbitProgress } from "react-loading-indicators";
+import PostActions from "./postaction";
+import MenuModal from "./dropdownmenu.js";
+import SuggestUserHomepage from "../../pages/suggestforHomepage.js";
 
 function Post() {
   const navigate = useNavigate();
@@ -23,8 +21,6 @@ function Post() {
 
   useEffect(() => {
     if (postData) setLoading(false);
-
-    
   }, [postData]);
 
   const handleProfileClick = (userid) => {
@@ -40,10 +36,32 @@ function Post() {
     const audio = audioRefs.current[idx];
     if (!audio) return;
 
+    const musicData = postData[idx].music;
+
     if (audio.paused) {
+      // pause all other audios
       Object.values(audioRefs.current).forEach((a) => {
         if (a && !a.paused) a.pause();
       });
+
+      // set start time if available
+      if (musicData?.clipStart !== undefined) {
+        audio.currentTime = musicData.clipStart;
+      }
+
+      // stop automatically at clipEnd
+      if (musicData?.clipEnd !== undefined) {
+        const end = musicData.clipEnd;
+        const onTimeUpdate = () => {
+          if (audio.currentTime >= end) {
+            audio.pause();
+            audio.removeEventListener("timeupdate", onTimeUpdate);
+            setPlayingIndex(null);
+          }
+        };
+        audio.addEventListener("timeupdate", onTimeUpdate);
+      }
+
       audio
         .play()
         .then(() => setPlayingIndex(idx))
@@ -56,10 +74,10 @@ function Post() {
 
   const formatPostDate = (dateString) => {
     const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', {
-      day: 'numeric',
-      month: 'short',
-      year: 'numeric',
+    return date.toLocaleDateString("en-US", {
+      day: "numeric",
+      month: "short",
+      year: "numeric",
     });
   };
 
@@ -70,8 +88,6 @@ function Post() {
       </div>
     );
   }
-
-   
 
   return (
     <div className="">
@@ -88,23 +104,23 @@ function Post() {
                 <div
                   className="d-flex align-items-center"
                   onClick={() => handleProfileClick(user._id)}
-                  style={{ cursor: 'pointer', marginLeft: '-15px' }}
+                  style={{ cursor: "pointer", marginLeft: "-15px" }}
                 >
                   <img
                     src={user.profilePicture || profilpicture}
                     alt={user.username}
                     className="rounded-circle border me-1"
-                    style={{ width: 36, height: 36, objectFit: 'cover' }}
+                    style={{ width: 36, height: 36, objectFit: "cover" }}
                   />
                   <strong
                     style={{
-                      fontSize: '13px',
-                      maxWidth: window.innerWidth <= 576 ? '90px' : '150px',
-                      overflow: 'hidden',
-                      textOverflow: 'ellipsis',
-                      whiteSpace: 'nowrap',
-                      display: 'inline-block',
-                      verticalAlign: 'middle',
+                      fontSize: "13px",
+                      maxWidth: window.innerWidth <= 576 ? "90px" : "150px",
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      whiteSpace: "nowrap",
+                      display: "inline-block",
+                      verticalAlign: "middle",
                     }}
                   >
                     {user.username}
@@ -113,7 +129,10 @@ function Post() {
 
                 <div className="d-flex align-items-center gap-2">
                   {currentUserId !== user._id && (
-                    <button className="btn btn-outline-primary btn-sm" type="button">
+                    <button
+                      className="btn btn-outline-primary btn-sm"
+                      type="button"
+                    >
                       Follow
                     </button>
                   )}
@@ -131,13 +150,17 @@ function Post() {
 
               {/* Media Section */}
               {mediaItems.length > 0 && (
-                <div id={`carousel-${idx}`} className="carousel slide" data-bs-ride="carousel">
-                  {post.music && (
+                <div
+                  id={`carousel-${idx}`}
+                  className="carousel slide"
+                  data-bs-ride="carousel"
+                >
+                  {post.music?.url && (
                     <audio
                       ref={(el) => {
                         audioRefs.current[idx] = el;
                       }}
-                      src={post.music}
+                      src={post.music.url}
                       preload="none"
                     />
                   )}
@@ -145,32 +168,36 @@ function Post() {
                   <div className="carousel-inner">
                     {mediaItems.map((item, i) => (
                       <div
-                        className={`carousel-item ${i === 0 ? 'active' : ''}`}
+                        className={`carousel-item ${i === 0 ? "active" : ""}`}
                         key={i}
-                        style={{ position: 'relative' }}
+                        style={{ position: "relative" }}
                       >
-                        {item.type === 'video' ? (
+                        {item.type === "video" ? (
                           <video className="d-block w-100" controls>
                             <source src={item.url} type="video/mp4" />
                             Your browser does not support the video tag.
                           </video>
                         ) : (
-                          <img src={item.url} className="d-block w-100" alt={`media-${i}`} />
+                          <img
+                            src={item.url}
+                            className="d-block w-100"
+                            alt={`media-${i}`}
+                          />
                         )}
 
                         {/* Music Button */}
-                        {post.music && (
+                        {post.music?.url && (
                           <button
                             type="button"
                             className="btn btn-light btn-sm"
                             style={{
-                              position: 'absolute',
-                              bottom: '10px',
-                              right: '10px',
-                              borderRadius: '100%',
-                              padding: '2px',
-                              fontSize: '14px',
-                              backgroundColor: 'rgba(255,255,255,0.8)',
+                              position: "absolute",
+                              bottom: "10px",
+                              right: "10px",
+                              borderRadius: "100%",
+                              padding: "2px",
+                              fontSize: "14px",
+                              backgroundColor: "rgba(255,255,255,0.8)",
                               zIndex: 5,
                             }}
                             onClick={(e) => handleToggleMusic(idx, e)}
@@ -182,8 +209,8 @@ function Post() {
                             <i
                               className={
                                 playingIndex === idx
-                                  ? 'bi bi-volume-up-fill'
-                                  : 'bi bi-volume-mute-fill'
+                                  ? "bi bi-volume-up-fill"
+                                  : "bi bi-volume-mute-fill"
                               }
                             />
                           </button>
@@ -214,10 +241,12 @@ function Post() {
               {/* Caption + Actions */}
               <div className="card-body">
                 <PostActions />
-                <p className="card-text" style={{ fontSize: '14px' }}>
+                <p className="card-text" style={{ fontSize: "14px" }}>
                   {post.caption}
                   <br />
-                  <small className="text-muted">{formatPostDate(post.createdAt)}</small>
+                  <small className="text-muted">
+                    {formatPostDate(post.createdAt)}
+                  </small>
                 </p>
               </div>
             </div>
