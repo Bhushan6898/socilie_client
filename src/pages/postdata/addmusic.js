@@ -215,14 +215,14 @@ export default function MusicPicker({ onSelect }) {
                   </button>
                 </div>
                 <div>
-                  <div className="fw-bold">{song.title}</div>
-                  <div className="text-muted" style={{ fontSize: "0.85rem" }}>
+                  <div className="fw-bold " style={{ fontSize: "10px" }}>{song.title}</div>
+                  <div className="text-muted" style={{ fontSize: "10px" }}>
                     {song.artist.name}
                   </div>
                 </div>
               </div>
               <button
-                className="btn btn-success btn-sm ml-2"
+                className="btn btn-success btn-sm ml-2 " style={{ fontSize: "10px" }}
                 onClick={() => handleSelect(song)}
               >
                 <i className={song ? "fas fa-bookmark" : "far fa-bookmark"}></i>
