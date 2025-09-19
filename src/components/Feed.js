@@ -5,11 +5,20 @@ import profilpicture from '../asset/profile.png';
 import { useNavigate } from 'react-router-dom';
 const stories = [
   { username: 'Bhushan Patil', img: 'https://res.cloudinary.com/dl35wuxhn/image/upload/v1751878744/user-images/user_652cb3593dbba5f70aa925df37650af581f20c63436823da4eb771d7e5878f00.jpg', status: 'Enjoying the sunshine!' },
-  { username: 'jane_smith', img: 'https://randomuser.me/api/portraits/women/2.jpg', status: 'Lovely day at the beach.' },
-  { username: 'alex', img: 'https://randomuser.me/api/portraits/men/3.jpg', status: 'Working hard!' },
-  { username: 'emma', img: 'https://randomuser.me/api/portraits/women/4.jpg', status: 'Coffee time.' },
-  { username: 'mike', img: 'https://randomuser.me/api/portraits/men/5.jpg', status: 'Gym session.' },
-  { username: 'lucy', img: 'https://randomuser.me/api/portraits/women/6.jpg', status: 'Traveling!' }
+  { username: 'arjun_kumar', img: 'https://images.unsplash.com/photo-1583394838336-acd977736f90?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60', status: 'Exploring new tech today!' },
+  { username: 'priya_sharma', img: 'https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60', status: 'Evening chai vibes.' },
+  { username: 'ananya_patil', img: 'https://images.unsplash.com/photo-1542596594-649edbc13630?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60', status: 'Learning React with fun.' },
+  { username: 'rohit_singh', img: 'https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60', status: 'Morning jog completed.' },
+  { username: 'isha_gupta', img: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60', status: 'Weekend shopping spree!' },
+  { username: 'manish_yadav', img: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60', status: 'Long drive ahead 🚗' },
+  { username: 'sneha_reddy', img: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60', status: 'Cooking something special.' },
+  { username: 'vivek_dubey', img: 'https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60', status: 'Football practice time.' },
+  { username: 'aarti_menon', img: 'https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60', status: 'Yoga for peace 🧘‍♀️' },
+  { username: 'sanjay_pandey', img: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60', status: 'Watching latest Bollywood movie.' },
+  { username: 'divya_nair', img: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60', status: 'Reading a new novel 📖' },
+  { username: 'akash_mehta', img: 'https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60', status: 'Workout never stops.' },
+  { username: 'kavya_iyer', img: 'https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=60', status: 'Exploring Goa beaches 🌊' }
+ 
 ];
 
 function Feed() {
