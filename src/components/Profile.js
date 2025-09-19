@@ -123,7 +123,7 @@ function Profile() {
   };
 
   const allPosts = (postData && postData.length > 0) ? postData : dummyPosts;
-  console.log("play", play);
+
 
 
 
@@ -336,13 +336,13 @@ function Profile() {
                   {/* --- Card Header with Profile + Location --- */}
                   <div className="card-header d-flex align-items-center bg-dark border-0">
                     <img
-                      src={post.user?.profilePic || "/default-avatar.png"}
+                      src={userData.profilepic}
                       alt="profile"
                       className="rounded-circle me-2"
                       style={{ width: "40px", height: "40px", objectFit: "cover" }}
                     />
                     <div>
-                      <strong>{post.user?.username || "username"}</strong>
+                      <strong>{userData.username}</strong>
                       <div className="text-muted small">
                         {post.location || "Unknown location"}
                       </div>
