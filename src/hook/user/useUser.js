@@ -105,7 +105,7 @@ export const useUser = () => {
                 const response = await UserRepository.UserData(); 
                 if (response.status === 200) {
                     const data= response.data.user;
-                  console.log(data);
+                  
                   dispatch(setUserdata({ data }));
                     
                     setUserdatas(response.data.user)
@@ -189,7 +189,6 @@ export const useUser = () => {
                 const response = await UserRepository.GetpostData(); 
                 if (response.status === 200) {
                     const data= response.data.posts;
-                  console.log(data);
                    dispatch(setPostdata({ data }));
                     
                     
