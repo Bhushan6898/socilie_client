@@ -1,6 +1,6 @@
 import axios from "axios";
-export const BaseURL="http://localhost:3001"
-//export const BaseURL="https://socilite-server-1.onrender.com"
+//export const BaseURL="http://localhost:3001"
+export const BaseURL="https://socilite-server-1.onrender.com"
 const axiosInstance = axios.create({
   baseURL: BaseURL,
   withCredentials: true
