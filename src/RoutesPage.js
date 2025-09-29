@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { OrbitProgress } from 'react-loading-indicators';
+import { Atom, OrbitProgress } from 'react-loading-indicators';
 
 // Dummy components (replace with actual imports if available)
 import Feed from './components/Feed';
@@ -35,7 +35,7 @@ function App() {
     const timeout = setTimeout(() => {
       setShowSidebarAndNavbar(isAuthenticated);
       setLoading(false);
-    }, 3000);
+    }, 300);
 
     return () => clearTimeout(timeout);
   }, [isAuthenticated]);
@@ -46,9 +46,10 @@ function App() {
 
   if (loading) {
     return (
-      <div className="d-flex justify-content-center align-items-center vh-100">
-        <OrbitProgress color="#32cd32" size="medium" text="Loading..." textColor="" />
-      </div>
+       <div className="d-flex flex-column justify-content-center align-items-center vh-100 bg-dark text-white">
+      <Atom color="#32cd32" size="medium" text="Loading" textColor="" />
+      <p className="mt-3">Opening Socialite app for you...</p>
+    </div>
     );
   }
 

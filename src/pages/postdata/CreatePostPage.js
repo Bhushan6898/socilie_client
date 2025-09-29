@@ -3,8 +3,9 @@ import { Form, Button, Container, Row, Col, Card } from "react-bootstrap";
 import { useUser } from "../../hook/user/useUser.js";
 import dummyLocations from "../../pages/location.json";
 import MusicList from "./addmusic.js";
-import { ArrowRepeat } from "react-bootstrap-icons";
-
+import { ArrowRepeat } from "react-bootstrap-icons"
+import { Atom, TrophySpin } from "react-loading-indicators";
+import { useNavigate } from "react-router-dom";
 const CreatePostPage = () => {
   const [files, setFiles] = useState([]);
   const [caption, setCaption] = useState("");
@@ -13,7 +14,8 @@ const CreatePostPage = () => {
   const [locationSuggestions, setLocationSuggestions] = useState([]);
   const [step, setStep] = useState(0); // Step 0 = Upload
   const [selectedSong, setSelectedSong] = useState(null);
-
+  const [showloading, setShowloadings] = useState(false);
+  const navigate = useNavigate();
   const fileInputRef = useRef(null);
   const audioRef = useRef(null); // ✅ Fix: add audio ref here
   const { createPost } = useUser();
@@ -22,19 +24,19 @@ const CreatePostPage = () => {
     if (fileInputRef.current) {
       fileInputRef.current.click();
     }
-    
+
 
   }, []);
   useEffect(() => {
-  if (selectedSong) {
-    // store only url + clip info, not the whole object
-    setMusic({
-      url: selectedSong.url,
-      clipStart: selectedSong.clipStart,
-      clipEnd: selectedSong.clipEnd,
-    });
-  }
-}, [selectedSong]);
+    if (selectedSong) {
+
+      setMusic({
+        url: selectedSong.url,
+        clipStart: selectedSong.clipStart,
+        clipEnd: selectedSong.clipEnd,
+      });
+    }
+  }, [selectedSong]);
 
   const handleFileChange = (e) => {
     setFiles([...e.target.files]);
@@ -52,21 +54,36 @@ const CreatePostPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setShowloadings(true);
 
-    const formData = new FormData();
-    files.forEach((file) => formData.append("files", file));
-    formData.append("caption", caption);
-    formData.append("location", location);
-   formData.append("music", JSON.stringify(music));
 
-    formData.append("type", "post");
+    try {
+      const formData = new FormData();
+      files.forEach((file) => formData.append("files", file));
+      formData.append("caption", caption);
+      formData.append("location", location);
+      formData.append("music", JSON.stringify(music));
+      formData.append("type", "post");
+      const res = await createPost(formData);
+      if (res.status === 200) {
+        navigate("/")
+      }
 
-     await createPost(formData);
+    } catch (err) {
+      console.error("Error creating post:", err);
+    } finally {
+      setShowloadings(false);
+    }
   };
-  console.log(selectedSong);
 
   return (
     <Container className="py-4" style={{ paddingBottom: "80px" }}>
+      {/* {
+      showloading && (
+        <div className="d-flex flex-column justify-content-center align-items-center vh-100 position-fixed top-0 start-0 w-100 h-100 bg-white" style={{ zIndex: 1050 }}>
+          <TrophySpin color="#cc9131" size="medium" text="" textColor="#NaNNaNNaN" />
+          </div>
+)} */}
       <h4>Create a Post</h4>
       <Row className="justify-content-center">
         <Col xs={12} md={12}>
@@ -226,7 +243,7 @@ const CreatePostPage = () => {
                             }
                           }}
                         >
-                           ⏹
+                          ⏹
                         </button>
                       </div>
 
@@ -290,7 +307,7 @@ const CreatePostPage = () => {
                           setCurrentTime(0);
                         }}
                       >
-                        ❌ 
+                        ❌
                       </button>
                     </div>
                   )}
