@@ -1,16 +1,16 @@
-import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import logo from '../asset/logo.png';
-import { useUser } from '../hook/user/useUser';
-import { OrbitProgress } from 'react-loading-indicators';
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import logo from "../asset/logo.png";
+import { useUser } from "../hook/user/useUser";
+import { Commet } from "react-loading-indicators";
 
 function Login() {
   const { getlogin, getconnect } = useUser();
-  const [form, setForm] = useState({ email: '', password: '' });
+  const [form, setForm] = useState({ email: "", password: "" });
   const [loading, setLoading] = useState(false);
-  const [isConnected, setIsConnected] = useState(false); // 🟢 New state to track connection status
+  const [isConnected, setIsConnected] = useState(false);
 
-  const handleChange = e => {
+  const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
@@ -18,19 +18,17 @@ function Login() {
     const checkConnection = async () => {
       try {
         const response = await getconnect();
-        console.log('Connection successful: ', response);
         if (response?.status === 200) {
-          setIsConnected(true); // ✅ Set connection as successful
+          setIsConnected(true);
         }
       } catch (error) {
-        console.error('Connection failed:', error);
+        console.error("Connection failed:", error);
       }
     };
     checkConnection();
   }, []);
-console.log(isConnected);
 
-  const handleSubmit = async e => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     await getlogin(form);
@@ -39,35 +37,46 @@ console.log(isConnected);
 
   if (loading) {
     return (
-      <div className="d-flex justify-content-center align-items-center vh-100">
-        <OrbitProgress color="#32cd32" size="medium" text="Loading..." />
+      <div className="d-flex flex-column justify-content-center align-items-center vh-100 bg-dark text-white text-center p-3">
+        <Commet color="#32cd32" size="medium" />
+        <h6 className="mt-3">Logging into Socilite...</h6>
       </div>
     );
   }
 
   return (
-    <div className="d-flex justify-content-center align-items-center bg-light" style={{ minHeight: '80vh' }}>
-      <div className="card p-4" style={{ maxWidth: 350, width: '100%' }}>
+    <div
+      className="d-flex justify-content-center align-items-center px-3"
+      style={{
+        minHeight: "100vh",
+        background: "linear-gradient(135deg, #eab566f5 0%, #764ba2 100%)",
+      }}
+    >
+      <div
+        className="card p-4 shadow-lg w-100"
+        style={{
+          maxWidth: "400px",
+          borderRadius: "20px",
+          backdropFilter: "blur(12px)",
+          background: "rgba(255, 255, 255, 0.95)",
+        }}
+      >
+        {/* Logo & title */}
         <div className="text-center mb-4">
-          <img src={logo} alt="Instagram" width="48" style={{ borderRadius: "10px" }} />
-          <h4 className="mt-2 mb-0 fw-bold d-flex align-items-center justify-content-center gap-2">
-            SOCILITE
-            {isConnected && (
-              <span
-                style={{
-                  display: 'inline-block',
-                  width: 5,
-                  height: 5,
-                  backgroundColor: 'green',
-                  borderRadius: '50%',
-                }}
-              ></span>
-            )}
-          </h4>
+          <img
+            src={logo}
+            alt="Socilite"
+            className="img-fluid"
+            style={{ width: "60px", borderRadius: "12px" }}
+          />
+          <h3 className="mt-3 fw-bold">Socilite</h3>
+          <p className="text-muted small">Connect & share with the world 🌍</p>
         </div>
+
+        {/* Login form */}
         <form onSubmit={handleSubmit}>
           <input
-            className="form-control mb-2"
+            className="form-control mb-3 rounded-pill p-2"
             type="email"
             name="email"
             placeholder="Email"
@@ -76,7 +85,7 @@ console.log(isConnected);
             required
           />
           <input
-            className="form-control mb-3"
+            className="form-control mb-3 rounded-pill p-2"
             type="password"
             name="password"
             placeholder="Password"
@@ -84,12 +93,34 @@ console.log(isConnected);
             onChange={handleChange}
             required
           />
-          <button type="submit" className="btn btn-primary w-100 mb-2">Log In</button>
+          <button
+            type="submit"
+            className="btn w-100 py-2 rounded-pill fw-bold"
+            style={{
+              background: "linear-gradient(90deg, #667eea 0%, #764ba2 100%)",
+              border: "none",
+              color: "#fff",
+            }}
+          >
+            Log In
+          </button>
         </form>
-        <div className="text-center mt-3">
-          <span>Don't have an account? </span>
-          <Link to="/register">Sign up</Link>
+
+        {/* Divider */}
+        <div className="d-flex align-items-center my-3">
+          <hr className="flex-grow-1" />
+          <span className="px-2 text-muted">or</span>
+          <hr className="flex-grow-1" />
         </div>
+
+        {/* Footer */}
+        <div className="text-center">
+          <span>Don’t have an account? </span>
+          <Link to="/register" className="fw-bold text-decoration-none">
+            Sign up
+          </Link>
+        </div>
+
       </div>
     </div>
   );
