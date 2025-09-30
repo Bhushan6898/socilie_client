@@ -9,7 +9,7 @@ import Profile from './components/profile/Profile.js';
 import Login from './components/Login';
 import Register from './components/Register';
 import Notifications from './pages/Notifications';
-import Messages from './pages/Messages';
+import Messages from './pages/messege/Messages.js';
 import Page from './pages/postdata/index.js';
 import PostPage from './pages/postdata/CreatePostPage.js';
 import ReelPage from './pages/postdata/CreateReelPage.js';
