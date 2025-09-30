@@ -5,7 +5,7 @@ import { Atom, OrbitProgress } from 'react-loading-indicators';
 
 // Dummy components (replace with actual imports if available)
 import Feed from './components/Feed';
-import Profile from './components/Profile';
+import Profile from './components/profile/Profile.js';
 import Login from './components/Login';
 import Register from './components/Register';
 import Notifications from './pages/Notifications';

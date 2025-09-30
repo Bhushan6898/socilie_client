@@ -12,10 +12,11 @@ function App() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+      getuser();  
     const init = async () => {
       try {
         await getconnect();   // Check backend/server connection
-        await getuser();      // Load user if available
+           // Load user if available
       } catch (err) {
         console.error("Connection or user fetch failed:", err);
       } finally {
