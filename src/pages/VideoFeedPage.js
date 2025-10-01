@@ -1,142 +1,39 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useRef, useEffect, useState } from "react";
+import { FaHeart, FaCommentDots, FaShare, FaVolumeUp, FaVolumeMute } from "react-icons/fa";
 
+import reel1 from "../asset/reel/reel1.mp4";
+import reel2 from "../asset/reel/reel2.mp4";
+import reel3 from "../asset/reel/reel3.mp4";
+import reel4 from "../asset/reel/reel4.mp4";
+import reel5 from "../asset/reel/reel5.mp4";
 
-const videoPosts = [
-  {
-    username: 'cartoon_hero1',
-    profileImg: 'https://randomuser.me/api/portraits/men/11.jpg',
-    type: 'video',
-    videoUrl: 'https://samplelib.com/lib/preview/mp4/sample-5s.mp4',
-    caption: 'Epic cartoon adventure!'
-  },
-  {
-    username: 'anime_star2',
-    profileImg: 'https://randomuser.me/api/portraits/women/22.jpg',
-    type: 'video',
-    videoUrl: 'https://samplelib.com/lib/preview/mp4/sample-10s.mp4',
-    caption: 'My new anime intro!'
-  },
-  {
-    username: 'funny_doggo',
-    profileImg: 'https://randomuser.me/api/portraits/men/33.jpg',
-    type: 'video',
-    videoUrl: 'https://media.w3.org/2010/05/sintel/trailer.mp4',
-    caption: 'Dog animation 😂'
-  },
-  {
-    username: 'pixie_world',
-    profileImg: 'https://randomuser.me/api/portraits/women/44.jpg',
-    type: 'video',
-    videoUrl: 'https://media.w3.org/2010/05/bunny/trailer.mp4',
-    caption: 'Fairy tale in motion ✨'
-  },
-  {
-    username: 'toon_racer',
-    profileImg: 'https://randomuser.me/api/portraits/men/55.jpg',
-    type: 'video',
-    videoUrl: 'https://media.w3.org/2010/05/video/movie_300.mp4',
-    caption: 'Race to the cartoon finish line 🏁'
-  },
-  {
-    username: 'dragon_kid',
-    profileImg: 'https://randomuser.me/api/portraits/women/66.jpg',
-    type: 'video',
-    videoUrl: 'https://media.w3.org/2010/05/video/movie_700.mp4',
-    caption: 'Baby dragon flying 🔥'
-  },
-  {
-    username: 'bubble_boy',
-    profileImg: 'https://randomuser.me/api/portraits/men/77.jpg',
-    type: 'video',
-    videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
-    caption: 'Floating through bubble town'
-  },
-  {
-    username: 'zoo_kids',
-    profileImg: 'https://randomuser.me/api/portraits/women/88.jpg',
-    type: 'video',
-    videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4',
-    caption: 'Zoo animal adventures 🐘'
-  },
-  {
-    username: 'magic_fox',
-    profileImg: 'https://randomuser.me/api/portraits/men/99.jpg',
-    type: 'video',
-    videoUrl: 'https://media.w3.org/2010/05/video/movie_1080.mp4',
-    caption: 'Mystical fox journey'
-  },
-  {
-    username: 'tiny_toon',
-    profileImg: 'https://randomuser.me/api/portraits/women/91.jpg',
-    type: 'video',
-    videoUrl: 'https://media.w3.org/2010/05/bunny/movie.mp4',
-    caption: 'Toon time 🐰🎬'
-  },
-  {
-    username: 'crazy_penguin',
-    profileImg: 'https://randomuser.me/api/portraits/men/92.jpg',
-    type: 'video',
-    videoUrl: 'https://media.w3.org/2010/05/sintel/movie.mp4',
-    caption: 'Chillin\' with penguins 🐧'
-  },
-  {
-    username: 'robot_march',
-    profileImg: 'https://randomuser.me/api/portraits/women/93.jpg',
-    type: 'video',
-    videoUrl: 'https://www.w3schools.com/html/movie.mp4',
-    caption: 'March of the robots 🤖'
-  },
-  {
-    username: 'fluffy_cloud',
-    profileImg: 'https://randomuser.me/api/portraits/men/94.jpg',
-    type: 'video',
-    videoUrl: 'https://samplelib.com/lib/preview/mp4/sample-30s.mp4',
-    caption: 'Cloud town weather cartoon ☁️'
-  },
-  {
-    username: 'alien_kid',
-    profileImg: 'https://randomuser.me/api/portraits/women/95.jpg',
-    type: 'video',
-    videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4',
-    caption: 'Alien meets earth kids 👽'
-  },
-  {
-    username: 'super_cat',
-    profileImg: 'https://randomuser.me/api/portraits/men/96.jpg',
-    type: 'video',
-    videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4',
-    caption: 'The purr-fect hero 🐱💥'
-  }
+const reels = [
+  { id: 1, video: reel1, username: "user_one", caption: "Exploring Jalgaon 🌆🔥" },
+  { id: 2, video: reel2, username: "user_two", caption: "Evening vibes 😍🎶" },
+  { id: 3, video: reel3, username: "user_three", caption: "Work hard, chill harder 💻☕" },
+  { id: 4, video: reel4, username: "user_four", caption: "Sunset vibes 🌅" },
+  { id: 5, video: reel5, username: "user_five", caption: "Coffee break ☕" },
 ];
 
-
-
-function VideoFeedPage() {
+function ReelPage() {
   const videoRefs = useRef([]);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [muted, setMuted] = useState(true);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          const video = entry.target;
+          const index = Number(entry.target.dataset.index);
           if (entry.isIntersecting) {
-            // Pause all videos first
-            videoRefs.current.forEach((vid) => {
-              if (vid && vid !== video) {
-                vid.pause();
-              }
-            });
-            video.play().catch((e) => {
-              console.log('Autoplay error:', e);
-            });
+            setCurrentIndex(index);
+            entry.target.play().catch(() => {});
           } else {
-            video.pause();
+            entry.target.pause();
           }
         });
       },
-      {
-        threshold: 0.7, // 70% of video must be visible
-      }
+      { threshold: 0.7 }
     );
 
     videoRefs.current.forEach((video) => {
@@ -146,40 +43,122 @@ function VideoFeedPage() {
     return () => observer.disconnect();
   }, []);
 
+  const toggleMute = () => {
+    setMuted(!muted);
+    videoRefs.current.forEach((video, index) => {
+      if (video && index === currentIndex) video.muted = !video.muted;
+    });
+  };
+
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-      
-      {videoPosts.map((video, i) => (
-        <div key={i} style={{ width: '100%', maxHeight: '100vh', overflow: 'hidden' }}>
-          <div style={{ display: 'flex', alignItems: 'center', padding: '10px' }}>
-            <img
-              src={video.profileImg}
-              alt="Profile"
-              style={{ width: '40px', height: '40px', borderRadius: '50%', marginRight: '10px' }}
-            />
-            <strong>{video.username}</strong>
-          </div>
+    <div
+      style={{
+        width: "100%",
+        height: "100vh",
+        background: "black",
+        overflowY: "scroll",
+        scrollSnapType: "y mandatory",
+      }}
+    >
+      {reels.map((reel, index) => (
+        <div
+          key={reel.id}
+          style={{
+            width: "100%",
+            height: "100vh",
+            position: "relative",
+            scrollSnapAlign: "center",
+          }}
+        >
+          {/* Video */}
           <video
-            ref={(el) => (videoRefs.current[i] = el)}
-            src={video.videoUrl}
-            controls={false}
-            muted={false}
-            autoPlay
+            ref={(el) => (videoRefs.current[index] = el)}
+            data-index={index}
+            src={reel.video}
+            muted={muted}
+            loop
             playsInline
             style={{
-              width: '100%',
-              height: '100vh',
-              objectFit: 'cover',
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
             }}
           />
-           <div style={{ padding: '10px' }}>
-            <p>{video.caption}</p>
+
+          {/* Centered Mute Button for Current Reel */}
+          {index === currentIndex && (
+            <div
+              onClick={toggleMute}
+              style={{
+                position: "absolute",
+                top: "50%",
+                left: "50%",
+                transform: "translate(-50%, -50%)",
+                color: "white",
+                fontSize: "10px",
+                cursor: "pointer",
+                backgroundColor: "rgba(0,0,0,0.4)",
+                padding: "12px",
+                borderRadius: "50%",
+                zIndex: 10,
+              }}
+            >
+              {muted ? <FaVolumeMute /> : <FaVolumeUp />}
+            </div>
+          )}
+
+          {/* Username + Caption */}
+          <div
+            style={{
+              position: "absolute",
+              bottom: "80px",
+              left: "10px",
+              color: "white",
+              maxWidth: "80%",
+            }}
+          >
+            <div style={{ display: "flex", alignItems: "center", marginBottom: "8px" }}>
+              <img
+                src={`https://randomuser.me/api/portraits/men/${index + 10}.jpg`}
+                alt="profile"
+                style={{ width: "40px", height: "40px", borderRadius: "50%", marginRight: "10px" }}
+              />
+              <strong>@{reel.username}</strong>
+            </div>
+            <p>{reel.caption}</p>
           </div>
-          
+
+          {/* Right side buttons */}
+          <div
+            style={{
+              position: "absolute",
+              right: "15px",
+              bottom: "100px",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              gap: "20px",
+              color: "white",
+              fontSize: "24px",
+            }}
+          >
+            <div style={{ textAlign: "center" }}>
+              <FaHeart />
+              <p style={{ fontSize: "12px", marginTop: "4px" }}>120</p>
+            </div>
+            <div style={{ textAlign: "center" }}>
+              <FaCommentDots />
+              <p style={{ fontSize: "12px", marginTop: "4px" }}>45</p>
+            </div>
+            <div style={{ textAlign: "center" }}>
+              <FaShare />
+              <p style={{ fontSize: "12px", marginTop: "4px" }}>10</p>
+            </div>
+          </div>
         </div>
       ))}
     </div>
   );
 }
 
-export default VideoFeedPage;
+export default ReelPage;
