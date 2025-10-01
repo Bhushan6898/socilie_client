@@ -89,6 +89,7 @@ function Post() {
     );
   }
 
+
   return (
     <div className="">
       {postData.map((post, idx) => {

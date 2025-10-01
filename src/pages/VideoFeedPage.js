@@ -6,13 +6,19 @@ import reel2 from "../asset/reel/reel2.mp4";
 import reel3 from "../asset/reel/reel3.mp4";
 import reel4 from "../asset/reel/reel4.mp4";
 import reel5 from "../asset/reel/reel5.mp4";
+import reel6 from "../asset/reel/reel6.mp4";
+import reel7 from "../asset/reel/reel7.mp4";
+import reel8 from "../asset/reel/reel8.mp4";
 
 const reels = [
-  { id: 1, video: reel1, username: "user_one", caption: "Exploring Jalgaon 🌆🔥" },
-  { id: 2, video: reel2, username: "user_two", caption: "Evening vibes 😍🎶" },
-  { id: 3, video: reel3, username: "user_three", caption: "Work hard, chill harder 💻☕" },
-  { id: 4, video: reel4, username: "user_four", caption: "Sunset vibes 🌅" },
-  { id: 5, video: reel5, username: "user_five", caption: "Coffee break ☕" },
+  { id: 1, video: reel1, userprofile: "https://res.cloudinary.com/dl35wuxhn/image/upload/v1757006094/socilite-user/product_af4563692ae0e6551d6ee0948ba50498db48b869d584ad651331388e4477a326.jpg", username: "user_one", caption: "Exploring Jalgaon 🌆🔥" },
+  { id: 2, video: reel2, userprofile: "https://res.cloudinary.com/dl35wuxhn/image/upload/v1756469770/socilite-user/product_195f28ea6d7618815fa7870a2829a5a8fc3663a73b1dc4cf7989505753c1f167.jpg", username: "user_two", caption: "Evening vibes 😍🎶" },
+  { id: 3, video: reel3, userprofile: "https://res.cloudinary.com/dl35wuxhn/image/upload/v1754468104/socilite-user/product_e2ce44f5503387abc81e0bfb5c29c6bb7b2a5ef6a22324c33f8004cf729cb4bf.jpg", username: "user_three", caption: "Work hard, chill harder 💻☕" },
+  { id: 4, video: reel4, userprofile: "https://res.cloudinary.com/dl35wuxhn/image/upload/v1756469770/socilite-user/product_195f28ea6d7618815fa7870a2829a5a8fc3663a73b1dc4cf7989505753c1f167.jpg", username: "user_four", caption: "Sunset vibes 🌅" },
+  { id: 5, video: reel5, userprofile: "https://res.cloudinary.com/dl35wuxhn/image/upload/v1757006094/socilite-user/product_af4563692ae0e6551d6ee0948ba50498db48b869d584ad651331388e4477a326.jpg", username: "user_five", caption: "Coffee break ☕" },
+  { id: 6, video: reel6, userprofile: "https://res.cloudinary.com/dl35wuxhn/image/upload/v1754468104/socilite-user/product_e2ce44f5503387abc81e0bfb5c29c6bb7b2a5ef6a22324c33f8004cf729cb4bf.jpg", username: "user_three", caption: "Work hard, chill harder 💻☕" },
+  { id: 7, video: reel7, userprofile: "https://res.cloudinary.com/dl35wuxhn/image/upload/v1756469770/socilite-user/product_195f28ea6d7618815fa7870a2829a5a8fc3663a73b1dc4cf7989505753c1f167.jpg", username: "user_four", caption: "Sunset vibes 🌅" },
+  { id: 8, video: reel8, userprofile: "https://res.cloudinary.com/dl35wuxhn/image/upload/v1757006094/socilite-user/product_af4563692ae0e6551d6ee0948ba50498db48b869d584ad651331388e4477a326.jpg", username: "user_five", caption: "Coffee break ☕" },
 ];
 
 function ReelPage() {
@@ -27,7 +33,7 @@ function ReelPage() {
           const index = Number(entry.target.dataset.index);
           if (entry.isIntersecting) {
             setCurrentIndex(index);
-            entry.target.play().catch(() => {});
+            entry.target.play().catch(() => { });
           } else {
             entry.target.pause();
           }
@@ -85,7 +91,7 @@ function ReelPage() {
             }}
           />
 
-          {/* Centered Mute Button for Current Reel */}
+          {/* Centered Mute Button */}
           {index === currentIndex && (
             <div
               onClick={toggleMute}
@@ -95,12 +101,13 @@ function ReelPage() {
                 left: "50%",
                 transform: "translate(-50%, -50%)",
                 color: "white",
-                fontSize: "10px",
+                fontSize: "13px",
                 cursor: "pointer",
                 backgroundColor: "rgba(0,0,0,0.4)",
-                padding: "12px",
+                padding: "16px",
                 borderRadius: "50%",
                 zIndex: 10,
+                transition: "opacity 0.3s",
               }}
             >
               {muted ? <FaVolumeMute /> : <FaVolumeUp />}
@@ -108,25 +115,50 @@ function ReelPage() {
           )}
 
           {/* Username + Caption */}
-          <div
-            style={{
-              position: "absolute",
-              bottom: "80px",
-              left: "10px",
-              color: "white",
-              maxWidth: "80%",
-            }}
-          >
-            <div style={{ display: "flex", alignItems: "center", marginBottom: "8px" }}>
-              <img
-                src={`https://randomuser.me/api/portraits/men/${index + 10}.jpg`}
-                alt="profile"
-                style={{ width: "40px", height: "40px", borderRadius: "50%", marginRight: "10px" }}
-              />
-              <strong>@{reel.username}</strong>
-            </div>
-            <p>{reel.caption}</p>
-          </div>
+         {/* Username + Caption */}
+{/* Username + Caption */}
+<div
+  style={{
+    position: "absolute",
+    bottom: "80px", // 40px above the bottom
+    left: "10px",
+    color: "white",
+    maxWidth: "70%",
+    zIndex: 5,
+  }}
+>
+  {/* Profile section */}
+  <div style={{ display: "flex", alignItems: "center", marginBottom: "80px" }}>
+    <img
+      src={reel.userprofile}
+      alt="profile"
+      style={{
+        width: "36px",
+        height: "36px",
+        borderRadius: "50%",
+        marginRight: "8px",
+        objectFit: "cover",
+      }}
+    />
+    <strong style={{ fontSize: "14px" }}>@{reel.username}</strong>
+  </div>
+
+  {/* Caption below profile */}
+  <p
+    style={{
+      margin: 0,
+      fontSize: "13px",
+      lineHeight: "16px",
+      wordBreak: "break-word",
+      marginTop: "40px",
+    }}
+  >
+   
+  </p>
+</div>
+
+
+
 
           {/* Right side buttons */}
           <div
