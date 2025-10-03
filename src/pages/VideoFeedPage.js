@@ -11,14 +11,14 @@ import reel7 from "../asset/reel/reel7.mp4";
 import reel8 from "../asset/reel/reel8.mp4";
 
 const reels = [
-  { id: 1, video: reel1, userprofile: "https://res.cloudinary.com/dl35wuxhn/image/upload/v1757006094/socilite-user/product_af4563692ae0e6551d6ee0948ba50498db48b869d584ad651331388e4477a326.jpg", username: "user_one", caption: "Exploring Jalgaon 🌆🔥" },
-  { id: 2, video: reel2, userprofile: "https://res.cloudinary.com/dl35wuxhn/image/upload/v1756469770/socilite-user/product_195f28ea6d7618815fa7870a2829a5a8fc3663a73b1dc4cf7989505753c1f167.jpg", username: "user_two", caption: "Evening vibes 😍🎶" },
-  { id: 3, video: reel3, userprofile: "https://res.cloudinary.com/dl35wuxhn/image/upload/v1754468104/socilite-user/product_e2ce44f5503387abc81e0bfb5c29c6bb7b2a5ef6a22324c33f8004cf729cb4bf.jpg", username: "user_three", caption: "Work hard, chill harder 💻☕" },
-  { id: 4, video: reel4, userprofile: "https://res.cloudinary.com/dl35wuxhn/image/upload/v1756469770/socilite-user/product_195f28ea6d7618815fa7870a2829a5a8fc3663a73b1dc4cf7989505753c1f167.jpg", username: "user_four", caption: "Sunset vibes 🌅" },
-  { id: 5, video: reel5, userprofile: "https://res.cloudinary.com/dl35wuxhn/image/upload/v1757006094/socilite-user/product_af4563692ae0e6551d6ee0948ba50498db48b869d584ad651331388e4477a326.jpg", username: "user_five", caption: "Coffee break ☕" },
-  { id: 6, video: reel6, userprofile: "https://res.cloudinary.com/dl35wuxhn/image/upload/v1754468104/socilite-user/product_e2ce44f5503387abc81e0bfb5c29c6bb7b2a5ef6a22324c33f8004cf729cb4bf.jpg", username: "user_three", caption: "Work hard, chill harder 💻☕" },
-  { id: 7, video: reel7, userprofile: "https://res.cloudinary.com/dl35wuxhn/image/upload/v1756469770/socilite-user/product_195f28ea6d7618815fa7870a2829a5a8fc3663a73b1dc4cf7989505753c1f167.jpg", username: "user_four", caption: "Sunset vibes 🌅" },
-  { id: 8, video: reel8, userprofile: "https://res.cloudinary.com/dl35wuxhn/image/upload/v1757006094/socilite-user/product_af4563692ae0e6551d6ee0948ba50498db48b869d584ad651331388e4477a326.jpg", username: "user_five", caption: "Coffee break ☕" },
+  { id: 1, video: reel1, userprofile: "https://res.cloudinary.com/dl35wuxhn/image/upload/v1757006094/socilite-user/product_af4563692ae0e6551d6ee0948ba50498db48b869d584ad651331388e4477a326.jpg", username: "Bhushan Patil", caption: "Exploring Jalgaon 🌆🔥" },
+  { id: 2, video: reel2, userprofile: "https://res.cloudinary.com/dl35wuxhn/image/upload/v1756469770/socilite-user/product_195f28ea6d7618815fa7870a2829a5a8fc3663a73b1dc4cf7989505753c1f167.jpg", username: "ram@patil12", caption: "Evening vibes 😍🎶" },
+  { id: 3, video: reel3, userprofile: "https://res.cloudinary.com/dl35wuxhn/image/upload/v1754468104/socilite-user/product_e2ce44f5503387abc81e0bfb5c29c6bb7b2a5ef6a22324c33f8004cf729cb4bf.jpg", username: "mpatil@123", caption: "Work hard, chill harder 💻☕" },
+  { id: 4, video: reel4, userprofile: "https://res.cloudinary.com/dl35wuxhn/image/upload/v1756469770/socilite-user/product_195f28ea6d7618815fa7870a2829a5a8fc3663a73b1dc4cf7989505753c1f167.jpg", username: "Bhushan Patil", caption: "Sunset vibes 🌅" },
+  { id: 5, video: reel5, userprofile: "https://res.cloudinary.com/dl35wuxhn/image/upload/v1757006094/socilite-user/product_af4563692ae0e6551d6ee0948ba50498db48b869d584ad651331388e4477a326.jpg", username: "mpatil@01", caption: "Coffee break ☕" },
+  { id: 6, video: reel6, userprofile: "https://res.cloudinary.com/dl35wuxhn/image/upload/v1754468104/socilite-user/product_e2ce44f5503387abc81e0bfb5c29c6bb7b2a5ef6a22324c33f8004cf729cb4bf.jpg", username: "ram@patil12", caption: "Work hard, chill harder 💻☕" },
+  { id: 7, video: reel7, userprofile: "https://res.cloudinary.com/dl35wuxhn/image/upload/v1756469770/socilite-user/product_195f28ea6d7618815fa7870a2829a5a8fc3663a73b1dc4cf7989505753c1f167.jpg", username: "ram@patil12", caption: "Sunset vibes 🌅" },
+  { id: 8, video: reel8, userprofile: "https://res.cloudinary.com/dl35wuxhn/image/upload/v1757006094/socilite-user/product_af4563692ae0e6551d6ee0948ba50498db48b869d584ad651331388e4477a326.jpg", username: "Bhushan Patil", caption: "Coffee break ☕" },
 ];
 
 function ReelPage() {
