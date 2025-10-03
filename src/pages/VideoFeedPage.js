@@ -25,6 +25,7 @@ function ReelPage() {
   const videoRefs = useRef([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [muted, setMuted] = useState(true);
+  const [paused, setPaused] = useState(false);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -49,11 +50,29 @@ function ReelPage() {
     return () => observer.disconnect();
   }, []);
 
+  useEffect(() => {
+    // Reset paused state when changing reel
+    setPaused(false);
+  }, [currentIndex]);
+
   const toggleMute = () => {
     setMuted(!muted);
     videoRefs.current.forEach((video, index) => {
       if (video && index === currentIndex) video.muted = !video.muted;
     });
+  };
+
+  const togglePause = () => {
+    const video = videoRefs.current[currentIndex];
+    if (video) {
+      if (video.paused) {
+        video.play();
+        setPaused(false);
+      } else {
+        video.pause();
+        setPaused(true);
+      }
+    }
   };
 
   return (
@@ -88,11 +107,15 @@ function ReelPage() {
               width: "100%",
               height: "100%",
               objectFit: "cover",
+              cursor: index === currentIndex ? "pointer" : "default",
             }}
+            onClick={index === currentIndex ? togglePause : undefined}
+            onPause={() => index === currentIndex && setPaused(true)}
+            onPlay={() => index === currentIndex && setPaused(false)}
           />
 
-          {/* Centered Mute Button */}
-          {index === currentIndex && (
+          {/* Centered Volume Icon when paused */}
+          {index === currentIndex && paused && (
             <div
               onClick={toggleMute}
               style={{
@@ -101,13 +124,14 @@ function ReelPage() {
                 left: "50%",
                 transform: "translate(-50%, -50%)",
                 color: "white",
-                fontSize: "13px",
+                fontSize: "16px",
                 cursor: "pointer",
-                backgroundColor: "rgba(0,0,0,0.4)",
-                padding: "16px",
+                backgroundColor: "rgba(0,0,0,0.5)",
+                padding: "20px",
                 borderRadius: "50%",
                 zIndex: 10,
                 transition: "opacity 0.3s",
+                boxShadow: "0 2px 8px rgba(0,0,0,0.3)",
               }}
             >
               {muted ? <FaVolumeMute /> : <FaVolumeUp />}
