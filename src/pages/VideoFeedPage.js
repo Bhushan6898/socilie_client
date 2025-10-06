@@ -152,7 +152,7 @@ function ReelPage() {
             }}
           >
             {/* Profile section */}
-            <div style={{ display: "flex", alignItems: "center", marginBottom: "80px" }}>
+            <div style={{ display: "flex", alignItems: "center", marginBottom: "0px" }}>
               <img
                 src={reel.userprofile}
                 alt="profile"
@@ -166,14 +166,14 @@ function ReelPage() {
               />
               <strong style={{ fontSize: "14px" }}>@{reel.username}</strong>
             </div>
-            {/* Caption below profile */}
+            {/* Caption below username, marginTop: 10px */}
             <p
               style={{
                 margin: 0,
                 fontSize: "13px",
                 lineHeight: "16px",
                 wordBreak: "break-word",
-                marginTop: "40px",
+                marginTop: "10px",
               }}
             >
               {reel.caption}
@@ -213,7 +213,7 @@ function ReelPage() {
 }
 
 export default ReelPage;
- 
+
 
 
 
