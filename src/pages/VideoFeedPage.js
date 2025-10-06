@@ -78,10 +78,11 @@ function ReelPage() {
   return (
     <div
       style={{
-        width: "100%",
+        width: "100vw",
         height: "100vh",
         background: "black",
         overflowY: "scroll",
+        overflowX: "hidden",
         scrollSnapType: "y mandatory",
       }}
     >
@@ -89,9 +90,9 @@ function ReelPage() {
         <div
           key={reel.id}
           style={{
-            width: "100%",
+            width: "100vw",
             height: "100vh",
-            position: "relative",
+            position: "relative", // back to relative for scroll
             scrollSnapAlign: "center",
           }}
         >
@@ -104,16 +105,18 @@ function ReelPage() {
             loop
             playsInline
             style={{
-              width: "100%",
-              height: "100%",
+              width: "100vw",
+              height: "100vh",
               objectFit: "cover",
               cursor: index === currentIndex ? "pointer" : "default",
+              position: "absolute",
+              top: 0,
+              left: 0,
             }}
             onClick={index === currentIndex ? togglePause : undefined}
             onPause={() => index === currentIndex && setPaused(true)}
             onPlay={() => index === currentIndex && setPaused(false)}
           />
-
           {/* Centered Volume Icon when paused */}
           {index === currentIndex && paused && (
             <div
@@ -137,53 +140,45 @@ function ReelPage() {
               {muted ? <FaVolumeMute /> : <FaVolumeUp />}
             </div>
           )}
-
           {/* Username + Caption */}
-         {/* Username + Caption */}
-{/* Username + Caption */}
-<div
-  style={{
-    position: "absolute",
-    bottom: "80px", // 40px above the bottom
-    left: "10px",
-    color: "white",
-    maxWidth: "70%",
-    zIndex: 5,
-  }}
->
-  {/* Profile section */}
-  <div style={{ display: "flex", alignItems: "center", marginBottom: "80px" }}>
-    <img
-      src={reel.userprofile}
-      alt="profile"
-      style={{
-        width: "36px",
-        height: "36px",
-        borderRadius: "50%",
-        marginRight: "8px",
-        objectFit: "cover",
-      }}
-    />
-    <strong style={{ fontSize: "14px" }}>@{reel.username}</strong>
-  </div>
-
-  {/* Caption below profile */}
-  <p
-    style={{
-      margin: 0,
-      fontSize: "13px",
-      lineHeight: "16px",
-      wordBreak: "break-word",
-      marginTop: "40px",
-    }}
-  >
-   
-  </p>
-</div>
-
-
-
-
+          <div
+            style={{
+              position: "absolute",
+              bottom: "80px",
+              left: "10px",
+              color: "white",
+              maxWidth: "70%",
+              zIndex: 5,
+            }}
+          >
+            {/* Profile section */}
+            <div style={{ display: "flex", alignItems: "center", marginBottom: "80px" }}>
+              <img
+                src={reel.userprofile}
+                alt="profile"
+                style={{
+                  width: "36px",
+                  height: "36px",
+                  borderRadius: "50%",
+                  marginRight: "8px",
+                  objectFit: "cover",
+                }}
+              />
+              <strong style={{ fontSize: "14px" }}>@{reel.username}</strong>
+            </div>
+            {/* Caption below profile */}
+            <p
+              style={{
+                margin: 0,
+                fontSize: "13px",
+                lineHeight: "16px",
+                wordBreak: "break-word",
+                marginTop: "40px",
+              }}
+            >
+              {reel.caption}
+            </p>
+          </div>
           {/* Right side buttons */}
           <div
             style={{
@@ -218,3 +213,7 @@ function ReelPage() {
 }
 
 export default ReelPage;
+ 
+
+
+
