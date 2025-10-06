@@ -90,6 +90,17 @@ class UserRepository {
             return error;
         }
     }
+
+    async Setlike(payload) {
+        try {
+            console.log(payload);
+            
+            const response = await repository.post('/user/like',payload);
+            return response;
+        } catch (error) {
+            return error;
+        }
+    }
 }
 
 export default new UserRepository(); // Exporting an instance

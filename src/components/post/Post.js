@@ -89,7 +89,6 @@ function Post() {
     );
   }
 
-
   return (
     <div className="">
       {postData.map((post, idx) => {
@@ -241,7 +240,7 @@ function Post() {
 
               {/* Caption + Actions */}
               <div className="card-body">
-                <PostActions />
+                <PostActions postId={post._id} userId={currentUserId} />
                 <p className="card-text" style={{ fontSize: "14px" }}>
                   {post.caption}
                   <br />
@@ -266,3 +265,4 @@ function Post() {
 }
 
 export default Post;
+

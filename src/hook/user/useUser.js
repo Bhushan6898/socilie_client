@@ -201,6 +201,21 @@ export const useUser = () => {
                 console.error("Error while connecting:", error);
             }
         },
+         likePost: async (payload) => {
+            try {
+                const response = await UserRepository.Setlike(payload); // Call the correct method
+                if (response.status === 200) {
+                   
+                    return response;
+                } 
+                else {
+                    console.error("Connection failed with status:", response.status);
+                }
+                return response;
+            } catch (error) {
+                console.error("Error while connecting:", error);
+            }
+        },
 
     };
 };

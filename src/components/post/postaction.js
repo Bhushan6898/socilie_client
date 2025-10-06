@@ -1,17 +1,31 @@
 import { useState } from "react";
+import { useSelector } from "react-redux";
+import { useUser } from "../../hook/user/useUser";
 
-function PostActions() {
+
+function PostActions({ postId, userId }) {
   const [liked, setLiked] = useState(false);
-  const [likeCount, setLikeCount] = useState(45);
-  const [commentCount] = useState(30);
+  const [likeCount, setLikeCount] = useState(0);
+  const [commentCount] = useState(0);
   const [saved, setSaved] = useState(false);
+const{ likePost }=useUser();
 
-  const handleLike = () => {
+
+  const handleLike = async () => {
+    // Optimistic UI update
     setLiked(!liked);
     setLikeCount(likeCount + (liked ? -1 : 1));
+    try {
+      const data = { postId,  like: !liked };
+      await likePost(data);
+      
+    } catch (error) {
+     
+      setLiked(liked);
+      setLikeCount(likeCount + (liked ? 1 : -1));
+     
+    }
   };
-
-  
 
   return (
     <div className="d-flex align-items-center justify-content-between">
