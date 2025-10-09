@@ -88,6 +88,7 @@ function Post() {
       </div>
     );
   }
+console.log(postData);
 
   return (
     <div className="">
@@ -240,7 +241,7 @@ function Post() {
 
               {/* Caption + Actions */}
               <div className="card-body">
-                <PostActions postId={post._id} userId={currentUserId} />
+                <PostActions postId={post._id} userId={currentUserId}  like={post.likes}/>
                 <p className="card-text" style={{ fontSize: "14px" }}>
                   {post.caption}
                   <br />

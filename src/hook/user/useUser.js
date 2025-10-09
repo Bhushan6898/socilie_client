@@ -205,6 +205,7 @@ export const useUser = () => {
             try {
                 const response = await UserRepository.Setlike(payload); // Call the correct method
                 if (response.status === 200) {
+                   console.log(response);
                    
                     return response;
                 } 

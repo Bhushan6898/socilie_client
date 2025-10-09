@@ -1,35 +1,57 @@
-import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useState, useEffect } from "react";
 import { useUser } from "../../hook/user/useUser";
+import { useSelector } from "react-redux";
 
+function PostActions({ postId, userId, like }) {
+  const { likePost } = useUser();
+  const currentUserId = useSelector((state) => state.auth.id);
 
-function PostActions({ postId, userId }) {
-  const [liked, setLiked] = useState(false);
-  const [likeCount, setLikeCount] = useState(0);
-  const [commentCount] = useState(0);
   const [saved, setSaved] = useState(false);
-const{ likePost }=useUser();
+  const [liked, setLiked] = useState(false);
+  const [likeList, setLikeList] = useState(like); // Initial likes from props
 
+  // ✅ Update `liked` when `likeList` or `currentUserId` changes
+  useEffect(() => {
+    const userHasLiked = likeList.some(
+      (entry) => entry.userId._id.toString() === currentUserId.toString()
+    );
+    setLiked(userHasLiked);
+  }, [likeList, currentUserId]);
 
   const handleLike = async () => {
-    // Optimistic UI update
-    setLiked(!liked);
-    setLikeCount(likeCount + (liked ? -1 : 1));
+    const newLiked = !liked;
+    let updatedLikes;
+
+    if (newLiked) {
+      // Add current user's like
+      updatedLikes = [
+        ...likeList,
+        {
+          userId: { _id: currentUserId },
+          likedAt: new Date().toISOString(),
+          _id: Math.random().toString(36).substr(2, 9), // temporary ID
+        },
+      ];
+    } else {
+      // Remove current user's like
+      updatedLikes = likeList.filter(
+        (entry) => entry.userId._id.toString() !== currentUserId.toString()
+      );
+    }
+
+    setLikeList(updatedLikes); // Trigger re-render
+
     try {
-      const data = { postId,  like: !liked };
-      await likePost(data);
-      
+      await likePost({ postId, like: newLiked });
     } catch (error) {
-     
-      setLiked(liked);
-      setLikeCount(likeCount + (liked ? 1 : -1));
-     
+      console.error("Failed to update like:", error);
+      // Revert on error
+      setLikeList(likeList);
     }
   };
 
   return (
     <div className="d-flex align-items-center justify-content-between">
-      {/* Left side: Like, Comment, Share */}
       <div className="d-flex align-items-center">
         {/* Like */}
         <button
@@ -37,36 +59,37 @@ const{ likePost }=useUser();
           onClick={handleLike}
           style={{ fontSize: "1.4rem" }}
         >
-          <i
-            className={`${liked ? "fas fa-heart text-danger" : "far fa-heart"}`}
-          ></i>
-          <span style={{ fontSize: "0.85rem", marginLeft: "6px" ,color: "#0f1010ff", fontWeight: "bold"}}>
-            {likeCount}
+          <i className={liked ? "fas fa-heart text-danger" : "far fa-heart"}></i>
+          <span style={{
+            fontSize: "0.85rem",
+            marginLeft: "6px",
+            color: "#0f1010ff",
+            fontWeight: "bold"
+          }}>
+            {likeList.length}
           </span>
         </button>
 
         {/* Comment */}
-        <button
-          className="btn btn-link p-0 me-3 d-flex align-items-center"
-          style={{ fontSize: "1.4rem" }}
-        >
+        <button className="btn btn-link p-0 me-3 d-flex align-items-center" style={{ fontSize: "1.4rem" }}>
           <i className="far fa-comment"></i>
-          <span style={{ fontSize: "0.85rem", marginLeft: "6px", color: "#0f1010ff",fontWeight: "bold" }}>
-            {commentCount}
+          <span style={{
+            fontSize: "0.85rem",
+            marginLeft: "6px",
+            color: "#0f1010ff",
+            fontWeight: "bold"
+          }}>
+            0
           </span>
         </button>
 
         {/* Share */}
-        <button
-          className="btn btn-link p-0 me-3"
-          style={{ fontSize: "1.4rem" }}
-        >
+        <button className="btn btn-link p-0 me-3" style={{ fontSize: "1.4rem" }}>
           <i className="far fa-paper-plane"></i>
         </button>
       </div>
-     
 
-      {/* Right side: Save */}
+      {/* Save */}
       <button
         className="btn btn-link p-0"
         style={{ fontSize: "1.4rem" }}
