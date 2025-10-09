@@ -53,3 +53,35 @@ c6b1ae4326msh32419369928c436p13b71djsn3890b14be4c4 */
   100% {transform: rotate(360deg) translate(30px)
 }
 }
+
+/* index.css or App.css */
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+   font-family: 'Poppins', sans-serif;
+}
+/* Light mode is default */
+
+/* Dark mode overrides */
+body.dark-mode {
+  background-color: #121212;
+  color: #f1f1f1;
+}
+
+body.dark-mode .navbar {
+  background-color: #1e1e1e !important;
+  color: white;
+}
+
+body.dark-mode .card,
+body.dark-mode .modal-content {
+  background-color: #1e1e1e;
+  color: rgb(29, 28, 28);
+  border-color: #333;
+}
+
+body.dark-mode .btn-outline-secondary {
+  color: #f1f1f1;
+  border-color: #ccc;
+}

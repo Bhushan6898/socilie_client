@@ -99,11 +99,12 @@ console.log(postData);
 
         return (
           <React.Fragment key={idx}>
-            <div className="card mb-4">
+            <div className="card mb-4" style={{ border: "none" }}>
               {/* Profile Section */}
-              <div className="card-header d-flex align-items-center justify-content-between">
+             <div className="card-header d-flex align-items-center justify-content-between bg-white border-0 p-1">
+
                 <div
-                  className="d-flex align-items-center"
+                  className="d-flex align-items-center p-0"
                   onClick={() => handleProfileClick(user._id)}
                   style={{ cursor: "pointer", marginLeft: "-15px" }}
                 >

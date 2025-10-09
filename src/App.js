@@ -32,7 +32,7 @@ function App() {
   return (
     <>
       {isAuthenticated && <Navbar />}
-      <div className="container mt-4">
+      <div className=" mt-4">
         <RoutesPage />
       </div>
     </>
