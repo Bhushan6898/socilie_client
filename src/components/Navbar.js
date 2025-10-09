@@ -38,38 +38,105 @@ function Navbar() {
   return (
     <>
       {/* Top Navbar */}
-      <nav className="navbar navbar-light bg-light border-bottom px-3 py-2">
-        <div className="container d-flex justify-content-between align-items-center">
-          <Link className="navbar-brand d-flex align-items-center" to="/">
-            <img
-              src={logo}
-              alt="Socilite"
-              className="img-fluid"
-              style={{ maxWidth: 70, height: 'auto', borderRadius: '10%' }}
-            />
+      <nav
+        className="navbar navbar-light bg-light border-bottom px-3 py-2"
+        style={{
+          position: 'sticky',
+          top: 0,
+          zIndex: 1000,
+          width: '100%',
+        }}
+      >
+        <div
+          className="container-fluid d-flex justify-content-between align-items-center flex-wrap"
+          style={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+          }}
+        >
+          {/* Logo Text */}
+          <Link
+            className="navbar-brand d-flex align-items-center"
+            to="/"
+            style={{ textDecoration: 'none' }}
+          >
+           <h5
+  style={{
+    fontFamily: "'Alex Brush', cursive",
+    fontSize: '1.8rem',
+    background: 'linear-gradient(45deg, #f58529, #dd2a7b, #8134af, #515bd4)',
+    WebkitBackgroundClip: 'text',
+    WebkitTextFillColor: 'transparent',
+    margin: 0,
+    letterSpacing: '1px',
+    padding: 0,
+    textAlign: 'center',
+    fontWeight: 'bold',
+    textShadow: '0px 0px 1px rgba(0,0,0,0.2)', // adds subtle depth
+  }}
+>
+  Socilite
+</h5>
+
           </Link>
 
-          <div className="d-flex align-items-center gap-3">
+          {/* Right Side Icons */}
+          <div
+            className="d-flex align-items-center"
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.75rem',
+              flexWrap: 'wrap',
+              justifyContent: 'center',
+            }}
+          >
             {/* 🌙 Toggle Theme Button */}
             <button
               className="btn btn-sm btn-outline-secondary"
               onClick={() => setDarkMode(!darkMode)}
               title="Toggle Dark Mode"
+              style={{
+                borderRadius: '50%',
+                width: '32px',
+                height: '32px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
             >
               {darkMode ? '🌞' : '🌙'}
             </button>
 
-            <Link to="/notifications" className="btn btn-link position-relative">
+            {/* 🔔 Notifications */}
+            <Link
+              to="/notifications"
+              className="btn btn-link position-relative"
+              style={{
+                position: 'relative',
+                padding: '0',
+              }}
+            >
               <i className="fas fa-bell fa-lg" style={{ color: '#f34a12ff' }}></i>
               <span
                 className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
-                style={{ fontSize: '0.65rem' }}
+                style={{
+                  fontSize: '0.65rem',
+                  transform: 'translate(-25%, -30%)',
+                }}
               >
                 {notifications?.length || 0}
               </span>
             </Link>
 
-            <Link to="/messages" className="btn btn-link">
+            {/* ✉️ Messages */}
+            <Link
+              to="/messages"
+              className="btn btn-link"
+              style={{ padding: '0' }}
+            >
               <i className="fas fa-envelope fa-lg" style={{ color: '#3498db' }}></i>
             </Link>
           </div>

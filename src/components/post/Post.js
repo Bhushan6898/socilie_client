@@ -106,7 +106,7 @@ console.log(postData);
                 <div
                   className="d-flex align-items-center p-0"
                   onClick={() => handleProfileClick(user._id)}
-                  style={{ cursor: "pointer", marginLeft: "-15px" }}
+                  style={{ cursor: "pointer", marginLeft: "10px", }}
                 >
                   <img
                     src={user.profilePicture || profilpicture}
@@ -130,14 +130,14 @@ console.log(postData);
                 </div>
 
                 <div className="d-flex align-items-center gap-2">
-                  {currentUserId !== user._id && (
+                  {/* {currentUserId !== user._id && (
                     <button
                       className="btn btn-outline-primary btn-sm"
                       type="button"
                     >
                       Follow
                     </button>
-                  )}
+                  )} */}
                   <button
                     className="btn p-0 border-0 bg-transparent"
                     style={{ lineHeight: 0 }}
