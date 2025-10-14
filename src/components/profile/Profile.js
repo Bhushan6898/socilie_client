@@ -199,10 +199,10 @@ function Profile() {
       </div>
 
       <hr />
-      <ProfileHighlights/>
+      <ProfileHighlights />
 
       <ul className="nav justify-content-around mb-3">
-        
+
         <li className="nav-item">
           <button
             className={`nav-link border-0 bg-transparent ${activeTab === "posts" ? "text-dark fw-bold border-bottom border-3 border-primary" : "text-secondary"
@@ -345,7 +345,7 @@ function Profile() {
       {selectedPost && (
         <div
           className="modal d-block"
-          style={{ backgroundColor: "rgba(0,0,0,0.9)" }}
+
           tabIndex="-1"
           onClick={() => {
             Object.values(audioRefs.current).forEach((audio) => {
@@ -357,13 +357,13 @@ function Profile() {
           }}
         >
           <div
-            className="modal-dialog modal-fullscreen"
+            className="modal-dialog "
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="modal-content bg-black text-white">
+            <div className="modal-content  ">
               <div
                 className="modal-body p-0"
-                style={{ overflowY: "auto", height: "100vh" }}
+                style={{ overflowY: "auto", height: "90vh" }}
               >
                 {allPosts.map((post, postIdx) => {
                   const mediaItems =
@@ -372,12 +372,12 @@ function Profile() {
                   return (
                     <div
                       key={postIdx}
-                      className="d-flex justify-content-center mb-4"
-                      style={{ minHeight: "100vh" }}
+                      className="d-flex justify-content-center mb-4 border-0"
+                     
                     >
-                      <div className="card bg-dark text-white w-100" style={{ maxWidth: "500px" }}>
+                      <div className="card text-white w-100" style={{ maxWidth: "500px", height: "500px" }}>
                         {/* --- Card Header with Profile + Location --- */}
-                        <div className="card-header d-flex align-items-center bg-dark border-0">
+                        <div className="card-header d-flex align-items-center border-0">
                           <img
                             src={userData.profilepic}
                             alt="profile"
@@ -385,78 +385,50 @@ function Profile() {
                             style={{ width: "40px", height: "40px", objectFit: "cover" }}
                           />
                           <div>
-                            <strong>{userData.username}</strong>
-                            <div className="text-muted small">
-                              {post.location || "Unknown location"}
-                            </div>
+                            <strong className="text-dark">{userData.username}</strong>
+                            <div className="text-muted small">{post.location || "Unknown location"}</div>
                           </div>
                         </div>
 
-                        {/* --- Card Body (Media) --- */}
-                        <div className="card-body p-0 d-flex justify-content-center position-relative">
+                        {/* --- Fixed Height Card Body --- */}
+                        <div
+                          className="card-body p-0 d-flex justify-content-center align-items-center position-relative border-0 "
+                          style={{ height: "450px", overflow: "hidden" }}
+                        >
                           {mediaItems.length > 1 ? (
-                            // Carousel for multiple
+                            // --- Carousel ---
                             <div
                               id={`carouselPost-${postIdx}`}
-                              className="carousel slide w-100"
+                              className="carousel slide w-100 h-100"
                               data-bs-ride="carousel"
                             >
-                              <div className="carousel-inner">
+                              <div className="carousel-inner h-100">
                                 {mediaItems.map((media, i) => (
                                   <div
                                     key={i}
-                                    className={`carousel-item ${i === 0 ? "active" : ""}`}
-                                    style={{ position: "relative" }}
+                                    className={`carousel-item ${i === 0 ? "active" : ""} h-100`}
+                                    style={{ position: "relative", textAlign: "center" }}
                                   >
-                                    {/* Music Toggle */}
-                                    {media.music && (
-                                      <>
-                                        <audio
-                                          ref={(el) => (audioRefs.current[`${postIdx}-${i}`] = el)}
-                                          src={media.music}
-                                        />
-                                        <div
-                                          onClick={() => toggleAudio(`${postIdx}-${i}`)}
-                                          style={{
-                                            position: "absolute",
-                                            bottom: "20px",
-                                            right: "10px",
-                                            backgroundColor: "rgba(0,0,0,0.6)",
-                                            padding: "8px",
-                                            borderRadius: "50%",
-                                            cursor: "pointer",
-                                            zIndex: 10,
-                                          }}
-                                        >
-                                          {playingIndex === `${postIdx}-${i}` ? (
-                                            <FaVolumeUp />
-                                          ) : (
-                                            <FaVolumeMute />
-                                          )}
-                                        </div>
-                                      </>
-                                    )}
-
                                     {media.type === "video" ? (
                                       <video
                                         src={media.url}
-                                        className="d-block w-100"
-                                        style={{ maxHeight: "70vh", objectFit: "contain" }}
+                                        className="h-100"
+                                        style={{ maxWidth: "100%", objectFit: "contain" }}
                                         controls
                                       />
                                     ) : (
                                       <img
                                         src={media.url}
                                         alt=""
-                                        className="d-block w-100"
-                                        style={{ maxHeight: "70vh", objectFit: "contain" }}
+                                        className="h-100"
+                                        style={{ maxWidth: "100%", objectFit: "contain" }}
                                       />
                                     )}
                                   </div>
                                 ))}
                               </div>
 
-                              {/* Controls */}
+                              {/* Carousel Controls */}
                               <button
                                 className="carousel-control-prev"
                                 type="button"
@@ -471,77 +443,76 @@ function Profile() {
                               ></button>
                             </div>
                           ) : (
-                            // Single media
-                            <div style={{ position: "relative", width: "100%" }}>
-                              {mediaItems[0].music && (
-                                <>
-                                  <audio
-                                    ref={(el) => (audioRefs.current[`${postIdx}-0`] = el)}
-                                    src={mediaItems[0].music}
-                                  />
-                                  <div
-                                    onClick={() => toggleAudio(`${postIdx}-0`)}
-                                    style={{
-                                      position: "absolute",
-                                      bottom: "20px",
-                                      right: "10px",
-                                      backgroundColor: "rgba(0,0,0,0.6)",
-                                      padding: "8px",
-                                      borderRadius: "50%",
-                                      cursor: "pointer",
-                                      zIndex: 10,
-                                    }}
-                                  >
-                                    {playingIndex === `${postIdx}-0` ? (
-                                      <FaVolumeUp />
-                                    ) : (
-                                      <FaVolumeMute />
-                                    )}
-                                  </div>
-                                </>
-                              )}
-
+                            // --- Single media ---
+                            <div className="w-100 h-100 d-flex justify-content-center align-items-center position-relative">
                               {mediaItems[0].type === "video" ? (
                                 <video
                                   src={mediaItems[0].url}
-                                  className="d-block w-100"
-                                  style={{ maxHeight: "70vh", objectFit: "contain" }}
+                                  className="h-100"
+                                  style={{ maxWidth: "100%", objectFit: "contain" }}
                                   controls
                                 />
                               ) : (
                                 <img
                                   src={mediaItems[0].url}
-                                  className="d-block w-100"
+                                  className="h-100"
                                   alt=""
-                                  style={{ maxHeight: "70vh", objectFit: "contain" }}
+                                  style={{ maxWidth: "100%", objectFit: "contain" }}
                                 />
                               )}
                             </div>
                           )}
+
+                          {/* --- Music Toggle --- */}
+                          {mediaItems[0].music && (
+                            <>
+                              <audio
+                                ref={(el) => (audioRefs.current[`${postIdx}-0`] = el)}
+                                src={mediaItems[0].music}
+                              />
+                              <div
+                                onClick={() => toggleAudio(`${postIdx}-0`)}
+                                style={{
+                                  position: "absolute",
+                                  bottom: "20px",
+                                  right: "10px",
+                                  backgroundColor: "rgba(0,0,0,0.6)",
+                                  padding: "8px",
+                                  borderRadius: "50%",
+                                  cursor: "pointer",
+                                  zIndex: 10,
+                                }}
+                              >
+                                {playingIndex === `${postIdx}-0` ? <FaVolumeUp /> : <FaVolumeMute />}
+                              </div>
+                            </>
+                          )}
                         </div>
+                        {/* --- Caption and Date Section --- */}
+                        <div className="px-3 py-2  text-white border-top border-secondary">
+                          {post.caption && (
+                            <p className="mb-1" style={{ fontSize: "14px",color:"#141313ff" }}>
+                               {post.caption}
+                            </p>
+                          )}
+                          {post.createdAt && (
+                            <p className="mb-0 text-muted" style={{ fontSize: "12px" }}>
+                              {new Date(post.createdAt).toLocaleDateString()} • {new Date(post.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                            </p>
+                          )}
+                        </div>
+
                       </div>
+
+
                     </div>
+
                   );
                 })}
               </div>
 
               {/* Footer */}
-              <div className="modal-footer justify-content-center bg-dark">
-                <button
-                  type="button"
-                  className="btn btn-light"
-                  onClick={() => {
-                    Object.values(audioRefs.current).forEach((audio) => {
-                      audio.pause();
-                      audio.currentTime = 0;
-                    });
-                    setSelectedPost(null);
-                    setPlayingIndex(null);
-                  }}
-                >
-                  Close
-                </button>
-              </div>
+
             </div>
           </div>
         </div>

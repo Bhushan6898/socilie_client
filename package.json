@@ -9,6 +9,7 @@
     "@reduxjs/toolkit": "^2.8.2",
     "axios": "^1.10.0",
     "bootstrap": "^5.3.7",
+    "browser-image-compression": "^2.0.2",
     "core-js-pure": "^3.44.0",
     "emoji-picker-react": "^4.13.2",
     "fabric": "^6.7.1",

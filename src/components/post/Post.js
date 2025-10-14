@@ -12,7 +12,6 @@ function Post() {
   const navigate = useNavigate();
   const postData = useSelector((state) => state.auth.allpostdata);
   const currentUserId = useSelector((state) => state.auth.id);
-
   const [loading, setLoading] = useState(true);
   const [showMenu, setShowMenu] = useState(false);
   const [playingIndex, setPlayingIndex] = useState(null);
@@ -102,7 +101,6 @@ console.log(postData);
             <div className="card mb-4" style={{ border: "none" }}>
               {/* Profile Section */}
              <div className="card-header d-flex align-items-center justify-content-between bg-white border-0 p-1">
-
                 <div
                   className="d-flex align-items-center p-0"
                   onClick={() => handleProfileClick(user._id)}

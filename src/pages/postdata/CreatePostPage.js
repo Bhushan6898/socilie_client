@@ -6,6 +6,7 @@ import MusicList from "./addmusic.js";
 import { ArrowRepeat } from "react-bootstrap-icons"
 import { Atom, TrophySpin } from "react-loading-indicators";
 import { useNavigate } from "react-router-dom";
+import imageCompression from 'browser-image-compression';
 const CreatePostPage = () => {
   const [files, setFiles] = useState([]);
   const [caption, setCaption] = useState("");
@@ -38,9 +39,32 @@ const CreatePostPage = () => {
     }
   }, [selectedSong]);
 
-  const handleFileChange = (e) => {
-    setFiles([...e.target.files]);
-  };
+ const handleFileChange = async (e) => {
+  const maxSizeKB = 500; // 500 KB
+  const selectedFiles = Array.from(e.target.files);
+  const compressedImages = [];
+
+  for (const file of selectedFiles) {
+    if (!file.type.startsWith("image/")) {
+      alert(`${file.name} is not an image and won't be compressed.`);
+      continue;
+    }
+
+    try {
+      const options = {
+        maxSizeMB: maxSizeKB / 1024, // convert KB to MB
+        useWebWorker: true,
+      };
+
+      const compressedFile = await imageCompression(file, options);
+      compressedImages.push(compressedFile);
+    } catch (error) {
+      console.error("Compression failed for", file.name, error);
+    }
+  }
+
+  setFiles(compressedImages);
+};
 
   const handleLocationSearch = (e) => {
     const value = e.target.value;
