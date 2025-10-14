@@ -12,12 +12,13 @@ function Actions({ postId,  like }) {
   const [likeList, setLikeList] = useState(like);
   const [showLikes, setShowLikes] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
-  console.log(postId,  like);
   
+  
+console.log(likeList,currentUserId);
 
   useEffect(() => {
     const userHasLiked = likeList.some(
-      (entry) => entry.userId._id === currentUserId
+      (entry) => entry.userId === currentUserId
     );
     setLiked(userHasLiked);
   }, [likeList, currentUserId]);
@@ -42,10 +43,10 @@ function Actions({ postId,  like }) {
         },
       ];
     } else {
-      // Remove like
-    //   updatedLikes = likeList.filter(
-    //     (entry) => entry.userId._id.toString() !== currentUserId.toString()
-    //   );
+      
+      updatedLikes = likeList.filter(
+        (entry) => entry.userId._id.toString() !== currentUserId.toString()
+      );
     }
 
     setLikeList(updatedLikes);

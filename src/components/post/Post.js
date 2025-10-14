@@ -100,53 +100,58 @@ console.log(postData);
           <React.Fragment key={idx}>
             <div className="card mb-4" style={{ border: "none" }}>
               {/* Profile Section */}
-             <div className="card-header d-flex align-items-center justify-content-between bg-white border-0 p-1">
-                <div
-                  className="d-flex align-items-center p-0"
-                  onClick={() => handleProfileClick(user._id)}
-                  style={{ cursor: "pointer", marginLeft: "10px", }}
-                >
-                  <img
-                    src={user.profilePicture || profilpicture}
-                    alt={user.username}
-                    className="rounded-circle border me-1"
-                    style={{ width: 36, height: 36, objectFit: "cover" }}
-                  />
-                  <strong
-                    style={{
-                      fontSize: "13px",
-                      maxWidth: window.innerWidth <= 576 ? "90px" : "150px",
-                      overflow: "hidden",
-                      textOverflow: "ellipsis",
-                      whiteSpace: "nowrap",
-                      display: "inline-block",
-                      verticalAlign: "middle",
-                    }}
-                  >
-                    {user.username}
-                  </strong>
-                </div>
+            <div className="card-header d-flex align-items-center justify-content-between bg-white border-0 p-1">
+  <div
+    className="d-flex align-items-start flex-column p-0"
+    onClick={() => handleProfileClick(user._id)}
+    style={{ cursor: "pointer", marginLeft: "10px", flex: 1 }}
+  >
+    <div className="d-flex align-items-center">
+      <img
+        src={user.profilePicture || profilpicture}
+        alt={user.username}
+        className="rounded-circle border me-2"
+        style={{ width: 36, height: 36, objectFit: "cover" }}
+      />
+      <div className="d-flex flex-column">
+        <strong
+          style={{
+            fontSize: "13px",
+            maxWidth: window.innerWidth <= 576 ? "90px" : "150px",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            whiteSpace: "nowrap",
+            display: "inline-block",
+          }}
+        >
+          {user.username}
+        </strong>
+        <span className="text-muted" style={{ fontSize: "12px" }}>
+          {post.location || "Pune"}
+        </span>
+        {/* {post.music?.url && (
+          <span className="text-primary" style={{ fontSize: "12px" }}>
+            🎵 {post.music.title || "Audio track"}
+          </span>
+        )} */}
+      </div>
+    </div>
+  </div>
 
-                <div className="d-flex align-items-center gap-2">
-                  {/* {currentUserId !== user._id && (
-                    <button
-                      className="btn btn-outline-primary btn-sm"
-                      type="button"
-                    >
-                      Follow
-                    </button>
-                  )} */}
-                  <button
-                    className="btn p-0 border-0 bg-transparent"
-                    style={{ lineHeight: 0 }}
-                    onClick={() => setShowMenu(!showMenu)}
-                    type="button"
-                  >
-                    <ThreeDotsVertical size={18} />
-                  </button>
-                </div>
-                {showMenu && <MenuModal onClose={() => setShowMenu(false)} />}
-              </div>
+  <div className="d-flex align-items-center gap-2">
+    <button
+      className="btn p-0 border-0 bg-transparent"
+      style={{ lineHeight: 0 }}
+      onClick={() => setShowMenu(!showMenu)}
+      type="button"
+    >
+      <ThreeDotsVertical size={18} />
+    </button>
+  </div>
+
+  {showMenu && <MenuModal onClose={() => setShowMenu(false)} />}
+</div>
+
 
               {/* Media Section */}
               {mediaItems.length > 0 && (

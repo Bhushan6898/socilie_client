@@ -64,7 +64,8 @@ function PostActions({ postId, userId, like }) {
 
     return username.includes(search) || name.includes(search);
   });
-console.log(likeList);
+
+
 
   return (
     <>

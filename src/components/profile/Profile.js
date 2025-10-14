@@ -7,6 +7,7 @@ import { FaVolumeUp, FaVolumeMute } from 'react-icons/fa';
 import Setting from '../setting/index.js'
 import { useAdmin } from '../../hook/admin/useAdmin.js';
 import ProfileHighlights from './highlist.js';
+import Actions from './action.js';
 // Dummy post images
 const dummyPosts = [
   "https://picsum.photos/id/1011/300/300",
@@ -124,7 +125,14 @@ function Profile() {
 
   const allPosts = (postData && postData.length > 0) ? postData : dummyPosts;
 
-
+  const formatPostDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString("en-US", {
+      day: "numeric",
+      month: "short",
+      year: "numeric",
+    });
+  };
 
 
   const toggleAudio = (index) => {
@@ -362,8 +370,8 @@ function Profile() {
           >
             <div className="modal-content  ">
               <div
-                className="modal-body p-0"
-                style={{ overflowY: "auto", height: "90vh" }}
+                className="modal-body p-0 "
+                style={{ overflowY: "auto", height: "90vh", border: "none" }}
               >
                 {allPosts.map((post, postIdx) => {
                   const mediaItems =
@@ -372,8 +380,8 @@ function Profile() {
                   return (
                     <div
                       key={postIdx}
-                      className="d-flex justify-content-center mb-4 border-0"
-                     
+                      className="d-flex justify-content-center mb-1 border-0"
+
                     >
                       <div className="card text-white w-100" style={{ maxWidth: "500px", height: "500px" }}>
                         {/* --- Card Header with Profile + Location --- */}
@@ -411,11 +419,15 @@ function Profile() {
                                   >
                                     {media.type === "video" ? (
                                       <video
-                                        src={media.url}
-                                        className="h-100"
-                                        style={{ maxWidth: "100%", objectFit: "contain" }}
+                                        key={i}
+                                        className="w-100 h-100"
+                                        style={{ objectFit: "contain" }}
                                         controls
-                                      />
+                                        preload="metadata"
+                                      >
+                                        <source src={media.url} type="video/mp4" />
+                                        Your browser does not support the video tag.
+                                      </video>
                                     ) : (
                                       <img
                                         src={media.url}
@@ -488,18 +500,17 @@ function Profile() {
                             </>
                           )}
                         </div>
+                        {/* <Actions postId={post._id}   like={post.likes}/> */}
                         {/* --- Caption and Date Section --- */}
-                        <div className="px-3 py-2  text-white border-top border-secondary">
-                          {post.caption && (
-                            <p className="mb-1" style={{ fontSize: "14px",color:"#141313ff" }}>
-                               {post.caption}
-                            </p>
-                          )}
-                          {post.createdAt && (
-                            <p className="mb-0 text-muted" style={{ fontSize: "12px" }}>
-                              {new Date(post.createdAt).toLocaleDateString()} • {new Date(post.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                            </p>
-                          )}
+                        <div className="card-body">
+                          <Actions postId={post._id} like={post.likes} />
+                          <p className="card-text text-dark" style={{ fontSize: "14px" }}>
+                            {post.caption}
+                            <br />
+                            <small className="text-muted">
+                              {formatPostDate(post.createdAt)}
+                            </small>
+                          </p>
                         </div>
 
                       </div>
